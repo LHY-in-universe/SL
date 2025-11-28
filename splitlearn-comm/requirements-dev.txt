@@ -1,0 +1,29 @@
+# Development dependencies for splitlearn-comm
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-timeout>=2.1.0
+pytest-xdist>=3.0.0  # Parallel test execution
+
+# Code quality
+black>=23.0.0  # Code formatting
+isort>=5.12.0  # Import sorting
+flake8>=6.0.0  # Linting
+mypy>=1.0.0    # Type checking
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.2.0
+myst-parser>=1.0.0  # Markdown support for Sphinx
+
+# Build tools
+build>=0.10.0
+twine>=4.0.0  # Package publishing
+
+# Protocol buffers
+grpcio-tools>=1.50.0  # For compiling .proto files
+
+# Development utilities
+ipython>=8.0.0  # Better REPL
+ipdb>=0.13.0    # Debugger

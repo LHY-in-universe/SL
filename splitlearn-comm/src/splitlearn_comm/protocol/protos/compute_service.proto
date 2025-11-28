@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package splitlearn.comm;
+
+// ComputeService - 通用计算服务
+// 提供远程计算能力，完全解耦具体模型实现
+service ComputeService {
+    // 执行计算
+    rpc Compute(ComputeRequest) returns (ComputeResponse);
+
+    // 健康检查
+    rpc HealthCheck(HealthRequest) returns (HealthResponse);
+
+    // 获取服务信息
+    rpc GetServiceInfo(ServiceInfoRequest) returns (ServiceInfoResponse);
+}
+
+// 计算请求
+message ComputeRequest {
+    // 输入张量数据（二进制格式，优化性能）
+    bytes data = 1;
+
+    // 张量形状 [batch_size, seq_len, hidden_size, ...]
+    repeated int32 shape = 2;
+
+    // 可选的请求 ID（用于追踪）
+    optional int32 request_id = 3;
+
+    // 可选的元数据
+    map<string, string> metadata = 4;
+}
+
+// 计算响应
+message ComputeResponse {
+    // 输出张量数据
+    bytes data = 1;
+
+    // 张量形状
+    repeated int32 shape = 2;
+
+    // 请求 ID（与请求对应）
+    optional int32 request_id = 3;
+
+    // 服务端计算耗时（毫秒）
+    optional float compute_time_ms = 4;
+}
+
+// 健康检查请求
+message HealthRequest {}
+
+// 健康检查响应
+message HealthResponse {
+    // 服务状态: "ok", "unhealthy"
+    string status = 1;
+
+    // 状态消息
+    string message = 2;
+
+    // 服务版本
+    string version = 3;
+
+    // 运行时间（秒）
+    optional float uptime_seconds = 4;
+}
+
+// 服务信息请求
+message ServiceInfoRequest {}
+
+// 服务信息响应
+message ServiceInfoResponse {
+    // 服务名称
+    string service_name = 1;
+
+    // 服务版本
+    string version = 2;
+
+    // 运行设备
+    string device = 3;
+
+    // 运行时间（秒）
+    optional float uptime_seconds = 4;
+
+    // 总请求数
+    int64 total_requests = 5;
+
+    // 自定义信息
+    map<string, string> custom_info = 6;
+}

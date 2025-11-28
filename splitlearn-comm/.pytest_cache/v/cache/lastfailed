@@ -1,0 +1,15 @@
+{
+  "tests/test_retry.py::TestRetryStrategy::test_cannot_instantiate_abstract_class": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_retry_once": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_retry_multiple_times": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_exponential_backoff_delays": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_max_delay_cap": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_jitter_randomization": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_execute_with_arguments": true,
+  "tests/test_retry.py::TestExponentialBackoff::test_different_exception_types": true,
+  "tests/test_retry.py::TestRetryEdgeCases::test_negative_max_retries": true,
+  "tests/test_retry.py::TestRetryEdgeCases::test_very_large_max_retries": true,
+  "tests/test_retry.py::TestRetryEdgeCases::test_function_with_side_effects": true,
+  "tests/test_retry.py::TestRetryEdgeCases::test_concurrent_retry_execution": true,
+  "tests/test_retry.py::TestRetryLogging::test_retry_logging_integration": true
+}

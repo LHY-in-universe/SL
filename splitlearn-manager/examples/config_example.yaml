@@ -1,0 +1,17 @@
+# Example Model Configuration
+# This YAML file demonstrates how to configure a model for splitlearn-manager
+
+model_id: "my_transformer_model"
+model_path: "/path/to/model.pt"
+model_type: "pytorch"  # Options: pytorch, huggingface, custom
+device: "cuda:0"       # Options: cpu, cuda, cuda:0, cuda:1, mps
+batch_size: 32
+max_memory_mb: 4096    # Maximum memory allocation in MB
+warmup: true           # Whether to warmup model after loading
+
+# Additional model-specific configuration
+config:
+  input_shape: [1, 10, 768]
+  max_sequence_length: 512
+  num_attention_heads: 12
+  hidden_size: 768
