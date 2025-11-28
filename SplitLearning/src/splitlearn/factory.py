@@ -3,7 +3,7 @@ Model Factory - Unified interface for creating split models
 
 Provides a single entry point for creating split models of any supported architecture.
 """
-from typing import Tuple
+from typing import Tuple, Optional
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
 
@@ -33,6 +33,8 @@ class ModelFactory:
         split_point_1: int,
         split_point_2: int,
         device: str = 'cpu',
+        storage_path: Optional[str] = None,
+        auto_save: bool = False,
     ) -> Tuple:
         """
         Create all three split model parts for any supported architecture
@@ -43,6 +45,8 @@ class ModelFactory:
             split_point_1: End of Bottom layers (exclusive)
             split_point_2: Start of Top layers (inclusive)
             device: Device to load models on
+            storage_path: Base directory for saving split models (optional)
+            auto_save: Whether to automatically save split models (default: False)
 
         Returns:
             Tuple: (bottom_model, trunk_model, top_model)
@@ -57,6 +61,8 @@ class ModelFactory:
                 model_name_or_path='gpt2',
                 split_point_1=2,
                 split_point_2=10,
+                storage_path='./models',
+                auto_save=True,
             )
         """
         # Validate model type is registered
@@ -152,6 +158,47 @@ class ModelFactory:
         if abs(total_split - total_full) > 1000:
             print(f"  Warning: Parameter count mismatch! "
                   f"Difference: {abs(total_split - total_full):,}")
+
+        # Auto-save functionality
+        if auto_save and storage_path:
+            print("\n" + "="*60)
+            print("Saving split models to storage...")
+            print("="*60)
+
+            from splitlearn.utils import StorageManager
+
+            # Create storage directories
+            dirs = StorageManager.create_storage_directories(storage_path)
+            print(f"Storage directory: {storage_path}")
+
+            # Generate split configuration string
+            split_config = f"{split_point_1}-{split_point_2}"
+
+            # Extract base model name (e.g., "gpt2" from "gpt2" or "meta-llama/...")
+            model_basename = model_name_or_path.split('/')[-1]
+
+            # Save bottom model
+            bottom_path = StorageManager.get_split_model_path(
+                storage_path, model_basename, "bottom", split_config
+            )
+            bottom_model.save_split_model(bottom_path)
+            print(f"  Bottom model saved: {bottom_path}")
+
+            # Save trunk model
+            trunk_path = StorageManager.get_split_model_path(
+                storage_path, model_basename, "trunk", split_config
+            )
+            trunk_model.save_split_model(trunk_path)
+            print(f"  Trunk model saved: {trunk_path}")
+
+            # Save top model
+            top_path = StorageManager.get_split_model_path(
+                storage_path, model_basename, "top", split_config
+            )
+            top_model.save_split_model(top_path)
+            print(f"  Top model saved: {top_path}")
+
+            print("="*60)
 
         return bottom_model, trunk_model, top_model
 

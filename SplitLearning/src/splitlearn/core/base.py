@@ -4,7 +4,10 @@ Base abstract class for all split models
 Defines the common interface that all split model parts must implement.
 """
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, Tuple
+from typing import Dict, Any, Optional, Tuple, Union
+from pathlib import Path
+from datetime import datetime
+import json
 import torch
 import torch.nn as nn
 
@@ -172,3 +175,84 @@ class BaseSplitModel(nn.Module, ABC):
         elif isinstance(module, nn.LayerNorm):
             module.bias.data.zero_()
             module.weight.data.fill_(1.0)
+
+    def save_split_model(
+        self,
+        save_path: Union[str, Path],
+        save_metadata: bool = True
+    ) -> None:
+        """
+        Save split model to disk.
+
+        Args:
+            save_path: Path to save model checkpoint
+            save_metadata: Whether to save metadata JSON file
+
+        Saves:
+            - <name>.pt: PyTorch state dict
+            - <name>_metadata.json: Model configuration and split info (if save_metadata=True)
+
+        Example:
+            >>> model.save_split_model("./models/bottom/gpt2_bottom.pt")
+        """
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Save model state dict
+        torch.save(self.state_dict(), save_path)
+
+        # Save metadata if requested
+        if save_metadata:
+            metadata = self._generate_metadata()
+            metadata_path = save_path.parent / f"{save_path.stem}_metadata.json"
+            with open(metadata_path, 'w') as f:
+                json.dump(metadata, f, indent=2)
+
+    def _generate_metadata(self) -> dict:
+        """
+        Generate metadata dictionary for saved model.
+
+        Returns:
+            Dictionary containing model metadata
+
+        Metadata includes:
+            - model_class: Name of the model class
+            - component: Component type (bottom/trunk/top)
+            - start_layer: Starting layer index
+            - end_layer: Ending layer index
+            - num_layers: Number of layers
+            - num_parameters: Total parameter count
+            - memory_mb: Memory footprint in MB
+            - config: Model configuration
+            - saved_at: ISO timestamp
+        """
+        # Determine component type from class name
+        class_name = self.__class__.__name__
+        if "Bottom" in class_name:
+            component = "bottom"
+        elif "Trunk" in class_name:
+            component = "trunk"
+        elif "Top" in class_name:
+            component = "top"
+        else:
+            component = "unknown"
+
+        # Get config as dict if possible
+        config_dict = {}
+        if hasattr(self.config, 'to_dict'):
+            config_dict = self.config.to_dict()
+        elif hasattr(self.config, '__dict__'):
+            config_dict = {k: v for k, v in self.config.__dict__.items()
+                          if not k.startswith('_')}
+
+        return {
+            "model_class": class_name,
+            "component": component,
+            "start_layer": self.start_layer,
+            "end_layer": self.end_layer,
+            "num_layers": self.num_layers,
+            "num_parameters": self.num_parameters(),
+            "memory_mb": self.memory_footprint_mb(),
+            "config": config_dict,
+            "saved_at": datetime.now().isoformat()
+        }

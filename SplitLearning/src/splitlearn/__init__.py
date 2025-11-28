@@ -30,14 +30,14 @@ from .factory import ModelFactory
 from .registry import ModelRegistry
 
 # Utilities
-from .utils import ParamMapper
+from .utils import ParamMapper, StorageManager
 
 # Import models to trigger registration
 from . import models
 
 # Model implementations
 from .models.gpt2 import GPT2BottomModel, GPT2TrunkModel, GPT2TopModel
-from .models.qwen2 import Qwen2BottomModel, Qwen2TrunkModel, Qwen2TopModel
+# from .models.qwen2 import Qwen2BottomModel, Qwen2TrunkModel, Qwen2TopModel  # Requires transformers >= 4.37
 
 __all__ = [
     # Version
@@ -55,14 +55,15 @@ __all__ = [
 
     # Utils
     "ParamMapper",
+    "StorageManager",
 
     # GPT-2
     "GPT2BottomModel",
     "GPT2TrunkModel",
     "GPT2TopModel",
 
-    # Qwen2
-    "Qwen2BottomModel",
-    "Qwen2TrunkModel",
-    "Qwen2TopModel",
+    # Qwen2 (requires transformers >= 4.37)
+    # "Qwen2BottomModel",
+    # "Qwen2TrunkModel",
+    # "Qwen2TopModel",
 ]

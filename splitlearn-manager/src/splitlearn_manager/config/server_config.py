@@ -21,6 +21,8 @@ class ServerConfig:
         health_check_interval: Health check interval in seconds
         enable_monitoring: Whether to enable Prometheus monitoring
         log_level: Logging level ("DEBUG", "INFO", "WARNING", "ERROR")
+        model_storage_dir: Base directory for storing split models
+        auto_save_split_models: Whether to auto-save split models when created
         config: Additional server configuration
     """
 
@@ -32,6 +34,8 @@ class ServerConfig:
     health_check_interval: float = 30.0
     enable_monitoring: bool = True
     log_level: str = "INFO"
+    model_storage_dir: str = "./models"
+    auto_save_split_models: bool = False
     config: Dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -65,6 +69,8 @@ class ServerConfig:
             "health_check_interval": self.health_check_interval,
             "enable_monitoring": self.enable_monitoring,
             "log_level": self.log_level,
+            "model_storage_dir": self.model_storage_dir,
+            "auto_save_split_models": self.auto_save_split_models,
             "config": self.config,
         }
 
@@ -82,6 +88,8 @@ class ServerConfig:
             "health_check_interval": self.health_check_interval,
             "enable_monitoring": self.enable_monitoring,
             "log_level": self.log_level,
+            "model_storage_dir": self.model_storage_dir,
+            "auto_save_split_models": self.auto_save_split_models,
             "config": self.config,
         }
 
@@ -115,5 +123,13 @@ class ServerConfig:
         valid_log_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         if self.log_level.upper() not in valid_log_levels:
             raise ValueError(f"Invalid log_level: {self.log_level}")
+
+        # Validate storage directory
+        from pathlib import Path
+        storage_path = Path(self.model_storage_dir)
+        if storage_path.exists() and not storage_path.is_dir():
+            raise ValueError(
+                f"model_storage_dir exists but is not a directory: {self.model_storage_dir}"
+            )
 
         return True

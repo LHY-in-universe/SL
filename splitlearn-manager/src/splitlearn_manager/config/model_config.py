@@ -20,6 +20,7 @@ class ModelConfig:
         batch_size: Maximum batch size for inference
         max_memory_mb: Maximum memory allocation in MB
         warmup: Whether to warmup model after loading
+        split_storage_config: Configuration for split model storage
         config: Additional model-specific configuration
     """
 
@@ -30,6 +31,7 @@ class ModelConfig:
     batch_size: int = 32
     max_memory_mb: Optional[int] = None
     warmup: bool = True
+    split_storage_config: Optional[Dict[str, Any]] = field(default_factory=dict)
     config: Dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -68,6 +70,7 @@ class ModelConfig:
             "batch_size": self.batch_size,
             "max_memory_mb": self.max_memory_mb,
             "warmup": self.warmup,
+            "split_storage_config": self.split_storage_config,
             "config": self.config,
         }
 
@@ -84,6 +87,7 @@ class ModelConfig:
             "batch_size": self.batch_size,
             "max_memory_mb": self.max_memory_mb,
             "warmup": self.warmup,
+            "split_storage_config": self.split_storage_config,
             "config": self.config,
         }
 
