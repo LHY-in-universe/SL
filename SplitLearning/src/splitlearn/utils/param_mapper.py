@@ -27,6 +27,7 @@ class ParamMapper:
         'llama': r'\.layers\.([0-9]+)',     # Same as llama2
         'gpt-j': r'\.h\.([0-9]+)',          # Similar to GPT-2
         'qwen2': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama)
+        'gemma': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama/qwen2)
     }
 
     # Component name patterns
@@ -47,6 +48,11 @@ class ParamMapper:
             'lm_head': r'lm_head\.weight',
         },
         'qwen2': {
+            'embedding': r'model\.embed_tokens\.weight',
+            'final_norm': r'model\.norm',
+            'lm_head': r'lm_head\.weight',
+        },
+        'gemma': {
             'embedding': r'model\.embed_tokens\.weight',
             'final_norm': r'model\.norm',
             'lm_head': r'lm_head\.weight',
@@ -113,7 +119,7 @@ class ParamMapper:
         """
         if model_type == 'gpt2' or model_type == 'gpt-j':
             return param_name.replace(f'.h.{old_idx}.', f'.h.{new_idx}.')
-        elif model_type in ['llama2', 'llama', 'qwen2']:
+        elif model_type in ['llama2', 'llama', 'qwen2', 'gemma']:
             return param_name.replace(f'.layers.{old_idx}.', f'.layers.{new_idx}.')
         else:
             available = ', '.join(sorted(cls.LAYER_PATTERNS.keys()))

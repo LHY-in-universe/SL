@@ -5,7 +5,7 @@ A Python library for physically splitting large language models into distributed
 ## Features
 
 - 🔧 **Model Splitting**: Split any transformer model into Bottom, Trunk, and Top parts
-- 🎯 **Multi-Architecture**: Built-in support for GPT-2, Qwen2, easily extensible
+- 🎯 **Multi-Architecture**: Built-in support for GPT-2, Gemma, Qwen2, easily extensible
 - 📦 **Minimal Dependencies**: Only requires PyTorch and Transformers
 - 🚀 **Easy to Use**: Simple API with sensible defaults
 - 🔌 **Extensible**: Abstract base classes for adding new architectures
@@ -60,6 +60,7 @@ predicted_token = output.logits.argmax(dim=-1)
 | Model | Model Type | Variants |
 |-------|------------|----------|
 | GPT-2 | `'gpt2'` | gpt2, gpt2-medium, gpt2-large, gpt2-xl |
+| Gemma | `'gemma'` | gemma-2b, gemma-7b |
 | Qwen2 | `'qwen2'` | Qwen2-0.5B, Qwen2-1.5B, Qwen2-7B, etc. |
 
 ## How It Works
