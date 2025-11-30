@@ -151,6 +151,70 @@ class GRPCComputeServer:
         """上下文管理器清理"""
         self.stop()
 
+    def launch_monitoring_ui(
+        self,
+        theme: str = "default",
+        refresh_interval: int = 2,
+        share: bool = False,
+        server_port: int = 7861,
+        **kwargs
+    ):
+        """
+        启动 Gradio 监控 UI
+
+        这是一个便捷方法，用于快速启动 Gradio 监控仪表板。
+        需要安装 gradio: pip install splitlearn-comm[ui]
+
+        Args:
+            theme: UI 主题 ("default", "dark", "light")
+            refresh_interval: 仪表板刷新间隔（秒）
+            share: 是否创建公共 Gradio 链接
+            server_port: 监控 UI 端口
+            **kwargs: 传递给 demo.launch() 的额外参数
+
+        Example:
+            >>> from splitlearn_comm import GRPCComputeServer
+            >>> from splitlearn_comm.core import ModelComputeFunction
+            >>>
+            >>> # 创建并启动服务器
+            >>> compute_fn = ModelComputeFunction(model)
+            >>> server = GRPCComputeServer(compute_fn, port=50051)
+            >>> server.start()
+            >>>
+            >>> # 启动监控 UI（在单独线程中运行）
+            >>> server.launch_monitoring_ui(
+            ...     share=False,
+            ...     server_port=7861,
+            ...     blocking=False
+            ... )
+            >>>
+            >>> # 服务器继续运行
+            >>> server.wait_for_termination()
+
+        Raises:
+            ImportError: 如果未安装 gradio
+        """
+        try:
+            from ..ui import ServerMonitoringUI
+        except ImportError:
+            raise ImportError(
+                "Gradio UI requires additional dependencies. "
+                "Install with: pip install splitlearn-comm[ui]"
+            )
+
+        # 创建并启动监控 UI
+        ui = ServerMonitoringUI(
+            servicer=self.servicer,
+            theme=theme,
+            refresh_interval=refresh_interval,
+        )
+
+        ui.launch(
+            share=share,
+            server_port=server_port,
+            **kwargs
+        )
+
 
 def serve(
     compute_fn: ComputeFunction,

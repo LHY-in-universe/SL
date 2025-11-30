@@ -44,6 +44,15 @@ dev = [
     "grpcio-tools>=1.50.0",  # For compiling protobuf
 ]
 
+ui = [
+    "gradio>=3.50.0,<5.0.0",  # Gradio UI framework
+    "pandas>=1.5.0",  # For server monitoring data handling
+]
+
+all = [
+    "splitlearn-comm[dev,ui]",
+]
+
 [project.urls]
 Homepage = "https://github.com/yourusername/splitlearn-comm"
 Repository = "https://github.com/yourusername/splitlearn-comm"

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x63ompute_service.proto\x12\x0fsplitlearn.comm\"\xc7\x01\n\x0e\x43omputeRequest\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x05\x12\x17\n\nrequest_id\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12?\n\x08metadata\x18\x04 \x03(\x0b\x32-.splitlearn.comm.ComputeRequest.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\r\n\x0b_request_id\"\x88\x01\n\x0f\x43omputeResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x05\x12\x17\n\nrequest_id\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x1c\n\x0f\x63ompute_time_ms\x18\x04 \x01(\x02H\x01\x88\x01\x01\x42\r\n\x0b_request_idB\x12\n\x10_compute_time_ms\"\x0f\n\rHealthRequest\"r\n\x0eHealthResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x1b\n\x0euptime_seconds\x18\x04 \x01(\x02H\x00\x88\x01\x01\x42\x11\n\x0f_uptime_seconds\"\x14\n\x12ServiceInfoRequest\"\x92\x02\n\x13ServiceInfoResponse\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x0e\n\x06\x64\x65vice\x18\x03 \x01(\t\x12\x1b\n\x0euptime_seconds\x18\x04 \x01(\x02H\x00\x88\x01\x01\x12\x16\n\x0etotal_requests\x18\x05 \x01(\x03\x12I\n\x0b\x63ustom_info\x18\x06 \x03(\x0b\x32\x34.splitlearn.comm.ServiceInfoResponse.CustomInfoEntry\x1a\x31\n\x0f\x43ustomInfoEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x11\n\x0f_uptime_seconds2\x8b\x02\n\x0e\x43omputeService\x12L\n\x07\x43ompute\x12\x1f.splitlearn.comm.ComputeRequest\x1a .splitlearn.comm.ComputeResponse\x12N\n\x0bHealthCheck\x12\x1e.splitlearn.comm.HealthRequest\x1a\x1f.splitlearn.comm.HealthResponse\x12[\n\x0eGetServiceInfo\x12#.splitlearn.comm.ServiceInfoRequest\x1a$.splitlearn.comm.ServiceInfoResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15\x63ompute_service.proto\x12\x0fsplitlearn.comm\"\xd9\x01\n\x0e\x43omputeRequest\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x05\x12\x17\n\nrequest_id\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12?\n\x08metadata\x18\x04 \x03(\x0b\x32-.splitlearn.comm.ComputeRequest.MetadataEntry\x12\x10\n\x08model_id\x18\x05 \x01(\t\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\r\n\x0b_request_id\"\x88\x01\n\x0f\x43omputeResponse\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\x0c\x12\r\n\x05shape\x18\x02 \x03(\x05\x12\x17\n\nrequest_id\x18\x03 \x01(\x05H\x00\x88\x01\x01\x12\x1c\n\x0f\x63ompute_time_ms\x18\x04 \x01(\x02H\x01\x88\x01\x01\x42\r\n\x0b_request_idB\x12\n\x10_compute_time_ms\"\x0f\n\rHealthRequest\"r\n\x0eHealthResponse\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x0f\n\x07version\x18\x03 \x01(\t\x12\x1b\n\x0euptime_seconds\x18\x04 \x01(\x02H\x00\x88\x01\x01\x42\x11\n\x0f_uptime_seconds\"\x14\n\x12ServiceInfoRequest\"\x92\x02\n\x13ServiceInfoResponse\x12\x14\n\x0cservice_name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x0e\n\x06\x64\x65vice\x18\x03 \x01(\t\x12\x1b\n\x0euptime_seconds\x18\x04 \x01(\x02H\x00\x88\x01\x01\x12\x16\n\x0etotal_requests\x18\x05 \x01(\x03\x12I\n\x0b\x63ustom_info\x18\x06 \x03(\x0b\x32\x34.splitlearn.comm.ServiceInfoResponse.CustomInfoEntry\x1a\x31\n\x0f\x43ustomInfoEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x42\x11\n\x0f_uptime_seconds2\x8b\x02\n\x0e\x43omputeService\x12L\n\x07\x43ompute\x12\x1f.splitlearn.comm.ComputeRequest\x1a .splitlearn.comm.ComputeResponse\x12N\n\x0bHealthCheck\x12\x1e.splitlearn.comm.HealthRequest\x1a\x1f.splitlearn.comm.HealthResponse\x12[\n\x0eGetServiceInfo\x12#.splitlearn.comm.ServiceInfoRequest\x1a$.splitlearn.comm.ServiceInfoResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,21 +36,21 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._loaded_options = None
   _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._serialized_options = b'8\001'
   _globals['_COMPUTEREQUEST']._serialized_start=43
-  _globals['_COMPUTEREQUEST']._serialized_end=242
-  _globals['_COMPUTEREQUEST_METADATAENTRY']._serialized_start=180
-  _globals['_COMPUTEREQUEST_METADATAENTRY']._serialized_end=227
-  _globals['_COMPUTERESPONSE']._serialized_start=245
-  _globals['_COMPUTERESPONSE']._serialized_end=381
-  _globals['_HEALTHREQUEST']._serialized_start=383
-  _globals['_HEALTHREQUEST']._serialized_end=398
-  _globals['_HEALTHRESPONSE']._serialized_start=400
-  _globals['_HEALTHRESPONSE']._serialized_end=514
-  _globals['_SERVICEINFOREQUEST']._serialized_start=516
-  _globals['_SERVICEINFOREQUEST']._serialized_end=536
-  _globals['_SERVICEINFORESPONSE']._serialized_start=539
-  _globals['_SERVICEINFORESPONSE']._serialized_end=813
-  _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._serialized_start=745
-  _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._serialized_end=794
-  _globals['_COMPUTESERVICE']._serialized_start=816
-  _globals['_COMPUTESERVICE']._serialized_end=1083
+  _globals['_COMPUTEREQUEST']._serialized_end=260
+  _globals['_COMPUTEREQUEST_METADATAENTRY']._serialized_start=198
+  _globals['_COMPUTEREQUEST_METADATAENTRY']._serialized_end=245
+  _globals['_COMPUTERESPONSE']._serialized_start=263
+  _globals['_COMPUTERESPONSE']._serialized_end=399
+  _globals['_HEALTHREQUEST']._serialized_start=401
+  _globals['_HEALTHREQUEST']._serialized_end=416
+  _globals['_HEALTHRESPONSE']._serialized_start=418
+  _globals['_HEALTHRESPONSE']._serialized_end=532
+  _globals['_SERVICEINFOREQUEST']._serialized_start=534
+  _globals['_SERVICEINFOREQUEST']._serialized_end=554
+  _globals['_SERVICEINFORESPONSE']._serialized_start=557
+  _globals['_SERVICEINFORESPONSE']._serialized_end=831
+  _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._serialized_start=763
+  _globals['_SERVICEINFORESPONSE_CUSTOMINFOENTRY']._serialized_end=812
+  _globals['_COMPUTESERVICE']._serialized_start=834
+  _globals['_COMPUTESERVICE']._serialized_end=1101
 # @@protoc_insertion_point(module_scope)

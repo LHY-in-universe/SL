@@ -4,7 +4,9 @@ ComputeServicer - gRPC 服务端 Servicer 实现
 
 import logging
 import time
-from typing import Optional
+from typing import Optional, List, Dict, Any
+from collections import deque
+from datetime import datetime
 
 import grpc
 
@@ -30,13 +32,15 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         self,
         compute_fn: ComputeFunction,
         codec: Optional[TensorCodec] = None,
-        version: str = "1.0.0"
+        version: str = "1.0.0",
+        history_size: int = 100
     ):
         """
         Args:
             compute_fn: 计算函数实例
             codec: Tensor 编解码器（默认使用 TensorCodec）
             version: 服务版本号
+            history_size: 保留的请求历史记录数量
         """
         self.compute_fn = compute_fn
         self.codec = codec or TensorCodec()
@@ -46,6 +50,10 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         self.total_requests = 0
         self.total_compute_time = 0.0
         self.server_start_time = time.time()
+        self.failed_requests = 0
+
+        # 请求历史（用于监控 UI）
+        self.request_history: deque = deque(maxlen=history_size)
 
         # 初始化计算函数
         try:
@@ -60,10 +68,13 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
 
     def Compute(self, request, context):
         """执行计算"""
-        try:
-            self.total_requests += 1
-            start_time = time.time()
+        self.total_requests += 1
+        start_time = time.time()
+        success = False
+        compute_time = 0.0
+        error_msg = None
 
+        try:
             # 1. 解码输入张量
             input_tensor = self.codec.decode(
                 data=request.data,
@@ -83,6 +94,7 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             # 4. 计算耗时
             compute_time = (time.time() - start_time) * 1000  # ms
             self.total_compute_time += compute_time
+            success = True
 
             # 5. 构建响应
             response = compute_service_pb2.ComputeResponse(
@@ -104,10 +116,25 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             return response
 
         except Exception as e:
+            self.failed_requests += 1
+            success = False
+            error_msg = str(e)
+            compute_time = (time.time() - start_time) * 1000  # ms
+
             logger.error(f"Error in Compute: {e}", exc_info=True)
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(str(e))
             return compute_service_pb2.ComputeResponse()
+
+        finally:
+            # 记录请求历史（用于监控 UI）
+            self.request_history.append({
+                "timestamp": datetime.now(),
+                "request_id": self.total_requests,
+                "success": success,
+                "compute_time_ms": compute_time,
+                "error": error_msg
+            })
 
     def HealthCheck(self, request, context):
         """健康检查"""
@@ -162,6 +189,28 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(str(e))
             return compute_service_pb2.ServiceInfoResponse()
+
+    def get_metrics(self) -> Dict[str, Any]:
+        """
+        获取服务器指标（用于监控 UI）
+
+        Returns:
+            包含服务器指标的字典
+        """
+        uptime = time.time() - self.server_start_time
+        success_requests = self.total_requests - self.failed_requests
+        success_rate = success_requests / self.total_requests if self.total_requests > 0 else 0.0
+        avg_compute_time = self.total_compute_time / self.total_requests if self.total_requests > 0 else 0.0
+
+        return {
+            "total_requests": self.total_requests,
+            "success_requests": success_requests,
+            "failed_requests": self.failed_requests,
+            "success_rate": success_rate,
+            "avg_compute_time_ms": avg_compute_time,
+            "uptime_seconds": uptime,
+            "request_history": list(self.request_history)
+        }
 
     def shutdown(self):
         """关闭服务，清理资源"""

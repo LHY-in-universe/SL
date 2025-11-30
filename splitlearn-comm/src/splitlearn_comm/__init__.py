@@ -48,6 +48,15 @@ from .client import (
     GRPCComputeClient,
 )
 
+# UI (optional - requires gradio)
+try:
+    from .ui import ClientUI, ServerMonitoringUI
+    _has_ui = True
+except ImportError:
+    _has_ui = False
+    ClientUI = None
+    ServerMonitoringUI = None
+
 __all__ = [
     # Version
     "__version__",
@@ -68,4 +77,8 @@ __all__ = [
     "ExponentialBackoff",
     "FixedDelay",
     "GRPCComputeClient",
+
+    # UI (optional)
+    "ClientUI",
+    "ServerMonitoringUI",
 ]

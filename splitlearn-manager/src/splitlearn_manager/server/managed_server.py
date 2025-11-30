@@ -24,17 +24,19 @@ class ManagedComputeFunction(ComputeFunction):
     ComputeFunction that routes requests through ModelManager.
     """
 
-    def __init__(self, model_manager: ModelManager, router: ModelRouter, metrics: Optional[MetricsCollector] = None):
+    def __init__(self, model_manager: ModelManager, router: ModelRouter, resource_manager: ResourceManager, metrics: Optional[MetricsCollector] = None):
         """
         Initialize managed compute function.
 
         Args:
             model_manager: Model manager instance
             router: Model router instance
+            resource_manager: Resource manager instance
             metrics: Metrics collector (optional)
         """
         self.model_manager = model_manager
         self.router = router
+        self.resource_manager = resource_manager
         self.metrics = metrics
 
     def compute(self, input_tensor: torch.Tensor) -> torch.Tensor:
@@ -88,10 +90,17 @@ class ManagedComputeFunction(ComputeFunction):
     def get_info(self) -> Dict:
         """Get service information."""
         models_info = self.model_manager.list_models()
+        usage = self.resource_manager.get_current_usage()
 
         return {
             "name": "ManagedComputeService",
             "num_models": len(models_info),
+            "custom_info": {
+                "cpu_percent": str(usage.cpu_percent),
+                "memory_mb": str(usage.memory_mb),
+                "memory_percent": str(usage.memory_percent),
+                "gpu_memory_mb": str(usage.gpu_memory_mb)
+            },
             "models": [
                 {
                     "model_id": info["model_id"],
@@ -154,6 +163,7 @@ class ManagedServer:
         compute_fn = ManagedComputeFunction(
             model_manager=self.model_manager,
             router=self.router,
+            resource_manager=self.resource_manager,
             metrics=self.metrics
         )
 

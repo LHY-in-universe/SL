@@ -28,6 +28,9 @@ message ComputeRequest {
 
     // 可选的元数据
     map<string, string> metadata = 4;
+
+    // 模型 ID (用于多模型路由)
+    string model_id = 5;
 }
 
 // 计算响应

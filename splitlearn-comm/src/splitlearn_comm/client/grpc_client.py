@@ -122,12 +122,13 @@ class GRPCComputeClient:
             logger.error(f"✗ Unexpected error during connection: {e}")
             return False
 
-    def compute(self, input_tensor: torch.Tensor) -> torch.Tensor:
+    def compute(self, input_tensor: torch.Tensor, model_id: Optional[str] = None) -> torch.Tensor:
         """
         执行远程计算
 
         Args:
             input_tensor: 输入张量
+            model_id: 目标模型 ID (可选)
 
         Returns:
             输出张量
@@ -145,11 +146,15 @@ class GRPCComputeClient:
             input_data, input_shape = self.codec.encode(input_tensor)
 
             # 2. 构建请求
-            request = compute_service_pb2.ComputeRequest(
-                data=input_data,
-                shape=list(input_shape),
-                request_id=self.request_count
-            )
+            request_kwargs = {
+                "data": input_data,
+                "shape": list(input_shape),
+                "request_id": self.request_count
+            }
+            if model_id:
+                request_kwargs["model_id"] = model_id
+                
+            request = compute_service_pb2.ComputeRequest(**request_kwargs)
 
             # 3. RPC 调用
             start_time = time.time()
@@ -273,3 +278,80 @@ class GRPCComputeClient:
     def __exit__(self, exc_type, exc_val, exc_tb):
         """上下文管理器清理"""
         self.close()
+
+    def launch_ui(
+        self,
+        bottom_model: Any,
+        top_model: Any,
+        tokenizer: Any,
+        theme: str = "default",
+        share: bool = False,
+        server_port: int = 7860,
+        **kwargs
+    ):
+        """
+        启动 Gradio UI 进行交互式文本生成
+
+        这是一个便捷方法，用于快速启动 Gradio 界面进行文本生成。
+        需要安装 gradio: pip install splitlearn-comm[ui]
+
+        Args:
+            bottom_model: Bottom 模型（在客户端运行）
+            top_model: Top 模型（在客户端运行）
+            tokenizer: 分词器（用于编码/解码文本）
+            theme: UI 主题 ("default", "dark", "light")
+            share: 是否创建公共 Gradio 链接
+            server_port: 服务器端口
+            **kwargs: 传递给 demo.launch() 的额外参数
+
+        Example:
+            >>> from splitlearn_comm import GRPCComputeClient
+            >>> from transformers import AutoTokenizer
+            >>> import torch
+            >>>
+            >>> # 连接服务器
+            >>> client = GRPCComputeClient("localhost:50051")
+            >>> client.connect()
+            >>>
+            >>> # 加载本地模型
+            >>> bottom = torch.load("bottom_model.pt")
+            >>> top = torch.load("top_model.pt")
+            >>> tokenizer = AutoTokenizer.from_pretrained("gpt2")
+            >>>
+            >>> # 启动 UI
+            >>> client.launch_ui(
+            ...     bottom_model=bottom,
+            ...     top_model=top,
+            ...     tokenizer=tokenizer,
+            ...     share=False
+            ... )
+
+        Raises:
+            ImportError: 如果未安装 gradio
+            RuntimeError: 如果客户端未连接
+        """
+        try:
+            from ..ui import ClientUI
+        except ImportError:
+            raise ImportError(
+                "Gradio UI requires additional dependencies. "
+                "Install with: pip install splitlearn-comm[ui]"
+            )
+
+        if self.stub is None:
+            raise RuntimeError("Client not connected. Call connect() first.")
+
+        # 创建并启动 UI
+        ui = ClientUI(
+            client=self,
+            bottom_model=bottom_model,
+            top_model=top_model,
+            tokenizer=tokenizer,
+            theme=theme,
+        )
+
+        ui.launch(
+            share=share,
+            server_port=server_port,
+            **kwargs
+        )

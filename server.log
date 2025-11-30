@@ -1,0 +1,41 @@
+/Users/lhy/anaconda3/lib/python3.11/site-packages/transformers/utils/generic.py:441: FutureWarning: `torch.utils._pytree._register_pytree_node` is deprecated. Please use `torch.utils._pytree.register_pytree_node` instead.
+  _torch_pytree._register_pytree_node(
+/Users/lhy/anaconda3/lib/python3.11/site-packages/transformers/utils/generic.py:309: FutureWarning: `torch.utils._pytree._register_pytree_node` is deprecated. Please use `torch.utils._pytree.register_pytree_node` instead.
+  _torch_pytree._register_pytree_node(
+/Users/lhy/anaconda3/lib/python3.11/site-packages/transformers/utils/generic.py:309: FutureWarning: `torch.utils._pytree._register_pytree_node` is deprecated. Please use `torch.utils._pytree.register_pytree_node` instead.
+  _torch_pytree._register_pytree_node(
+2025-11-29 22:12:20,215 - INFO - 使用现有的 Trunk 模型: /Users/lhy/Desktop/Git/SL/testcode/gpt2_trunk_full.pt
+2025-11-29 22:12:20,215 - INFO - Initializing ManagedServer...
+2025-11-29 22:12:20,215 - INFO - CUDA not available, using CPU only
+2025-11-29 22:12:20,215 - INFO - ModelManager initialized (max_models=5)
+2025-11-29 22:12:20,215 - INFO - Metrics initialized
+2025-11-29 22:12:20,215 - INFO - ComputeFunction setup completed
+2025-11-29 22:12:20,315 - INFO - ComputeServicer initialized: {'name': 'ManagedComputeService', 'num_models': 0, 'custom_info': {'cpu_percent': '28.6', 'memory_mb': '6239.15625', 'memory_percent': '76.2', 'gpu_memory_mb': 'None'}, 'models': []}
+2025-11-29 22:12:20,320 - INFO - GRPCComputeServer initialized at 127.0.0.1:50053
+2025-11-29 22:12:20,320 - INFO - ManagedServer initialized successfully
+2025-11-29 22:12:20,320 - INFO - Loading model gpt2-trunk...
+2025-11-29 22:12:20,320 - INFO - Loading model gpt2-trunk of type pytorch
+2025-11-29 22:12:20,320 - INFO - Loading PyTorch checkpoint from /Users/lhy/Desktop/Git/SL/testcode/gpt2_trunk_full.pt
+2025-11-29 22:12:20,441 - INFO - Successfully loaded model on cpu
+2025-11-29 22:12:20,441 - INFO - Warming up model...
+2025-11-29 22:12:20,691 - INFO - Model warmup completed
+2025-11-29 22:12:20,691 - INFO - Successfully loaded model gpt2-trunk on cpu
+2025-11-29 22:12:20,796 - INFO - Resource Usage - CPU: 91.6%, Memory: 6393MB (78.0%)
+2025-11-29 22:12:20,797 - INFO - GPT-2 Trunk 模型加载成功
+2025-11-29 22:12:20,797 - INFO - 启动服务器在 port 50053...
+2025-11-29 22:12:20,797 - INFO - Starting ManagedServer...
+2025-11-29 22:12:20,825 - INFO - Metrics server started on port 8002
+2025-11-29 22:12:20,825 - INFO - Monitoring loop started
+2025-11-29 22:12:20,828 - INFO - ✓ Server started on 127.0.0.1:50053
+2025-11-29 22:12:20,828 - INFO -   Max workers: 10
+2025-11-29 22:12:20,829 - INFO -   Max message length: 100.0 MB
+2025-11-29 22:12:20,829 - INFO -   Version: 1.0.0
+2025-11-29 22:12:20,829 - INFO - Waiting for requests... (Press Ctrl+C to stop)
+2025-11-29 22:12:20,829 - INFO - ManagedServer started on 127.0.0.1:50053
+/Users/lhy/Desktop/Git/SL/splitlearn-comm/src/splitlearn_comm/core/tensor_codec.py:63: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /Users/runner/work/pytorch/pytorch/pytorch/torch/csrc/utils/tensor_numpy.cpp:212.)
+  tensor = torch.from_numpy(array)
+2025-11-29 22:13:21,448 - WARNING - Health check: degraded
+2025-11-29 22:14:21,866 - WARNING - Health check: degraded
+2025-11-29 22:16:22,682 - WARNING - Health check: degraded
+2025-11-29 22:17:23,090 - WARNING - Health check: degraded
+2025-11-29 22:22:25,143 - WARNING - Health check: degraded

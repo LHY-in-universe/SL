@@ -7,7 +7,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ComputeRequest(_message.Message):
-    __slots__ = ("data", "shape", "request_id", "metadata")
+    __slots__ = ("data", "shape", "request_id", "metadata", "model_id")
     class MetadataEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -19,11 +19,13 @@ class ComputeRequest(_message.Message):
     SHAPE_FIELD_NUMBER: _ClassVar[int]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     METADATA_FIELD_NUMBER: _ClassVar[int]
+    MODEL_ID_FIELD_NUMBER: _ClassVar[int]
     data: bytes
     shape: _containers.RepeatedScalarFieldContainer[int]
     request_id: int
     metadata: _containers.ScalarMap[str, str]
-    def __init__(self, data: _Optional[bytes] = ..., shape: _Optional[_Iterable[int]] = ..., request_id: _Optional[int] = ..., metadata: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    model_id: str
+    def __init__(self, data: _Optional[bytes] = ..., shape: _Optional[_Iterable[int]] = ..., request_id: _Optional[int] = ..., metadata: _Optional[_Mapping[str, str]] = ..., model_id: _Optional[str] = ...) -> None: ...
 
 class ComputeResponse(_message.Message):
     __slots__ = ("data", "shape", "request_id", "compute_time_ms")
