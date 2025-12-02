@@ -35,6 +35,9 @@ from .config import ModelConfig, ServerConfig
 # Core
 from .core import ModelManager, ModelLoader, ResourceManager
 
+# Async Core
+from .core.async_model_manager import AsyncModelManager, AsyncManagedModel
+
 # Server
 from .server import ManagedServer
 
@@ -56,6 +59,10 @@ __all__ = [
     "ModelManager",
     "ModelLoader",
     "ResourceManager",
+
+    # Async Core
+    "AsyncModelManager",
+    "AsyncManagedModel",
 
     # Server
     "ManagedServer",

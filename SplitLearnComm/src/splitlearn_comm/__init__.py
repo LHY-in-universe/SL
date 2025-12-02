@@ -33,12 +33,27 @@ from .core import (
     CompressedTensorCodec,
 )
 
+# Async core abstractions
+from .core.async_compute_function import (
+    AsyncComputeFunction,
+    AsyncModelComputeFunction,
+    AsyncLambdaComputeFunction,
+    AsyncChainComputeFunction,
+)
+
 # Server
 from .server import (
     ComputeServicer,
     GRPCComputeServer,
     serve,
 )
+
+# Async server
+from .server.async_grpc_server import (
+    AsyncGRPCComputeServer,
+    serve_async,
+)
+from .server.async_servicer import AsyncComputeServicer
 
 # Client
 from .client import (
@@ -67,10 +82,21 @@ __all__ = [
     "TensorCodec",
     "CompressedTensorCodec",
 
+    # Async Core
+    "AsyncComputeFunction",
+    "AsyncModelComputeFunction",
+    "AsyncLambdaComputeFunction",
+    "AsyncChainComputeFunction",
+
     # Server
     "ComputeServicer",
     "GRPCComputeServer",
     "serve",
+
+    # Async Server
+    "AsyncGRPCComputeServer",
+    "AsyncComputeServicer",
+    "serve_async",
 
     # Client
     "RetryStrategy",
