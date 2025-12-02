@@ -60,8 +60,8 @@ def load_models():
             print("模型已缓存到本地")
 
         # 连接服务器
-        print("正在连接服务器 127.0.0.1:50053...")
-        client = GRPCComputeClient("127.0.0.1:50053", timeout=20.0)
+        print("正在连接服务器 192.168.0.144:50053...")
+        client = GRPCComputeClient("192.168.0.144:50053", timeout=20.0)
         if not client.connect():
             return "❌ 无法连接到服务器！\n请确保服务器正在运行：\n  python testcode/start_server.py\n\n(尝试了连接 127.0.0.1:50053)\n\n或运行准备脚本：\n  python testcode/prepare_models.py"
 
