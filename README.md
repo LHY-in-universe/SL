@@ -6,21 +6,23 @@
 
 本项目包含三个主要子项目：
 
-### 1. [SplitLearning](./SplitLearning)
-核心逻辑库，负责将 Transformer 模型（如 GPT-2, Qwen2）拆分为三个部分：
+### 1. [SplitLearnCore](./SplitLearnCore)
+核心逻辑库，负责将 Transformer 模型（如 GPT-2, Qwen2, Gemma）拆分为三个部分：
 - **Bottom**: Embeddings + 前 N 层
 - **Trunk**: 中间 M 层（计算密集型）
 - **Top**: 最后 K 层 + LM Head
 
-### 2. [splitlearn-comm](./splitlearn-comm)
+### 2. [SplitLearnComm](./SplitLearnComm)
 高性能通信库，基于 gRPC。
 - 负责在拆分后的模型部分之间传输 Tensor 数据。
 - 优化了序列化性能，支持压缩和重试机制。
+- 支持异步通信（grpc.aio）
 
-### 3. [splitlearn-manager](./splitlearn-manager)
+### 3. [SplitLearnManager](./SplitLearnManager)
 模型部署和生命周期管理库。
 - 负责模型的加载、卸载和资源监控。
 - 提供负载均衡和健康检查功能。
+- 支持异步模型管理，解决并发锁阻塞问题
 
 ## 快速开始
 
@@ -30,15 +32,15 @@
 
 ```bash
 # 1. 安装核心库
-cd SplitLearning
+cd SplitLearnCore
 pip install -e .
 
 # 2. 安装通信库
-cd ../splitlearn-comm
+cd ../SplitLearnComm
 pip install -e .
 
 # 3. 安装管理库
-cd ../splitlearn-manager
+cd ../SplitLearnManager
 pip install -e .
 ```
 
@@ -46,17 +48,17 @@ pip install -e .
 
 每个子目录中都包含详细的文档和示例代码：
 
-- **模型拆分**: 查看 `SplitLearning/examples/`
-- **通信测试**: 查看 `splitlearn-comm/examples/`
-- **服务管理**: 查看 `splitlearn-manager/examples/`
+- **模型拆分**: 查看 `SplitLearnCore/examples/`
+- **通信测试**: 查看 `SplitLearnComm/examples/`
+- **服务管理**: 查看 `SplitLearnManager/examples/`
 
 ## 文档
 
 所有详细文档均已翻译为中文，位于各子项目的 `docs/` 目录下。
 
-- [SplitLearning 文档](./SplitLearning/docs)
-- [splitlearn-comm 文档](./splitlearn-comm/docs)
-- [splitlearn-manager 文档](./splitlearn-manager/docs)
+- [SplitLearnCore 文档](./SplitLearnCore/docs)
+- [SplitLearnComm 文档](./SplitLearnComm/docs)
+- [SplitLearnManager 文档](./SplitLearnManager/docs)
 
 ## 贡献
 
