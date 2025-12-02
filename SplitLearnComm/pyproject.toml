@@ -54,9 +54,9 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/splitlearn-comm"
-Repository = "https://github.com/yourusername/splitlearn-comm"
-Issues = "https://github.com/yourusername/splitlearn-comm/issues"
+Homepage = "https://github.com/yourusername/SplitLearnComm"
+Repository = "https://github.com/yourusername/SplitLearnComm"
+Issues = "https://github.com/yourusername/SplitLearnComm/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

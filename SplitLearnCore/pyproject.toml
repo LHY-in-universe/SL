@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "splitlearn"
+name = "splitlearn-core"
 version = "1.0.0"
 description = "A Python library for physically splitting large language models"
 authors = [
@@ -47,10 +47,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/splitlearn"
-Documentation = "https://splitlearn.readthedocs.io"
-Repository = "https://github.com/yourusername/splitlearn"
-Issues = "https://github.com/yourusername/splitlearn/issues"
+Homepage = "https://github.com/yourusername/splitlearn-core"
+Documentation = "https://splitlearn-core.readthedocs.io"
+Repository = "https://github.com/yourusername/SplitLearnCore"
+Issues = "https://github.com/yourusername/SplitLearnCore/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

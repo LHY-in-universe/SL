@@ -46,10 +46,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/splitlearn-manager"
-Documentation = "https://github.com/yourusername/splitlearn-manager/docs"
-Repository = "https://github.com/yourusername/splitlearn-manager"
-Issues = "https://github.com/yourusername/splitlearn-manager/issues"
+Homepage = "https://github.com/yourusername/SplitLearnManager"
+Documentation = "https://github.com/yourusername/SplitLearnManager/docs"
+Repository = "https://github.com/yourusername/SplitLearnManager"
+Issues = "https://github.com/yourusername/SplitLearnManager/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
