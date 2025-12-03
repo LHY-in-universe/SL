@@ -36,9 +36,9 @@ import torch
 import torch.nn as nn
 from transformers import PretrainedConfig
 
-from splitlearn.core import BaseBottomModel
-from splitlearn.registry import ModelRegistry
-from splitlearn.utils import ParamMapper
+from splitlearn_core.core import BaseBottomModel
+from splitlearn_core.registry import ModelRegistry
+from splitlearn_core.utils import ParamMapper
 
 
 @ModelRegistry.register('your_model', 'bottom')
@@ -133,8 +133,8 @@ class YourBottomModel(BaseBottomModel):
 ```python
 # src/splitlearn/models/your_model/trunk.py
 
-from splitlearn.core import BaseTrunkModel
-from splitlearn.registry import ModelRegistry
+from splitlearn_core.core import BaseTrunkModel
+from splitlearn_core.registry import ModelRegistry
 
 @ModelRegistry.register('your_model', 'trunk')
 class YourTrunkModel(BaseTrunkModel):
@@ -183,8 +183,8 @@ class YourTrunkModel(BaseTrunkModel):
 ```python
 # src/splitlearn/models/your_model/top.py
 
-from splitlearn.core import BaseTopModel
-from splitlearn.registry import ModelRegistry
+from splitlearn_core.core import BaseTopModel
+from splitlearn_core.registry import ModelRegistry
 
 @ModelRegistry.register('your_model', 'top')
 class YourTopModel(BaseTopModel):
@@ -289,7 +289,7 @@ ParamMapper 使用该模式来识别和重映射层索引。
 ## 测试你的实现
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 # 使用你的模型进行测试
 bottom, trunk, top = ModelFactory.create_split_models(

@@ -4,8 +4,8 @@
 这个脚本检查 Gemma 模型类是否已正确注册到 ModelRegistry。
 """
 
-from splitlearn.registry import ModelRegistry
-from splitlearn import ModelFactory
+from splitlearn_core.registry import ModelRegistry
+from splitlearn_core import ModelFactory
 
 
 def main():
@@ -81,7 +81,7 @@ def main():
     print("验证完成！Gemma 模型已成功注册到 SplitLearn。")
     print("=" * 70)
     print("\n使用方法:")
-    print("  from splitlearn import ModelFactory")
+    print("  from splitlearn_core import ModelFactory")
     print("  bottom, trunk, top = ModelFactory.create_split_models(")
     print("      model_type='gemma',")
     print("      model_name_or_path='google/gemma-2b',")

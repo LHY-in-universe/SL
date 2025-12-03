@@ -9,9 +9,9 @@ import torch
 # 添加路径
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.append(os.path.join(project_root, 'SplitLearning', 'src'))
+sys.path.append(os.path.join(project_root, 'SplitLearnCore', 'src'))
 
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 def prepare_models():
     print("=" * 70)

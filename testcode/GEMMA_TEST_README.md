@@ -185,7 +185,7 @@ output.logits: [batch_size, seq_len, vocab_size]
 ### 基本使用
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 from transformers import AutoTokenizer
 import torch
 

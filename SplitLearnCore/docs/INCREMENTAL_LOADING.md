@@ -182,7 +182,7 @@ pip install splitlearn
 ### 最简单的例子
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 # 启用增量加载只需添加 low_memory=True
 bottom, trunk, top = ModelFactory.create_split_models(
@@ -248,7 +248,7 @@ def create_split_models(
 ### 示例 1: 基础增量加载
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 bottom, trunk, top = ModelFactory.create_split_models(
     model_type='qwen2',
@@ -361,7 +361,7 @@ bottom, trunk, top = ModelFactory.create_split_models(
 )
 
 # 稍后重新加载
-from splitlearn import SplitModel
+from splitlearn_core import SplitModel
 
 bottom = SplitModel.load('./my_models/qwen2/bottom.pt')
 trunk = SplitModel.load('./my_models/qwen2/trunk.pt')
@@ -404,7 +404,7 @@ top = SplitModel.load('./my_models/qwen2/top.pt')
 ### 自定义内存跟踪
 
 ```python
-from splitlearn.utils import MemoryTracker
+from splitlearn_core.utils import MemoryTracker
 
 tracker = MemoryTracker()
 
@@ -436,7 +436,7 @@ tracker.summary()
 ### 直接使用 ShardLoader
 
 ```python
-from splitlearn.utils import ShardLoader
+from splitlearn_core.utils import ShardLoader
 
 # 检查模型是否分片
 is_sharded = ShardLoader.is_sharded_model('Qwen/Qwen2-7B')

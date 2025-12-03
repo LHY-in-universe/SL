@@ -226,7 +226,7 @@ print(f"Output shape: {output.shape}")
 ### 示例 2：完整 Split Learning
 
 ```python
-from splitlearn.quickstart import load_split_model
+from splitlearn_core.quickstart import load_split_model
 from splitlearn_comm.quickstart import Client
 
 # 加载分割模型

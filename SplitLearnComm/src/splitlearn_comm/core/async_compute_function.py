@@ -7,6 +7,7 @@
 import asyncio
 import logging
 from abc import ABC, abstractmethod
+from concurrent.futures import Executor
 from typing import Dict, Optional
 
 import torch
@@ -74,7 +75,7 @@ class AsyncModelComputeFunction(AsyncComputeFunction):
         self,
         model: torch.nn.Module,
         device: str = "cuda",
-        executor: Optional[asyncio.Executor] = None
+        executor: Optional[Executor] = None
     ):
         """
         初始化异步模型计算函数。

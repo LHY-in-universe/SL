@@ -13,7 +13,7 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 import json
 
 

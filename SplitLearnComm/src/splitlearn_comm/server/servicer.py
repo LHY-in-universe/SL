@@ -12,6 +12,7 @@ import grpc
 
 from ..core import ComputeFunction, TensorCodec
 from ..protocol import compute_service_pb2, compute_service_pb2_grpc
+from ..monitoring import MetricsManager, LogManager, LogLevel, MonitoringConfig
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,8 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         compute_fn: ComputeFunction,
         codec: Optional[TensorCodec] = None,
         version: str = "1.0.0",
-        history_size: int = 100
+        history_size: int = 100,
+        monitoring_config: Optional[MonitoringConfig] = None
     ):
         """
         Args:
@@ -41,6 +43,7 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             codec: Tensor 编解码器（默认使用 TensorCodec）
             version: 服务版本号
             history_size: 保留的请求历史记录数量
+            monitoring_config: 监控配置（默认使用 MonitoringConfig）
         """
         self.compute_fn = compute_fn
         self.codec = codec or TensorCodec()
@@ -55,20 +58,38 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         # 请求历史（用于监控 UI）
         self.request_history: deque = deque(maxlen=history_size)
 
+        # 监控管理器
+        config = monitoring_config or MonitoringConfig()
+        self.metrics_manager = MetricsManager(max_history_size=config.max_history_size)
+        self.log_manager = LogManager(max_logs=config.max_log_size)
+
         # 初始化计算函数
         try:
             self.compute_fn.setup()
             logger.info("ComputeFunction setup completed")
+            self.log_manager.add_log(
+                LogLevel.INFO,
+                "ComputeFunction setup completed"
+            )
         except Exception as e:
             logger.warning(f"ComputeFunction setup failed: {e}")
+            self.log_manager.add_log(
+                LogLevel.WARNING,
+                f"ComputeFunction setup failed: {e}"
+            )
 
         # 获取服务信息
         self.service_info = self.compute_fn.get_info()
         logger.info(f"ComputeServicer initialized: {self.service_info}")
+        self.log_manager.add_log(
+            LogLevel.INFO,
+            f"ComputeServicer initialized: {self.service_info}"
+        )
 
     def Compute(self, request, context):
         """执行计算"""
         self.total_requests += 1
+        request_id = self.total_requests
         start_time = time.time()
         success = False
         compute_time = 0.0
@@ -82,7 +103,11 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             )
 
             logger.debug(
-                f"[Request {self.total_requests}] Input shape: {input_tensor.shape}"
+                f"[Request {request_id}] Input shape: {input_tensor.shape}"
+            )
+            self.log_manager.add_log(
+                LogLevel.DEBUG,
+                f"Received compute request {request_id}, shape={input_tensor.shape}"
             )
 
             # 2. 执行计算
@@ -96,6 +121,9 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             self.total_compute_time += compute_time
             success = True
 
+            # 记录延迟到 MetricsManager
+            self.metrics_manager.record_latency(compute_time / 1000.0)  # 转换为秒
+
             # 5. 构建响应
             response = compute_service_pb2.ComputeResponse(
                 data=output_data,
@@ -108,9 +136,13 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
                 response.request_id = request.request_id
 
             logger.debug(
-                f"[Request {self.total_requests}] "
+                f"[Request {request_id}] "
                 f"Output shape: {output_shape}, "
                 f"Time: {compute_time:.2f}ms"
+            )
+            self.log_manager.add_log(
+                LogLevel.INFO,
+                f"Request {request_id} completed successfully in {compute_time:.2f}ms"
             )
 
             return response
@@ -122,6 +154,11 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             compute_time = (time.time() - start_time) * 1000  # ms
 
             logger.error(f"Error in Compute: {e}", exc_info=True)
+            self.log_manager.add_log(
+                LogLevel.ERROR,
+                f"Request {request_id} failed: {error_msg}"
+            )
+
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(str(e))
             return compute_service_pb2.ComputeResponse()
@@ -130,7 +167,7 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             # 记录请求历史（用于监控 UI）
             self.request_history.append({
                 "timestamp": datetime.now(),
-                "request_id": self.total_requests,
+                "request_id": request_id,
                 "success": success,
                 "compute_time_ms": compute_time,
                 "error": error_msg
@@ -195,22 +232,74 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         获取服务器指标（用于监控 UI）
 
         Returns:
-            包含服务器指标的字典
+            包含服务器指标的字典，包括：
+            - 基本统计：请求数、成功率、平均时间
+            - 详细延迟统计：P50/P95/P99、min/max、标准差
+            - 延迟分布数据
+            - 吞吐量历史
+            - 请求历史
         """
         uptime = time.time() - self.server_start_time
         success_requests = self.total_requests - self.failed_requests
         success_rate = success_requests / self.total_requests if self.total_requests > 0 else 0.0
         avg_compute_time = self.total_compute_time / self.total_requests if self.total_requests > 0 else 0.0
 
+        # 获取详细的延迟统计
+        latency_stats = self.metrics_manager.get_latency_stats()
+        latency_distribution = self.metrics_manager.get_latency_distribution()
+        latency_history = self.metrics_manager.get_latency_history(limit=50)
+        throughput_history = self.metrics_manager.get_throughput_history(limit=50)
+
         return {
+            # 基本统计
             "total_requests": self.total_requests,
             "success_requests": success_requests,
             "failed_requests": self.failed_requests,
             "success_rate": success_rate,
             "avg_compute_time_ms": avg_compute_time,
             "uptime_seconds": uptime,
+
+            # 详细延迟统计 (来自 MetricsManager)
+            "latency_stats": latency_stats,
+
+            # 延迟分布 (用于直方图)
+            "latency_distribution": {
+                "bin_edges": latency_distribution[0],
+                "counts": latency_distribution[1]
+            },
+
+            # 延迟历史 (用于趋势图)
+            "latency_history": latency_history,
+
+            # 吞吐量历史 (用于吞吐量图)
+            "throughput_history": throughput_history,
+
+            # 当前吞吐量
+            "current_rps": self.metrics_manager.get_current_throughput(),
+
+            # 请求历史（保持向后兼容）
             "request_history": list(self.request_history)
         }
+
+    def get_logs(
+        self,
+        level_filter: Optional[str] = None,
+        limit: Optional[int] = None
+    ) -> List[Dict]:
+        """
+        获取日志记录（用于监控 UI）
+
+        Args:
+            level_filter: 日志级别过滤器 (e.g., "ERROR", "INFO", "ALL")
+            limit: 返回的最大日志数量
+
+        Returns:
+            日志列表
+        """
+        return self.log_manager.get_logs(
+            level_filter=level_filter,
+            limit=limit
+        )
 
     def shutdown(self):
         """关闭服务，清理资源"""

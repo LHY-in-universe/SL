@@ -11,8 +11,8 @@ from transformers import AutoTokenizer
 # 添加路径以便导入本地模块
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-sys.path.append(os.path.join(project_root, 'SplitLearning', 'src'))
-sys.path.append(os.path.join(project_root, 'splitlearn-comm', 'src'))
+sys.path.append(os.path.join(project_root, 'SplitLearnCore', 'src'))
+sys.path.append(os.path.join(project_root, 'SplitLearnComm', 'src'))
 
 from splitlearn_comm import GRPCComputeClient
 
@@ -40,7 +40,7 @@ def load_models():
             print("模型加载完成")
         else:
             # 需要下载并拆分
-            from splitlearn import ModelFactory
+            from splitlearn_core import ModelFactory
             print("首次运行：正在下载并拆分 GPT-2 模型...")
             print("这可能需要几分钟，请耐心等待...")
             bottom, trunk, top = ModelFactory.create_split_models(
@@ -60,12 +60,12 @@ def load_models():
             print("模型已缓存到本地")
 
         # 连接服务器
-        print("正在连接服务器 192.168.0.144:50053...")
-        client = GRPCComputeClient("192.168.0.144:50053", timeout=20.0)
+        print("正在连接服务器 localhost:50051...")
+        client = GRPCComputeClient("localhost:50051", timeout=20.0)
         if not client.connect():
-            return "❌ 无法连接到服务器！\n请确保服务器正在运行：\n  python testcode/start_server.py\n\n(尝试了连接 127.0.0.1:50053)\n\n或运行准备脚本：\n  python testcode/prepare_models.py"
+            return "❌ 无法连接到服务器！\n请确保服务器正在运行：\n  python testcode/server_gpt2.py\n\n或运行准备脚本：\n  python testcode/prepare_models.py"
 
-        return "✅ 初始化成功！\n\n✓ Bottom 模型已加载\n✓ Top 模型已加载\n✓ 服务器已连接 (localhost:50053)\n\n现在可以开始生成文本了！"
+        return "✅ 初始化成功！\n\n✓ Bottom 模型已加载\n✓ Top 模型已加载\n✓ 服务器已连接 (localhost:50051)\n\n现在可以开始生成文本了！"
     except Exception as e:
         import traceback
         error_msg = f"❌ 初始化失败:\n\n{str(e)}\n\n详细错误:\n{traceback.format_exc()}"
@@ -312,8 +312,8 @@ with gr.Blocks(
                - **Top-K**: 限制采样范围（0=贪婪采样）
 
             5. **服务器要求**:
-               - 确保运行了 `python testcode/start_server.py`
-               - 服务器地址: localhost:50053
+               - 确保运行了 `python testcode/server_gpt2.py`
+               - 服务器地址: localhost:50051
             """
         )
 

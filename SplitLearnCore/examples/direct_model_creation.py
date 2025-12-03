@@ -6,7 +6,7 @@ This demonstrates the lower-level API for more control over model splitting.
 
 import torch
 from transformers import GPT2Config, GPT2LMHeadModel, AutoTokenizer
-from splitlearn.models.gpt2 import GPT2BottomModel, GPT2TrunkModel, GPT2TopModel
+from splitlearn_core.models.gpt2 import GPT2BottomModel, GPT2TrunkModel, GPT2TopModel
 
 
 def main():

@@ -14,7 +14,7 @@ Qwen2-7B 增量加载示例
 """
 
 import torch
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 # ============================================================================
 # 示例 1: 基础增量加载
@@ -160,7 +160,7 @@ def example_comparison():
     print("="*70 + "\n")
 
     import gc
-    from splitlearn.utils import MemoryTracker
+    from splitlearn_core.utils import MemoryTracker
 
     tracker = MemoryTracker()
 
@@ -251,7 +251,7 @@ def example_save_and_load():
     # 稍后可以重新加载
     print("\n重新加载已保存的模型:")
 
-    from splitlearn import SplitModel
+    from splitlearn_core import SplitModel
 
     bottom_loaded = SplitModel.load('./saved_models/qwen2/bottom.pt', device='cpu')
     trunk_loaded = SplitModel.load('./saved_models/qwen2/trunk.pt', device='cpu')

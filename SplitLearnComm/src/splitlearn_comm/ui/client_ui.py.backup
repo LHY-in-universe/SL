@@ -459,143 +459,93 @@ class ClientUI:
             with gr.Tabs():
                 # Tab 1: Text Generation
                 with gr.Tab("📝 文本生成"):
-                    # Generation area
-                    gr.Markdown("### 文本生成")
+                    self._build_generation_tab()
+                gr.Markdown("### 📝 文本生成")
 
-                    with gr.Row():
-                        with gr.Column(scale=3):
-                            input_box = gr.Textbox(
-                                label="输入 Prompt",
-                                placeholder="例如: The future of AI is",
-                                lines=3
-                            )
-
-                        with gr.Column(scale=2):
-                            gr.Markdown("**生成参数**")
-                            max_length_slider = gr.Slider(
-                                minimum=1,
-                                maximum=100,
-                                value=20,
-                                step=1,
-                                label="最大生成长度 (tokens)"
-                            )
-                            temperature_slider = gr.Slider(
-                                minimum=0.1,
-                                maximum=2.0,
-                                value=1.0,
-                                step=0.1,
-                                label="Temperature (创造性)"
-                            )
-                            top_k_slider = gr.Slider(
-                                minimum=0,
-                                maximum=100,
-                                value=50,
-                                step=1,
-                                label="Top-K (0=贪婪采样)"
-                            )
-                            show_speed_check = gr.Checkbox(
-                                label="显示生成速度",
-                                value=True
-                            )
-
-                    with gr.Row():
-                        generate_btn = gr.Button("▶️ 开始生成", variant="primary", size="lg")
-                        stop_btn = gr.Button("⏹️ 停止生成", variant="stop", size="lg")
-
-                    with gr.Row():
-                        with gr.Column(scale=3):
-                            output_box = gr.Textbox(
-                                label="生成结果",
-                                lines=8,
-                                show_copy_button=True,
-                                elem_classes=["output-box"]
-                            )
-                        with gr.Column(scale=1):
-                            stats_box = gr.Textbox(
-                                label="生成统计",
-                                lines=8,
-                                elem_classes=["stats-box"]
-                            )
-
-                    # Examples
-                    gr.Markdown("### 💡 示例 Prompts")
-                    gr.Examples(
-                        examples=[
-                            ["The future of AI is"],
-                            ["Once upon a time, in a land far away,"],
-                            ["To be or not to be,"],
-                            ["In the beginning, there was"],
-                            ["The quick brown fox"],
-                        ],
-                        inputs=input_box,
-                        label="点击使用示例"
-                    )
-
-                    # Usage instructions
-                    with gr.Accordion("📖 使用说明", open=False):
-                        gr.Markdown(
-                            """
-                            1. **输入文本**: 在输入框中输入你的 prompt
-                            2. **调整参数** (可选):
-                               - **最大长度**: 生成的 token 数量
-                               - **Temperature**: 控制随机性（越高越随机）
-                               - **Top-K**: 限制采样范围（0=贪婪采样）
-                            3. **开始生成**: 点击"开始生成"按钮
-                            4. **停止生成**: 点击"停止生成"按钮可随时中止
-
-                            **注意**: 确保已连接到服务器并加载了模型。
-                            """
+                with gr.Row():
+                    with gr.Column(scale=3):
+                        input_box = gr.Textbox(
+                            label="输入 Prompt",
+                            placeholder="例如: The future of AI is",
+                            lines=3
                         )
 
-                # Tab 2: Real-time Logs
-                with gr.Tab("📝 实时日志"):
-                    gr.Markdown("### 客户端日志")
-
-                    with gr.Row():
-                        log_level_filter = gr.Dropdown(
-                            choices=["ALL", "DEBUG", "INFO", "WARNING", "ERROR"],
-                            value="INFO",
-                            label="日志级别",
-                            scale=1
+                    with gr.Column(scale=2):
+                        gr.Markdown("**生成参数**")
+                        max_length_slider = gr.Slider(
+                            minimum=1,
+                            maximum=100,
+                            value=20,
+                            step=1,
+                            label="最大生成长度 (tokens)"
+                        )
+                        temperature_slider = gr.Slider(
+                            minimum=0.1,
+                            maximum=2.0,
+                            value=1.0,
+                            step=0.1,
+                            label="Temperature (创造性)"
+                        )
+                        top_k_slider = gr.Slider(
+                            minimum=0,
+                            maximum=100,
+                            value=50,
+                            step=1,
+                            label="Top-K (0=贪婪采样)"
+                        )
+                        show_speed_check = gr.Checkbox(
+                            label="显示生成速度",
+                            value=True
                         )
 
-                    logs_display = gr.Textbox(
-                        label="日志输出",
-                        value=self._get_logs_text("INFO"),
-                        lines=25,
-                        max_lines=25,
-                        interactive=False,
-                        elem_classes=["stats-box"]
-                    )
+                with gr.Row():
+                    generate_btn = gr.Button("▶️ 开始生成", variant="primary", size="lg")
+                    stop_btn = gr.Button("⏹️ 停止生成", variant="stop", size="lg")
 
-                # Tab 3: Latency Analysis
-                with gr.Tab("⏱️ 延迟分析"):
-                    gr.Markdown("### 服务器通信延迟分析")
-
-                    # Latency Statistics Table
-                    with gr.Group():
-                        gr.Markdown("#### 延迟统计")
-                        latency_stats_table = gr.Dataframe(
-                            value=self._get_latency_stats_dataframe(),
-                            label="统计指标",
-                            interactive=False
+                with gr.Row():
+                    with gr.Column(scale=3):
+                        output_box = gr.Textbox(
+                            label="生成结果",
+                            lines=8,
+                            show_copy_button=True,
+                            elem_classes=["output-box"]
+                        )
+                    with gr.Column(scale=1):
+                        stats_box = gr.Textbox(
+                            label="生成统计",
+                            lines=8,
+                            elem_classes=["stats-box"]
                         )
 
-                    # Latency Distribution Histogram
-                    with gr.Group():
-                        gr.Markdown("#### 延迟分布直方图")
-                        latency_dist_plot = gr.Plot(
-                            value=self._get_latency_distribution_plot(),
-                            label="分布图"
-                        )
+            # Examples
+            gr.Markdown("### 💡 示例 Prompts")
+            gr.Examples(
+                examples=[
+                    ["The future of AI is"],
+                    ["Once upon a time, in a land far away,"],
+                    ["To be or not to be,"],
+                    ["In the beginning, there was"],
+                    ["The quick brown fox"],
+                ],
+                inputs=input_box,
+                label="点击使用示例"
+            )
 
-                    # Latency Trend
-                    with gr.Group():
-                        gr.Markdown("#### 延迟趋势")
-                        latency_trend_plot = gr.Plot(
-                            value=self._get_latency_trend_plot(),
-                            label="趋势图"
-                        )
+            # Usage instructions
+            with gr.Accordion("📖 使用说明", open=False):
+                gr.Markdown(
+                    """
+                    1. **输入文本**: 在输入框中输入你的 prompt
+                    2. **调整参数** (可选):
+                       - **最大长度**: 生成的 token 数量
+                       - **Temperature**: 控制随机性（越高越随机）
+                       - **Top-K**: 限制采样范围（0=贪婪采样）
+                    3. **开始生成**: 点击"开始生成"按钮
+                    4. **停止生成**: 点击"停止生成"按钮可随时中止
+
+                    **注意**: 确保已连接到服务器并加载了模型。
+                    """
+                )
 
             # Event bindings
             generate_btn.click(
@@ -616,31 +566,6 @@ class ClientUI:
                 fn=self._stop_generation,
                 inputs=[],
                 outputs=stats_box
-            )
-
-            # Event bindings - log level filter
-            log_level_filter.change(
-                fn=self._get_logs_text,
-                inputs=[log_level_filter],
-                outputs=[logs_display]
-            )
-
-            # Auto-refresh monitoring data
-            demo.load(
-                fn=lambda level: (
-                    self._get_logs_text(level),
-                    self._get_latency_stats_dataframe(),
-                    self._get_latency_distribution_plot(),
-                    self._get_latency_trend_plot()
-                ),
-                inputs=[log_level_filter],
-                outputs=[
-                    logs_display,
-                    latency_stats_table,
-                    latency_dist_plot,
-                    latency_trend_plot
-                ],
-                every=self.refresh_interval
             )
 
         return demo

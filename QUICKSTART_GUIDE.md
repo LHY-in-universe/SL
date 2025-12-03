@@ -200,7 +200,7 @@ serve(MyModel(), port=50051)  # 阻塞运行
 
 ```python
 # prepare_models.py
-from splitlearn.quickstart import load_split_model
+from splitlearn_core.quickstart import load_split_model
 
 # 下载并分割模型
 bottom, trunk, top = load_split_model(
@@ -219,7 +219,7 @@ print(f"  Top:    {sum(p.numel() for p in top.parameters())/1e6:.2f}M 参数")
 
 ```python
 # server.py
-from splitlearn.quickstart import load_split_model
+from splitlearn_core.quickstart import load_split_model
 from splitlearn_comm.quickstart import Server
 
 # 加载 Trunk 模型
@@ -245,7 +245,7 @@ server.wait_for_termination()
 
 ```python
 # client.py
-from splitlearn.quickstart import load_split_model
+from splitlearn_core.quickstart import load_split_model
 from splitlearn_comm.quickstart import Client
 import torch
 

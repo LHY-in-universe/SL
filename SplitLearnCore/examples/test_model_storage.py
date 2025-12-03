@@ -15,7 +15,7 @@ import importlib.util
 # Add parent directory to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from splitlearn import ModelFactory, StorageManager
+from splitlearn_core import ModelFactory, StorageManager
 
 # Import config modules directly without triggering package init
 def import_module_from_file(module_name, file_path):

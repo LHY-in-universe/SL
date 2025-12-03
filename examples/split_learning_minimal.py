@@ -14,7 +14,7 @@ Components:
 """
 
 import torch
-from splitlearn.quickstart import load_split_model
+from splitlearn_core.quickstart import load_split_model
 from splitlearn_comm.quickstart import Client, Server
 
 

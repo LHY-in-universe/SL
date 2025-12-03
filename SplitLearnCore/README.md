@@ -27,7 +27,7 @@ pip install -e .
 ## Quick Start
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 from transformers import AutoTokenizer
 
 # Load tokenizer
@@ -98,7 +98,7 @@ SplitLearn splits a transformer model into three parts:
 ### Direct Model Creation
 
 ```python
-from splitlearn.models.gpt2 import GPT2BottomModel
+from splitlearn_core.models.gpt2 import GPT2BottomModel
 from transformers import GPT2Config, GPT2LMHeadModel
 
 # Load full model
@@ -117,8 +117,8 @@ bottom = GPT2BottomModel.from_pretrained_split(
 ### Extending to New Architectures
 
 ```python
-from splitlearn.core import BaseBottomModel
-from splitlearn.registry import ModelRegistry
+from splitlearn_core.core import BaseBottomModel
+from splitlearn_core.registry import ModelRegistry
 
 @ModelRegistry.register('my_model', 'bottom')
 class MyBottomModel(BaseBottomModel):

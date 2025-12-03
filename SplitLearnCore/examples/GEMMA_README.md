@@ -22,7 +22,7 @@ Gemma 模型采用类似 LLaMA/Qwen2 的架构：
 ### 基本示例
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 from transformers import AutoTokenizer
 import torch
 

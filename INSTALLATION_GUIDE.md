@@ -256,7 +256,7 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 ```python
 # 验证 SplitLearnCore
-python -c "from splitlearn import ModelFactory; print('✓ SplitLearnCore OK')"
+python -c "from splitlearn_core import ModelFactory; print('✓ SplitLearnCore OK')"
 
 # 验证 SplitLearnComm
 python -c "from splitlearn_comm import GRPCComputeClient; print('✓ SplitLearnComm OK')"
@@ -265,7 +265,7 @@ python -c "from splitlearn_comm import GRPCComputeClient; print('✓ SplitLearnC
 python -c "from splitlearn_manager import AsyncModelManager; print('✓ SplitLearnManager OK')"
 
 # 验证 Quickstart API
-python -c "from splitlearn.quickstart import load_split_model; print('✓ Quickstart API OK')"
+python -c "from splitlearn_core.quickstart import load_split_model; print('✓ Quickstart API OK')"
 ```
 
 ### Q4: 客户端是否必须安装 transformers？

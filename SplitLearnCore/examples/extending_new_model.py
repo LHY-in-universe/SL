@@ -10,9 +10,9 @@ import torch
 import torch.nn as nn
 from transformers import PretrainedConfig
 
-from splitlearn.core import BaseBottomModel, BaseTrunkModel, BaseTopModel
-from splitlearn.registry import ModelRegistry
-from splitlearn.utils import ParamMapper
+from splitlearn_core.core import BaseBottomModel, BaseTrunkModel, BaseTopModel
+from splitlearn_core.registry import ModelRegistry
+from splitlearn_core.utils import ParamMapper
 
 
 # Step 1: Register your models with the registry
@@ -248,7 +248,7 @@ def main():
     """
     After implementing your models, you can use them with ModelFactory:
 
-    from splitlearn import ModelFactory
+    from splitlearn_core import ModelFactory
 
     bottom, trunk, top = ModelFactory.create_split_models(
         model_type='my_model',  # Your registered model type

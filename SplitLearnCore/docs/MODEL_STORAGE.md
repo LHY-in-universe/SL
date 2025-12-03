@@ -34,7 +34,7 @@
 ### 1. 基本用法 - 自动保存
 
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 # 创建分割模型并自动保存
 bottom, trunk, top = ModelFactory.create_split_models(
@@ -93,7 +93,7 @@ top.save_split_model(Path('./custom_path/top_model.pt'))
 ### 4. 使用 StorageManager 工具
 
 ```python
-from splitlearn import StorageManager
+from splitlearn_core import StorageManager
 
 # 生成标准化路径
 path = StorageManager.get_split_model_path(
@@ -212,7 +212,7 @@ print(f"Memory: {metadata['memory_mb']} MB")
 
 ```python
 import torch
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 # 首先创建模型结构
 bottom, trunk, top = ModelFactory.create_split_models(

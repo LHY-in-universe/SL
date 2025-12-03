@@ -28,7 +28,7 @@ def create_split_models(
 
 **示例:**
 ```python
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 bottom, trunk, top = ModelFactory.create_split_models(
     model_type='gpt2',
@@ -195,7 +195,7 @@ def filter_and_remap_state_dict(
 ### GPT-2 Models
 
 ```python
-from splitlearn.models.gpt2 import (
+from splitlearn_core.models.gpt2 import (
     GPT2BottomModel,
     GPT2TrunkModel,
     GPT2TopModel
@@ -205,7 +205,7 @@ from splitlearn.models.gpt2 import (
 ### Qwen2 Models
 
 ```python
-from splitlearn.models.qwen2 import (
+from splitlearn_core.models.qwen2 import (
     Qwen2BottomModel,
     Qwen2TrunkModel,
     Qwen2TopModel

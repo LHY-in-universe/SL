@@ -6,7 +6,7 @@ This demonstrates that the library works with different model architectures.
 
 import torch
 from transformers import AutoTokenizer
-from splitlearn import ModelFactory
+from splitlearn_core import ModelFactory
 
 
 def main():
