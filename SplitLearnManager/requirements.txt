@@ -1,0 +1,10 @@
+# SplitLearnManager - Minimal Runtime Dependencies
+# This file contains the minimal dependencies required to run SplitLearnManager
+
+# Core dependencies
+torch>=2.0.0
+splitlearn-comm>=1.0.0
+
+# Note: For full server functionality, install with:
+# pip install splitlearn-manager[server]
+# Or for development: pip install -r requirements-dev.txt

@@ -1,0 +1,11 @@
+# SplitLearnCore - Minimal Runtime Dependencies
+# This file contains the minimal dependencies required to run SplitLearnCore
+
+# Core dependencies
+torch>=2.0.0
+numpy>=1.24.0
+
+# Note: For full functionality (model loading, transformers support), install with:
+# pip install splitlearn-core[client]  # For client-side usage
+# pip install splitlearn-core[server]  # For server-side usage
+# Or for development: pip install -r requirements-dev.txt

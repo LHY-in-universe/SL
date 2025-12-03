@@ -29,21 +29,37 @@ classifiers = [
 
 dependencies = [
     "torch>=2.0.0",
-    "transformers>=4.30.0",
     "numpy>=1.24.0",
+]
+
+[project.optional-dependencies]
+# Client: Minimal dependencies for running Bottom/Top models on client side
+client = [
+    "transformers>=4.30.0",
+    "safetensors>=0.3.0",
+]
+
+# Server: Full dependencies for running Trunk models on server side
+server = [
+    "transformers>=4.30.0",
     "safetensors>=0.3.0",
     "huggingface-hub>=0.16.0",
     "tqdm>=4.65.0",
     "psutil>=5.9.0",
 ]
 
-[project.optional-dependencies]
+# Development: All dependencies for development
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=3.0.0",
     "black>=22.0.0",
     "flake8>=4.0.0",
     "mypy>=0.950",
+    "transformers>=4.30.0",
+    "safetensors>=0.3.0",
+    "huggingface-hub>=0.16.0",
+    "tqdm>=4.65.0",
+    "psutil>=5.9.0",
 ]
 
 [project.urls]
