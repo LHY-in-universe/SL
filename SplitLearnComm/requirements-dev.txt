@@ -30,7 +30,7 @@ build>=0.10.0
 twine>=4.0.0  # Package publishing
 
 # Protocol buffers
-grpcio-tools>=1.50.0  # For compiling .proto files
+grpcio-tools>=1.60.0,<1.70.0  # For compiling .proto files (与 grpcio 版本对齐)
 
 # Development utilities
 ipython>=8.0.0  # Better REPL

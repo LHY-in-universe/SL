@@ -1,11 +1,17 @@
 """
 带 Gradio 界面的 Split Learning 客户端 (改进版)
 """
+import os
+import sys
+
+# 抑制 gRPC 和 protobuf 警告 (必须在导入 grpc 之前设置)
+os.environ['GRPC_VERBOSITY'] = 'ERROR'
+os.environ['GRPC_TRACE'] = ''
+os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'  # 使用 Python 实现
+
 import torch
 import gradio as gr
 import time
-import os
-import sys
 from transformers import AutoTokenizer
 
 # 添加路径以便导入本地模块
@@ -187,14 +193,7 @@ def generate_text(prompt, max_length=20, temperature=1.0, top_k=50, show_speed=T
 
 
 # 创建 Gradio 界面 (改进版)
-with gr.Blocks(
-    title="Split Learning Demo",
-    theme=gr.themes.Soft(),
-    css="""
-    .status-box {font-family: monospace; font-size: 14px;}
-    .stats-box {font-family: monospace; font-size: 12px;}
-    """
-) as demo:
+with gr.Blocks() as demo:
 
     gr.Markdown(
         """
@@ -212,8 +211,7 @@ with gr.Blocks(
         status_box = gr.Textbox(
             label="系统状态",
             value="⚪ 未初始化 - 请点击下方按钮开始",
-            lines=6,
-            elem_classes=["status-box"]
+            lines=6
         )
         init_btn = gr.Button("🔌 初始化模型并连接服务器", variant="primary", size="lg")
 
@@ -267,14 +265,12 @@ with gr.Blocks(
             with gr.Column(scale=3):
                 output_box = gr.Textbox(
                     label="生成结果",
-                    lines=8,
-                    show_copy_button=True
+                    lines=8
                 )
             with gr.Column(scale=1):
                 stats_box = gr.Textbox(
                     label="生成统计",
-                    lines=8,
-                    elem_classes=["stats-box"]
+                    lines=8
                 )
 
     # 示例
@@ -358,9 +354,8 @@ if __name__ == "__main__":
 
     demo.queue()  # 启用队列以支持流式输出
     demo.launch(
-        server_name="0.0.0.0",  # 监听所有网络接口
-        server_port=7870,
-        share=False,  # 禁用公共链接，只使用本地访问
+        share=False,
+        prevent_thread_lock=False,  # 前台运行
         show_error=True,
-        inbrowser=True  # 自动打开浏览器
+        quiet=False  # 显示所有日志
     )

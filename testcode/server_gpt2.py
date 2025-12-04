@@ -6,6 +6,12 @@ GPT-2 Split Learning Server
 
 import os
 import sys
+
+# 抑制 gRPC 和 protobuf 警告 (必须在导入 grpc 之前设置)
+os.environ['GRPC_VERBOSITY'] = 'ERROR'
+os.environ['GRPC_TRACE'] = ''
+os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'  # 使用 Python 实现
+
 import torch
 import logging
 
