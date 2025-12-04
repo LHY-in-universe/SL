@@ -154,26 +154,32 @@ bash test/stop_all.sh
 
 ### Q2: 连接被拒绝 (ConnectionRefusedError)
 
-**A:** 确保所有三个服务器都在运行。如果使用启动脚本，检查 `test/logs/` 目录中的日志文件查看错误信息。
+**A:** 确保 Trunk 服务器正在运行。如果使用启动脚本，检查 `test/logs/trunk.log` 文件查看错误信息。
 
-### Q3: 如何查看服务器日志
+### Q3: 模型文件不存在
+
+**A:** 确保模型文件存在于以下位置：
+- `models/bottom/gpt2_2-10_bottom.pt`
+- `models/top/gpt2_2-10_top.pt`
+
+如果文件不存在，需要先运行 `docs_and_tests/save_split_models.py` 来保存模型。
+
+### Q4: 如何查看服务器日志
 
 **A:** 日志文件位于 `test/logs/` 目录：
 ```bash
-# 实时查看 Bottom Server 日志
-tail -f test/logs/bottom.log
+# 实时查看 Trunk Server 日志
+tail -f test/logs/trunk.log
 
-# 查看所有日志
-cat test/logs/*.log
+# 查看日志
+cat test/logs/trunk.log
 ```
 
-### Q4: 端口被占用
+### Q5: 端口被占用
 
 **A:** 检查端口使用情况：
 ```bash
-lsof -i :50051
 lsof -i :50052
-lsof -i :50053
 ```
 
 终止占用端口的进程：
@@ -181,7 +187,7 @@ lsof -i :50053
 kill -9 <PID>
 ```
 
-### Q5: 使用 Anaconda 环境失败
+### Q6: 使用 Anaconda 环境失败
 
 **A:** 本项目必须使用 Framework Python，不支持 Anaconda Python。详见根目录的 `ANACONDA环境无法使用的最终结论.md`。
 
@@ -200,11 +206,13 @@ kill -9 <PID>
 
 在 MacBook (Apple Silicon M1/M2) 上的典型性能：
 
-- **模型加载**: 5-10 秒（首次），2-5 秒（后续）
+- **模型加载**:
+  - 客户端本地模型: 2-5 秒（从磁盘加载）
+  - 服务端 Trunk 模型: 5-10 秒（首次），2-5 秒（后续）
 - **单次推理**: 0.1-0.5 秒
-  - Bottom: ~0.05 秒
-  - Trunk: ~0.1 秒
-  - Top: ~0.05 秒
+  - Bottom (本地): ~0.05 秒
+  - Trunk (远程): ~0.1 秒（包含网络传输）
+  - Top (本地): ~0.05 秒
 - **网络延迟**: < 1ms (本地)
 
 ## 进阶使用
@@ -219,8 +227,9 @@ TEST_TEXT = "Your custom text here"
 
 ### 修改拆分点
 
-编辑服务器文件中的 `split_points` 参数：
+**重要**: 如果修改拆分点，需要重新保存模型文件。
 
+1. 修改服务器文件中的 `split_points` 参数：
 ```python
 server = ManagedServer(
     model_type="gpt2",
@@ -231,6 +240,10 @@ server = ManagedServer(
     max_workers=1
 )
 ```
+
+2. 修改客户端代码中的模型路径和元数据读取，确保与新的拆分点匹配。
+
+3. 运行 `docs_and_tests/save_split_models.py` 保存新的模型文件。
 
 ### 使用不同的模型
 
@@ -251,9 +264,10 @@ server = ManagedServer(
 
 ### 推理结果异常
 
-1. 确认三个服务器的 `split_points` 参数一致
-2. 确认模型已完全加载（查看日志）
-3. 尝试重启所有服务器
+1. 确认 Trunk 服务器的 `split_points` 参数与客户端加载的模型匹配（应为 [2, 10]）
+2. 确认模型已完全加载（查看日志和客户端输出）
+3. 确认客户端和服务端使用的模型版本一致
+4. 尝试重启服务器和客户端
 
 ### 内存不足
 
