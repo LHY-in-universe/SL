@@ -10,7 +10,7 @@
 import asyncio
 import logging
 import time
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
 
 import torch
 
@@ -38,7 +38,8 @@ class AsyncManagedComputeFunction(AsyncComputeFunction):
         model_manager: AsyncModelManager,
         router: ModelRouter,
         resource_manager: ResourceManager,
-        metrics: Optional[MetricsCollector] = None
+        metrics: Optional[MetricsCollector] = None,
+        executor: Optional[Any] = None
     ):
         """
         初始化异步托管计算函数。
@@ -48,11 +49,13 @@ class AsyncManagedComputeFunction(AsyncComputeFunction):
             router: 模型路由器实例
             resource_manager: 资源管理器实例
             metrics: 指标收集器（可选）
+            executor: 线程池执行器（可选，用于模型推理）
         """
         self.model_manager = model_manager
         self.router = router
         self.resource_manager = resource_manager
         self.metrics = metrics
+        self.executor = executor
 
     async def compute(self, input_tensor: torch.Tensor) -> torch.Tensor:
         """
@@ -90,7 +93,8 @@ class AsyncManagedComputeFunction(AsyncComputeFunction):
                 with torch.no_grad():
                     return managed_model.model(input_tensor)
 
-            output = await loop.run_in_executor(None, _sync_inference)
+            # 使用指定的 executor，如果没有则使用默认的
+            output = await loop.run_in_executor(self.executor, _sync_inference)
 
             # 记录成功指标
             if self.metrics:
@@ -155,31 +159,36 @@ class AsyncManagedServer:
         self.resource_manager = ResourceManager()
         self.model_manager = AsyncModelManager(
             resource_manager=self.resource_manager,
-            max_models=self.config.max_models
+            max_models=self.config.max_models,
+            max_workers=self.config.max_workers
         )
         self.router = ModelRouter(self.model_manager)
 
         # 监控组件
-        self.metrics = MetricsCollector() if self.config.enable_metrics else None
+        self.metrics = MetricsCollector() if self.config.enable_monitoring else None
         self.health_checker = HealthChecker(
             model_manager=self.model_manager,
             resource_manager=self.resource_manager
         )
 
         # 创建异步计算函数
+        # 传递 model_manager 的 executor 用于推理
         self.compute_fn = AsyncManagedComputeFunction(
             model_manager=self.model_manager,
             router=self.router,
             resource_manager=self.resource_manager,
-            metrics=self.metrics
+            metrics=self.metrics,
+            executor=self.model_manager.executor
         )
 
         # 创建异步 gRPC 服务器
+        # max_message_length 从 config 字典获取，如果没有则使用默认值 100MB
+        max_message_length = self.config.config.get("max_message_length", 100 * 1024 * 1024)
         self.grpc_server = AsyncGRPCComputeServer(
             compute_fn=self.compute_fn,
             host=self.config.host,
             port=self.config.port,
-            max_message_length=self.config.max_message_length
+            max_message_length=max_message_length
         )
 
         # 监控任务
@@ -317,18 +326,29 @@ class AsyncManagedServer:
                 # 记录资源使用
                 self.resource_manager.log_resource_usage()
 
-                # 执行健康检查
-                health_status = self.health_checker.check_health()
-
-                if health_status.status != "healthy":
-                    logger.warning(
-                        f"Health check warning: {health_status.message}"
-                    )
+                # 执行健康检查（跳过模型检查，因为它是异步的）
+                # 只检查资源，模型检查在 get_status() 中处理
+                try:
+                    health_status = self.health_checker.check_health()
+                    # 如果健康检查返回字典，提取状态
+                    if isinstance(health_status, dict):
+                        status = health_status.get("status", "unknown")
+                        if status != "healthy":
+                            message = health_status.get("message", "Unknown issue")
+                            logger.warning(f"Health check warning: {message}")
+                except Exception as e:
+                    logger.warning(f"Health check error: {e}")
 
                 # 收集指标（如果启用）
                 if self.metrics:
-                    stats = await self.model_manager.get_statistics()
-                    self.metrics.update_model_stats(stats)
+                    try:
+                        stats = await self.model_manager.get_statistics()
+                        # 更新模型数量
+                        if isinstance(stats, dict):
+                            models_count = stats.get("total_models", 0)
+                            self.metrics.update_models_loaded(models_count)
+                    except Exception as e:
+                        logger.debug(f"Failed to update metrics: {e}")
 
                 # 等待下一次检查
                 await asyncio.sleep(self.config.health_check_interval)
@@ -352,13 +372,21 @@ class AsyncManagedServer:
         health = self.health_checker.check_health()
         grpc_stats = await self.grpc_server.get_statistics()
 
+        # 处理健康检查结果（可能是字典）
+        if isinstance(health, dict):
+            health_status = health.get("status", "unknown")
+            health_message = health.get("message", "No message")
+        else:
+            health_status = getattr(health, "status", "unknown")
+            health_message = getattr(health, "message", "No message")
+
         return {
             "running": self.running,
             "models": models,
             "statistics": stats,
             "health": {
-                "status": health.status,
-                "message": health.message,
+                "status": health_status,
+                "message": health_message,
             },
             "grpc": grpc_stats,
             "config": {

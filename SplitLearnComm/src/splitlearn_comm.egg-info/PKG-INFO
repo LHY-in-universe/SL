@@ -4,9 +4,9 @@ Version: 1.0.0
 Summary: A gRPC-based communication library for distributed computing
 Author: SplitLearn Contributors
 License: MIT
-Project-URL: Homepage, https://github.com/yourusername/splitlearn-comm
-Project-URL: Repository, https://github.com/yourusername/splitlearn-comm
-Project-URL: Issues, https://github.com/yourusername/splitlearn-comm/issues
+Project-URL: Homepage, https://github.com/yourusername/SplitLearnComm
+Project-URL: Repository, https://github.com/yourusername/SplitLearnComm
+Project-URL: Issues, https://github.com/yourusername/SplitLearnComm/issues
 Keywords: grpc,distributed-computing,deep-learning,communication,rpc
 Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
@@ -21,18 +21,40 @@ Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Classifier: Topic :: System :: Distributed Computing
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
-License-File: LICENSE
 Requires-Dist: torch>=2.0.0
-Requires-Dist: grpcio>=1.50.0
-Requires-Dist: protobuf>=4.0.0
+Requires-Dist: grpcio>=1.76.0
+Requires-Dist: protobuf>=5.28.0
 Requires-Dist: numpy>=1.24.0
+Provides-Extra: client
+Requires-Dist: grpcio>=1.76.0; extra == "client"
+Requires-Dist: protobuf>=4.25.0; extra == "client"
+Provides-Extra: server
+Requires-Dist: grpcio>=1.76.0; extra == "server"
+Requires-Dist: protobuf>=4.25.0; extra == "server"
+Provides-Extra: ui
+Requires-Dist: gradio<5.0.0,>=3.50.0; extra == "ui"
+Requires-Dist: pandas>=1.5.0; extra == "ui"
 Provides-Extra: dev
 Requires-Dist: pytest>=7.0.0; extra == "dev"
 Requires-Dist: pytest-cov>=3.0.0; extra == "dev"
+Requires-Dist: pytest-timeout>=2.1.0; extra == "dev"
+Requires-Dist: pytest-xdist>=3.0.0; extra == "dev"
 Requires-Dist: black>=22.0.0; extra == "dev"
+Requires-Dist: isort>=5.12.0; extra == "dev"
 Requires-Dist: flake8>=4.0.0; extra == "dev"
-Requires-Dist: grpcio-tools>=1.50.0; extra == "dev"
-Dynamic: license-file
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+Requires-Dist: grpcio-tools>=1.76.0; extra == "dev"
+Requires-Dist: sphinx>=5.0.0; extra == "dev"
+Requires-Dist: sphinx-rtd-theme>=1.2.0; extra == "dev"
+Requires-Dist: myst-parser>=1.0.0; extra == "dev"
+Requires-Dist: build>=0.10.0; extra == "dev"
+Requires-Dist: twine>=4.0.0; extra == "dev"
+Requires-Dist: ipython>=8.0.0; extra == "dev"
+Requires-Dist: ipdb>=0.13.0; extra == "dev"
+Requires-Dist: gradio<5.0.0,>=3.50.0; extra == "dev"
+Requires-Dist: pandas>=1.5.0; extra == "dev"
+Provides-Extra: all
+Requires-Dist: splitlearn-comm[client,dev,server,ui]; extra == "all"
 
 # splitlearn-comm
 

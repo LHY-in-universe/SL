@@ -59,10 +59,9 @@ class Client:
     ):
         # Create default retry strategy
         retry_strategy = ExponentialBackoff(
+            max_retries=max_retries,
             initial_delay=1.0,
-            max_delay=60.0,
-            multiplier=2.0,
-            max_attempts=max_retries
+            max_delay=60.0
         )
 
         # Create underlying client

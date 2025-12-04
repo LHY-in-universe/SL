@@ -140,6 +140,17 @@ def load_split_model(
     logger.info(f"  Device: {device}")
     logger.info(f"  dtype: {torch_dtype or 'default'}")
 
+    # 在加载模型之前配置 PyTorch 线程数（在调用 ModelFactory 之前）
+    # 这确保 HuggingFace 的 from_pretrained() 使用单线程
+    os.environ.setdefault('OMP_NUM_THREADS', '1')
+    os.environ.setdefault('MKL_NUM_THREADS', '1')
+    os.environ.setdefault('NUMEXPR_NUM_THREADS', '1')
+    try:
+        torch.set_num_threads(1)
+        torch.set_num_interop_threads(1)
+    except RuntimeError:
+        pass  # 如果已经设置过，忽略错误
+
     # Create split models using ModelFactory
     try:
         bottom, trunk, top = ModelFactory.create_split_models(

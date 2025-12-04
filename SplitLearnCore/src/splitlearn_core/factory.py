@@ -6,10 +6,31 @@ Supports both traditional loading and incremental loading for sharded models.
 """
 from typing import Tuple, Optional, Union, Dict, Any
 import gc
+import os
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
 
 from .registry import ModelRegistry
+
+
+def _configure_pytorch_threads_for_loading():
+    """
+    在 HuggingFace 加载模型之前配置 PyTorch 线程数。
+    
+    这个函数应该在调用 from_pretrained() 之前调用，以避免多线程竞争。
+    """
+    # 设置环境变量（如果还没有设置）
+    os.environ.setdefault('OMP_NUM_THREADS', '1')
+    os.environ.setdefault('MKL_NUM_THREADS', '1')
+    os.environ.setdefault('NUMEXPR_NUM_THREADS', '1')
+    
+    # 设置 PyTorch 线程数（必须在任何并行工作开始之前）
+    try:
+        torch.set_num_threads(1)
+        torch.set_num_interop_threads(1)
+    except RuntimeError:
+        # 如果已经启动过并行工作，忽略错误
+        pass
 
 
 class ModelFactory:
@@ -106,6 +127,10 @@ class ModelFactory:
             )
 
         print(f"Loading pretrained model '{model_name_or_path}'...")
+
+        # 在 HuggingFace 加载模型之前配置 PyTorch 线程数
+        # 这必须在调用 from_pretrained() 之前完成
+        _configure_pytorch_threads_for_loading()
 
         # Load config (lightweight)
         config = AutoConfig.from_pretrained(model_name_or_path)

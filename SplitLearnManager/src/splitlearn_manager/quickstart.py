@@ -45,6 +45,7 @@ class ManagedServer:
         host: Host address (default: "0.0.0.0")
         device: Device to use (default: auto-detect)
         max_models: Maximum number of models to manage (default: 5)
+        max_workers: Maximum number of worker threads (default: 1 for single-threaded)
 
     Example:
         Basic usage:
@@ -65,6 +66,7 @@ class ManagedServer:
         host: str = "0.0.0.0",
         device: Optional[str] = None,
         max_models: int = 5,
+        max_workers: int = 1,
         **model_kwargs
     ):
         self.model_type = model_type
@@ -86,7 +88,8 @@ class ManagedServer:
         self.server_config = ServerConfig(
             host=self.host,
             port=self.port,
-            max_models=self.max_models
+            max_models=self.max_models,
+            max_workers=max_workers
         )
 
         # Create async server (will be initialized in start())
@@ -99,7 +102,8 @@ class ManagedServer:
             f"model={self.model_type}, "
             f"component={self.component}, "
             f"port={self.port}, "
-            f"device={self.device}"
+            f"device={self.device}, "
+            f"max_workers={max_workers}"
         )
 
     def start(self):
@@ -115,28 +119,38 @@ class ManagedServer:
 
     async def _async_start(self):
         """Internal async start method."""
-        # Create async server
+        # Create async server (但不启动 gRPC)
+        # 注意：PyTorch 线程配置会在模型加载时自动设置（在 load_from_config 中）
         self._async_server = AsyncManagedServer(config=self.server_config)
 
-        # Start server
-        await self._async_server.start()
-
-        # Load model
+        # 先加载模型（在启动 gRPC 服务器之前）
+        # component 和其他参数放在 config 字典中
+        # 默认 split_points 用于 gpt2
+        default_split_points = self.model_kwargs.get("split_points", [2, 10])
+        model_config_dict = {
+            "component": self.component,
+            "split_points": default_split_points,
+            "cache_dir": self.model_kwargs.get("cache_dir", "./models"),
+            **{k: v for k, v in self.model_kwargs.items() if k not in ["split_points", "cache_dir"]}
+        }
         model_config = ModelConfig(
             model_id=f"{self.model_type}_{self.component}",
+            model_path=self.model_path,
             model_type=self.model_type,
-            component=self.component,
-            model_name_or_path=self.model_path,
             device=self.device,
-            **self.model_kwargs
+            config=model_config_dict
         )
 
-        logger.info(f"Loading model: {model_config.model_id}")
+        logger.info(f"Loading model: {model_config.model_id} (before starting gRPC server)...")
         await self._async_server.load_model(model_config)
-        logger.info("Model loaded successfully")
+        logger.info("✓ Model loaded successfully")
+
+        # 模型加载完成后，再启动 gRPC 服务器
+        logger.info("Starting gRPC server...")
+        await self._async_server.start()
+        logger.info(f"✓ Server running on {self.host}:{self.port}. Press Ctrl+C to stop.")
 
         # Wait for termination
-        logger.info(f"Server running on {self.host}:{self.port}. Press Ctrl+C to stop.")
         await self._async_server.wait_for_termination()
 
     def start_background(self):
