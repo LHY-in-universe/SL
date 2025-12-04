@@ -71,10 +71,10 @@ class AsyncComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
 
         try:
             # 解码输入张量
+            # Note: TensorCodec.decode always uses float32, no dtype parameter needed
             input_tensor = self.codec.decode(
                 data=request.data,
-                shape=tuple(request.shape),
-                dtype=request.dtype if request.dtype else "float32"
+                shape=tuple(request.shape)
             )
 
             logger.debug(
@@ -93,10 +93,10 @@ class AsyncComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             output_data, output_shape = self.codec.encode(output_tensor)
 
             # 返回响应
+            # Note: ComputeResponse does not have dtype field, always uses float32
             return compute_service_pb2.ComputeResponse(
                 data=output_data,
-                shape=list(output_shape),
-                dtype=str(output_tensor.dtype).replace("torch.", "")
+                shape=list(output_shape)
             )
 
         except Exception as e:

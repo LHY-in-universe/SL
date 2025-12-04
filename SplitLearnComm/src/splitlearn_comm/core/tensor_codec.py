@@ -60,7 +60,8 @@ class TensorCodec:
         array = array.reshape(shape)
 
         # 转换为 PyTorch tensor
-        tensor = torch.from_numpy(array)
+        # 复制数组以确保可写性，避免警告
+        tensor = torch.from_numpy(array.copy())
 
         return tensor
 

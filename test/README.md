@@ -30,9 +30,23 @@ bash test/start_all.sh
 服务器将在后台运行，日志保存在 `test/logs/` 目录。
 
 **2. 运行客户端测试**
+
+有两种方式：
+
+**方式 A: 单次测试**
 ```bash
 /Library/Frameworks/Python.framework/Versions/3.11/bin/python3 test/client/test_client.py
 ```
+
+**方式 B: 交互式对话（推荐）**
+```bash
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 test/client/interactive_client.py
+```
+
+交互式客户端支持：
+- 在终端输入文本
+- 实时获得 AI 回复
+- 输入 `quit` 或 `exit` 退出
 
 客户端会自动：
 - 从 `models/bottom/` 加载 Bottom 模型

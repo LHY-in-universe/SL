@@ -159,8 +159,8 @@ def load_split_model(
             split_point_1=split_point_1,
             split_point_2=split_point_2,
             device=device,
-            torch_dtype=torch_dtype,
-            cache_dir=cache_dir,
+            # Note: torch_dtype is not supported by ModelFactory.create_split_models
+            # If needed, convert models after loading
         )
 
         logger.info("✓ Models loaded successfully")
