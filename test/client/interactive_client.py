@@ -13,6 +13,15 @@ from pathlib import Path
 from datetime import datetime
 from transformers import AutoTokenizer, AutoConfig
 
+# 添加项目路径
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.insert(0, project_root)
+
+# 添加 SplitLearnMonitor 路径（监控模块在本地）
+monitor_src_path = os.path.join(project_root, 'SplitLearnMonitor', 'src')
+if os.path.exists(monitor_src_path):
+    sys.path.insert(0, monitor_src_path)
+
 # 尝试导入 psutil（可选）
 try:
     import psutil
@@ -24,13 +33,10 @@ except ImportError:
 try:
     from splitlearn_monitor import ClientMonitor
     MONITOR_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     MONITOR_AVAILABLE = False
     ClientMonitor = None
-
-# 添加项目路径
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
-sys.path.insert(0, project_root)
+    # 不在控制台输出错误，因为这是可选的模块
 
 from splitlearn_comm.quickstart import Client
 from splitlearn_core.models.gpt2 import GPT2BottomModel, GPT2TopModel
@@ -259,7 +265,6 @@ def main():
     monitor = None
     if MONITOR_AVAILABLE:
         try:
-            from datetime import datetime
             session_name = f"interactive_client_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
             monitor = ClientMonitor(
                 session_name=session_name,
@@ -269,7 +274,10 @@ def main():
             )
             print(f"[监控] SplitLearnMonitor 已启动 (会话: {session_name})\n")
         except Exception as e:
-            print(f"[监控] SplitLearnMonitor 启动失败: {e}，将使用基础监控\n")
+            print(f"[监控] SplitLearnMonitor 启动失败: {e}")
+            print(f"[监控] 将使用基础监控（不会生成 HTML 报告）\n")
+            import traceback
+            traceback.print_exc()
             monitor = None
 
     # 系统资源监控（在模型加载之前测量初始内存）
@@ -565,23 +573,52 @@ def main():
                 
                 # 保存监控报告
                 try:
-                    report_path = monitor.save_report(format="html")
+                    # 创建报告目录
+                    reports_dir = os.path.join(project_root, 'test', 'reports')
+                    os.makedirs(reports_dir, exist_ok=True)
+                    
+                    # 生成报告文件名（包含时间戳）
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    html_report_path = os.path.join(reports_dir, f"{monitor.session_name}_{timestamp}_report.html")
+                    json_report_path = os.path.join(reports_dir, f"{monitor.session_name}_{timestamp}_report.json")
+                    
+                    # 保存 HTML 报告
+                    report_path = monitor.save_report(output_path=html_report_path, format="html")
                     print(f"\n[监控报告]")
                     print(f"  HTML 报告已保存: {report_path}")
                     
                     # 同时保存 JSON 格式
                     try:
-                        json_path = monitor.save_report(format="json")
+                        json_path = monitor.save_report(output_path=json_report_path, format="json")
                         print(f"  JSON 数据已保存: {json_path}")
-                    except:
-                        pass
+                    except Exception as json_e:
+                        print(f"  [警告] JSON 报告保存失败: {json_e}")
+                        import traceback
+                        traceback.print_exc()
                 except Exception as e:
                     print(f"\n[监控报告] 保存失败: {e}")
+                    import traceback
+                    traceback.print_exc()
                     
             except Exception as e:
                 print(f"\n[SplitLearnMonitor] 获取统计失败: {e}")
                 import traceback
                 traceback.print_exc()
+        else:
+            # 监控模块未启动时的提示
+            if not MONITOR_AVAILABLE:
+                print(f"\n{'='*70}")
+                print("[监控报告]")
+                print(f"{'='*70}")
+                print("  ⚠️  监控模块不可用，无法生成 HTML 统计报告")
+                print("  原因: splitlearn_monitor 模块未找到或导入失败")
+                print("  提示: 确保 SplitLearnMonitor 模块已正确配置路径")
+            elif monitor is None:
+                print(f"\n{'='*70}")
+                print("[监控报告]")
+                print(f"{'='*70}")
+                print("  ⚠️  监控模块启动失败，无法生成 HTML 统计报告")
+                print("  请查看上方的错误信息了解具体原因")
         
         # 系统资源统计
         print(f"\n[系统资源使用]")

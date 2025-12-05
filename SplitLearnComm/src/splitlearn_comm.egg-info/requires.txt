@@ -1,6 +1,6 @@
 torch>=2.0.0
-grpcio>=1.76.0
-protobuf>=5.28.0
+grpcio<1.70.0,>=1.60.0
+protobuf<5.0.0,>=4.25.0
 numpy>=1.24.0
 
 [all]
