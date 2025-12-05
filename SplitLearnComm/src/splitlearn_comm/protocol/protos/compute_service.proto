@@ -33,6 +33,33 @@ message ComputeRequest {
     string model_id = 5;
 }
 
+// 服务端监控快照
+message MonitoringSnapshot {
+    // 时间戳
+    double timestamp = 1;
+
+    // CPU 使用率 (0-100)
+    float cpu_percent = 2;
+
+    // 内存使用 (MB)
+    float memory_mb = 3;
+
+    // 内存使用率 (0-100)
+    float memory_percent = 4;
+
+    // GPU 是否可用
+    bool gpu_available = 5;
+
+    // GPU 使用率 (0-100)，可选
+    optional float gpu_utilization = 6;
+
+    // GPU 内存使用 (MB)，可选
+    optional float gpu_memory_used_mb = 7;
+
+    // GPU 总内存 (MB)，可选
+    optional float gpu_memory_total_mb = 8;
+}
+
 // 计算响应
 message ComputeResponse {
     // 输出张量数据
@@ -46,6 +73,9 @@ message ComputeResponse {
 
     // 服务端计算耗时（毫秒）
     optional float compute_time_ms = 4;
+
+    // 服务端监控快照
+    optional MonitoringSnapshot monitoring_data = 5;
 }
 
 // 健康检查请求

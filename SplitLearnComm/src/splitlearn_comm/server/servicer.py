@@ -35,7 +35,8 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         codec: Optional[TensorCodec] = None,
         version: str = "1.0.0",
         history_size: int = 100,
-        monitoring_config: Optional[MonitoringConfig] = None
+        monitoring_config: Optional[MonitoringConfig] = None,
+        enable_resource_monitoring: bool = True
     ):
         """
         Args:
@@ -44,6 +45,7 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             version: 服务版本号
             history_size: 保留的请求历史记录数量
             monitoring_config: 监控配置（默认使用 MonitoringConfig）
+            enable_resource_monitoring: 是否启用资源监控（CPU/GPU/内存）
         """
         self.compute_fn = compute_fn
         self.codec = codec or TensorCodec()
@@ -62,6 +64,35 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         config = monitoring_config or MonitoringConfig()
         self.metrics_manager = MetricsManager(max_history_size=config.max_history_size)
         self.log_manager = LogManager(max_logs=config.max_log_size)
+
+        # 初始化资源监控（如果启用）
+        self.server_monitor = None
+        if enable_resource_monitoring:
+            try:
+                from splitlearn_monitor import ServerMonitor
+                self.server_monitor = ServerMonitor(
+                    server_name="compute_server",
+                    sampling_interval=0.1,
+                    enable_gpu=True,
+                    auto_start=True
+                )
+                logger.info("ServerMonitor initialized and started")
+                self.log_manager.add_log(
+                    LogLevel.INFO,
+                    "ServerMonitor initialized and started"
+                )
+            except ImportError:
+                logger.warning("splitlearn_monitor not available, resource monitoring disabled")
+                self.log_manager.add_log(
+                    LogLevel.WARNING,
+                    "splitlearn_monitor not available, resource monitoring disabled"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to initialize ServerMonitor: {e}")
+                self.log_manager.add_log(
+                    LogLevel.WARNING,
+                    f"Failed to initialize ServerMonitor: {e}"
+                )
 
         # 初始化计算函数
         try:
@@ -134,6 +165,32 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             # 如果请求包含 request_id，回传
             if request.HasField("request_id"):
                 response.request_id = request.request_id
+
+            # 6. 附加服务端监控数据（如果可用）
+            if self.server_monitor:
+                try:
+                    snapshot = self.server_monitor.system_monitor.get_current_snapshot()
+                    if snapshot:
+                        # 转换为 protobuf 格式
+                        monitoring_data = compute_service_pb2.MonitoringSnapshot(
+                            timestamp=snapshot.timestamp,
+                            cpu_percent=snapshot.cpu_percent,
+                            memory_mb=snapshot.memory_mb,
+                            memory_percent=snapshot.memory_percent,
+                            gpu_available=snapshot.gpu_available
+                        )
+
+                        # 添加 GPU 数据（如果可用）
+                        if snapshot.gpu_available and snapshot.gpu_utilization is not None:
+                            monitoring_data.gpu_utilization = snapshot.gpu_utilization
+                            if snapshot.gpu_memory_used_mb is not None:
+                                monitoring_data.gpu_memory_used_mb = snapshot.gpu_memory_used_mb
+                            if snapshot.gpu_memory_total_mb is not None:
+                                monitoring_data.gpu_memory_total_mb = snapshot.gpu_memory_total_mb
+
+                        response.monitoring_data.CopyFrom(monitoring_data)
+                except Exception as e:
+                    logger.warning(f"Failed to attach monitoring data: {e}")
 
             logger.debug(
                 f"[Request {request_id}] "
@@ -304,6 +361,11 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
     def shutdown(self):
         """关闭服务，清理资源"""
         try:
+            # 停止资源监控（如果启用）
+            if self.server_monitor:
+                self.server_monitor.stop()
+                logger.info("ServerMonitor stopped")
+
             self.compute_fn.teardown()
             logger.info("ComputeServicer shutdown completed")
             logger.info(f"Total requests processed: {self.total_requests}")

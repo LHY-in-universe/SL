@@ -1,0 +1,17 @@
+# SplitLearnMonitor - Core Runtime Dependencies
+# This file contains the minimal dependencies required to run SplitLearnMonitor
+
+# System monitoring
+psutil>=5.9.0        # CPU and memory monitoring
+
+# Statistical calculations
+numpy>=1.24.0        # Numerical operations and statistics
+
+# Visualization
+matplotlib>=3.5.0    # Chart generation
+
+# Note: For additional features, install with:
+# pip install splitlearn-monitor[gpu]              # For GPU monitoring
+# pip install splitlearn-monitor[viz-interactive]  # For interactive charts
+# pip install splitlearn-monitor[full]             # For all features
+# Or for development: pip install -r requirements-dev.txt

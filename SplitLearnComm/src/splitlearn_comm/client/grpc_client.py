@@ -4,7 +4,7 @@ GRPCComputeClient - gRPC 客户端实现
 
 import logging
 import time
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 import grpc
 import torch
@@ -75,6 +75,9 @@ class GRPCComputeClient:
         self.request_count = 0
         self.total_network_time = 0.0
         self.total_compute_time = 0.0
+
+        # 服务端监控数据
+        self.server_monitoring_snapshots = []
 
     def connect(self) -> bool:
         """
@@ -165,7 +168,22 @@ class GRPCComputeClient:
             self.total_network_time += network_time
             self.total_compute_time += response.compute_time_ms
 
-            # 5. 解码输出张量
+            # 5. 接收并存储服务端监控数据
+            if response.HasField("monitoring_data"):
+                monitoring_data = response.monitoring_data
+                snapshot_dict = {
+                    "timestamp": monitoring_data.timestamp,
+                    "cpu_percent": monitoring_data.cpu_percent,
+                    "memory_mb": monitoring_data.memory_mb,
+                    "memory_percent": monitoring_data.memory_percent,
+                    "gpu_available": monitoring_data.gpu_available,
+                    "gpu_utilization": monitoring_data.gpu_utilization if monitoring_data.HasField("gpu_utilization") else None,
+                    "gpu_memory_used_mb": monitoring_data.gpu_memory_used_mb if monitoring_data.HasField("gpu_memory_used_mb") else None,
+                    "gpu_memory_total_mb": monitoring_data.gpu_memory_total_mb if monitoring_data.HasField("gpu_memory_total_mb") else None,
+                }
+                self.server_monitoring_snapshots.append(snapshot_dict)
+
+            # 6. 解码输出张量
             output_tensor = self.codec.decode(
                 data=response.data,
                 shape=tuple(response.shape)
@@ -263,6 +281,19 @@ class GRPCComputeClient:
             "avg_compute_time_ms": avg_compute,
             "avg_total_time_ms": avg_network + avg_compute,
         }
+
+    def get_server_monitoring_data(self) -> List[Dict[str, Any]]:
+        """
+        获取累积的服务端监控数据
+
+        Returns:
+            服务端监控快照列表
+        """
+        return self.server_monitoring_snapshots.copy()
+
+    def clear_server_monitoring_data(self):
+        """清空服务端监控数据"""
+        self.server_monitoring_snapshots.clear()
 
     def close(self):
         """关闭连接"""

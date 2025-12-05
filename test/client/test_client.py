@@ -38,8 +38,12 @@ def print_step(step_num, title):
 def main():
     print_section("Split Learning 客户端 - 完整推理测试")
 
-    # 配置
-    TRUNK_SERVER = "localhost:50052"
+    # 配置 - 支持命令行参数或环境变量指定服务器地址
+    import sys
+    if len(sys.argv) > 1:
+        TRUNK_SERVER = sys.argv[1]
+    else:
+        TRUNK_SERVER = os.getenv("TRUNK_SERVER", "localhost:50052")
     TEST_TEXT = "The future of artificial intelligence is"
     
     # 模型路径
@@ -132,35 +136,57 @@ def main():
         # 4.1 Bottom 模型 (本地)
         print("\n[4.1] Bottom 模型处理 (本地)...")
         print(f"  输入: {input_ids.shape}")
+        print(f"  开始时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         bottom_start = time.time()
         with torch.no_grad():
             hidden_1 = bottom(input_ids)
-        bottom_time = time.time() - bottom_start
+        bottom_end = time.time()
+        bottom_time = bottom_end - bottom_start
+        print(f"  结束时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         print(f"  输出: {hidden_1.shape}")
-        print(f"  耗时: {bottom_time:.3f} 秒")
+        print(f"  耗时: {bottom_time:.3f} 秒 ({bottom_time*1000:.1f} ms)")
         print(f"  数据: {hidden_1.numel() * 4 / 1024:.2f} KB")
+        print(f"  [本地处理] Bottom 模型执行时间: {bottom_time*1000:.1f}ms")
 
         # 4.2 Trunk 模型 (远程服务器)
         print("\n[4.2] Trunk 模型处理 (远程服务器)...")
         print(f"  输入: {hidden_1.shape}")
+        print(f"  开始时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         trunk_start = time.time()
         hidden_2 = trunk_client.compute(hidden_1)
-        trunk_time = time.time() - trunk_start
+        trunk_end = time.time()
+        trunk_time = trunk_end - trunk_start
+        print(f"  结束时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         print(f"  输出: {hidden_2.shape}")
-        print(f"  耗时: {trunk_time:.3f} 秒")
+        print(f"  耗时: {trunk_time:.3f} 秒 ({trunk_time*1000:.1f} ms)")
         print(f"  数据: {hidden_2.numel() * 4 / 1024:.2f} KB")
+        print(f"  [传输统计]")
+        print(f"    总往返时间: {trunk_time*1000:.1f}ms")
+        print(f"    (包含: 编码 + 网络传输 + 服务器计算 + 网络传输 + 解码)")
+        # 尝试获取客户端统计信息
+        try:
+            stats = trunk_client._client.get_statistics()
+            if stats:
+                print(f"    平均网络时间: {stats.get('avg_network_time_ms', 0):.1f}ms")
+                print(f"    平均服务器计算: {stats.get('avg_compute_time_ms', 0):.1f}ms")
+        except:
+            pass
 
         # 4.3 Top 模型 (本地)
         print("\n[4.3] Top 模型处理 (本地)...")
         print(f"  输入: {hidden_2.shape}")
+        print(f"  开始时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         top_start = time.time()
         with torch.no_grad():
             output = top(hidden_2)
             logits = output.logits
-        top_time = time.time() - top_start
+        top_end = time.time()
+        top_time = top_end - top_start
+        print(f"  结束时间: {time.strftime('%H:%M:%S.%f')[:-3]}")
         print(f"  输出: {logits.shape}")
-        print(f"  耗时: {top_time:.3f} 秒")
+        print(f"  耗时: {top_time:.3f} 秒 ({top_time*1000:.1f} ms)")
         print(f"  数据: {logits.numel() * 4 / 1024:.2f} KB")
+        print(f"  [本地处理] Top 模型执行时间: {top_time*1000:.1f}ms")
 
     except Exception as e:
         print(f"\n❌ 推理失败: {e}")
@@ -189,12 +215,20 @@ def main():
         print(f"  {i}. '{token}' (概率: {prob:.4f})")
 
     # 步骤 6: 性能统计
-    print_step(6, "性能统计")
+    print_step(6, "详细性能统计")
 
-    print(f"总耗时: {total_time:.3f} 秒")
-    print(f"  Bottom (本地): {bottom_time:.3f} 秒 ({bottom_time/total_time*100:.1f}%)")
-    print(f"  Trunk (远程):  {trunk_time:.3f} 秒 ({trunk_time/total_time*100:.1f}%)")
-    print(f"  Top (本地):    {top_time:.3f} 秒 ({top_time/total_time*100:.1f}%)")
+    print(f"总耗时: {total_time:.3f} 秒 ({total_time*1000:.1f} ms)")
+    print(f"\n[时间分解]")
+    print(f"  Bottom (本地): {bottom_time:.3f} 秒 ({bottom_time*1000:.1f} ms) - {bottom_time/total_time*100:.1f}%")
+    print(f"  Trunk (远程):  {trunk_time:.3f} 秒 ({trunk_time*1000:.1f} ms) - {trunk_time/total_time*100:.1f}%")
+    print(f"    └─ 包含: 编码 + 网络传输(发送) + 服务器计算 + 网络传输(接收) + 解码")
+    print(f"    └─ 注: 网络传输时间 = 总时间 - 服务器计算时间 (需从服务器响应获取)")
+    print(f"  Top (本地):    {top_time:.3f} 秒 ({top_time*1000:.1f} ms) - {top_time/total_time*100:.1f}%")
+    
+    print(f"\n[本地处理总计]")
+    local_total = bottom_time + top_time
+    print(f"  本地处理时间: {local_total:.3f} 秒 ({local_total*1000:.1f} ms) - {local_total/total_time*100:.1f}%")
+    print(f"  远程处理时间: {trunk_time:.3f} 秒 ({trunk_time*1000:.1f} ms) - {trunk_time/total_time*100:.1f}%")
 
     # 步骤 7: 清理
     print_step(7, "清理资源")
