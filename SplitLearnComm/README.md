@@ -11,19 +11,11 @@ A high-performance gRPC-based communication library for distributed deep learnin
 - 📊 **Observable**: Performance metrics and statistics tracking
 - 🌐 **Flexible**: Supports single-machine, LAN, and WAN deployments
 
-## Installation
+## Installation / 依赖
 
-```bash
-pip install splitlearn-comm
-```
-
-Or install from source:
-
-```bash
-git clone https://github.com/yourusername/splitlearn-comm.git
-cd splitlearn-comm
-pip install -e .
-```
+- 已验证环境：Python 3.11.12、torch 2.9.1、grpcio 1.69.0（注意上限 `<1.70.0`）、protobuf 4.25.x。
+- 源码 + PYTHONPATH（当前目录结构）：`export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnComm/src:$PYTHONPATH`
+- 或开发模式安装：`pip install -e /Users/lhy/Desktop/Git/SL/SplitLearnComm`
 
 ## Quick Start
 
@@ -211,6 +203,24 @@ pytest tests/
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Minimal smoke test (imports only)
+
+```bash
+export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnComm/src:${PYTHONPATH:-}
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 - <<'PY'
+from splitlearn_comm import GRPCComputeClient, GRPCComputeServer
+from splitlearn_comm.core import ComputeFunction
+print("imports ok")
+PY
+```
+
+## 简易 API 概览
+
+- `GRPCComputeServer(compute_fn, host="0.0.0.0", port=50051, codec=None, retry_strategy=None)`: 启动 gRPC 计算服务，`compute_fn` 实现推理逻辑。
+- `GRPCComputeClient(target, retry_strategy=None, codec=None)`: 连接远端服务，`client.compute(tensor)` 进行远程推理。
+- `ComputeFunction`: 抽象基类，需实现 `compute(input_tensor)` 和 `get_info()`；可用 `ModelComputeFunction(model, device)` 封装 torch 模型。
+- 其他常用工具：`ExponentialBackoff`（重试策略）、`CompressedTensorCodec`（压缩传输）。
 
 ## Contributing
 

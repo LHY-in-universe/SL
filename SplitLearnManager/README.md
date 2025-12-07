@@ -34,19 +34,11 @@ A comprehensive model deployment and lifecycle management library for distribute
 - Server configuration
 - Validation and error checking
 
-## Installation
+## Installation / 依赖
 
-```bash
-pip install splitlearn-manager
-```
-
-Or install from source:
-
-```bash
-git clone https://github.com/yourusername/splitlearn-manager.git
-cd splitlearn-manager
-pip install -e .
-```
+- 已验证环境：Python 3.11.12、torch 2.9.1、splitlearn-comm 1.0.0（grpcio 1.69.0）。
+- 源码 + PYTHONPATH：`export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnManager/src:$PYTHONPATH`
+- 或开发模式安装：`pip install -e /Users/lhy/Desktop/Git/SL/SplitLearnManager`
 
 ## Quick Start
 
@@ -363,6 +355,23 @@ python examples/basic_server.py
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Minimal smoke test (imports)
+
+```bash
+export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnManager/src:/Users/lhy/Desktop/Git/SL/SplitLearnComm/src:${PYTHONPATH:-}
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 - <<'PY'
+from splitlearn_manager import ManagedServer, ModelConfig
+print("imports ok")
+PY
+```
+
+## 简易 API 概览
+
+- `ManagedServer(config: Optional[ServerConfig]=None)`: 管理模型的 gRPC 服务端；`load_model(ModelConfig)` / `unload_model(model_id)` / `get_status()` / `start()` / `stop()`。
+- `ModelConfig`: 描述模型元数据（路径、类型、设备、batch 等），支持 `from_yaml()`。
+- `ServerConfig`: 服务器配置（端口、并发、监控开关等），支持 `from_yaml()`。
+- `ResourceManager`: 资源查询/选择，`get_current_usage()`、`find_best_device()`、`check_available_resources()`。
 
 ## Contributing
 

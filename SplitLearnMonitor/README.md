@@ -36,32 +36,12 @@ SplitLearnMonitor provides comprehensive monitoring capabilities for Split Learn
   - Minimal code changes required
   - Compatible with existing Split Learning code
 
-## Installation
+## Installation / 依赖
 
-### Basic Installation (CPU + Memory monitoring)
-
-```bash
-pip install splitlearn-monitor
-```
-
-### With GPU Monitoring
-
-```bash
-pip install splitlearn-monitor[gpu]
-```
-
-### Full Installation (all features)
-
-```bash
-pip install splitlearn-monitor[full]
-```
-
-### From Source
-
-```bash
-cd SplitLearnMonitor
-pip install -e .
-```
+- 已验证环境：Python 3.11.12、torch 2.9.1、psutil 5.9.5、matplotlib 3.7.1。
+- 源码 + PYTHONPATH：`export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnMonitor/src:$PYTHONPATH`
+- 或开发模式安装：`pip install -e /Users/lhy/Desktop/Git/SL/SplitLearnMonitor`
+- GPU 监控需 `pynvml`，可选交互可安装 `[full]`。
 
 ## Quick Start
 
@@ -291,6 +271,34 @@ config = MonitorConfig(
 - pynvml >= 11.5.0 (GPU monitoring, NVIDIA only)
 - plotly >= 5.0.0 (interactive visualizations)
 - pandas >= 1.5.0 (data analysis)
+
+## Minimal smoke test (CPU only)
+
+```bash
+export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnMonitor/src:${PYTHONPATH:-}
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 - <<'PY'
+from splitlearn_monitor.core.performance_tracker import PerformanceTracker
+from splitlearn_monitor.core.system_monitor import SystemMonitor
+import time
+
+pt = PerformanceTracker()
+pt.record_phase("demo", 12.3)
+print("perf keys:", list(pt.get_all_statistics().keys()))
+
+sm = SystemMonitor(sampling_interval=0.1, enable_gpu=False)
+sm.start()
+time.sleep(0.3)
+sm.stop()
+print("snapshot:", sm.get_current_snapshot())
+PY
+```
+
+## 简易 API 概览
+
+- `SystemMonitor(sampling_interval=0.1, enable_gpu=True, max_samples=10000)`: 后台线程采样 CPU/内存/GPU；`start()` / `stop()` / `get_current_snapshot()` / `get_statistics()`。
+- `PerformanceTracker()`: 记录阶段耗时；`track_phase(name)` 上下文或 `record_phase(name, duration_ms)`；`get_all_statistics()`。
+- `HTMLReporter(system_monitor, performance_tracker)`: 生成 HTML 报告 `generate_report(path)`；还有 `MarkdownReporter/DataExporter` 等。
+- 集成包装：`ClientMonitor`、`ServerMonitor`、`quick_monitor()`（便捷上下文）。
 
 ## License
 

@@ -10,18 +10,22 @@ A Python library for physically splitting large language models into distributed
 - 🚀 **Easy to Use**: Simple API with sensible defaults
 - 🔌 **Extensible**: Abstract base classes for adding new architectures
 
-## Installation
+## Installation / 环境
 
+- 已验证环境：Python 3.11.12、torch 2.9.1、transformers 4.57.3、grpcio 1.69.0（如使用 Comm）。
+- 推荐方式：源码 + PYTHONPATH 或 pip 开发模式安装。
+
+Framework Python 示例：
 ```bash
-pip install splitlearn
+export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnCore/src:${PYTHONPATH:-}
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 -c "import splitlearn_core; print('import ok')"
 ```
 
-Or install from source:
-
+虚拟环境示例：
 ```bash
-git clone https://github.com/yourusername/splitlearn.git
-cd splitlearn
-pip install -e .
+python3 -m venv venv
+venv/bin/pip install torch==2.6.0 transformers==4.57.3
+venv/bin/pip install -e /Users/lhy/Desktop/Git/SL/SplitLearnCore
 ```
 
 ## Quick Start
@@ -204,6 +208,28 @@ flake8 src/
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Minimal smoke test (CPU, tiny 模型)
+
+```bash
+export PYTHONPATH=/Users/lhy/Desktop/Git/SL/SplitLearnCore/src:${PYTHONPATH:-}
+/Library/Frameworks/Python.framework/Versions/3.11/bin/python3 - <<'PY'
+import torch
+from splitlearn_core.quickstart import load_full_model
+
+model, tok = load_full_model('sshleifer/tiny-gpt2', device='cpu', dtype=torch.float32, low_cpu_mem_usage=True)
+inputs = tok("hello", return_tensors="pt")
+with torch.inference_mode():
+    out = model(**inputs)
+print("logits:", out.logits.shape)
+PY
+```
+
+## 简易 API 概览
+
+- `splitlearn_core.quickstart.load_full_model(model_name_or_path, device="cpu", dtype=None, low_cpu_mem_usage=True)`: 一次性加载完整 HF 因果语言模型，返回 `(model, tokenizer)`。
+- `splitlearn_core.ModelFactory.create_split_models(model_type, model_name_or_path, split_point_1, split_point_2, device="cpu")`: 创建 Bottom/Trunk/Top 拆分模型。
+- 底层模型类（示例）：`splitlearn_core.models.gpt2.GPT2BottomModel / TrunkModel / TopModel`，用于自定义或细粒度控制。
 
 ## Citation
 
