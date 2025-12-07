@@ -16,11 +16,122 @@ import logging
 
 import torch
 import torch.nn as nn
+from transformers import AutoTokenizer, AutoModelForCausalLM
 
-from .factory import ModelFactory
+from .factory import ModelFactory, _configure_pytorch_threads_for_loading
 from .core import BaseBottomModel, BaseTrunkModel, BaseTopModel
 
 logger = logging.getLogger(__name__)
+
+
+def _resolve_cache_dir(cache_dir: Optional[str]) -> Optional[str]:
+    """Resolve cache directory with local-first strategy."""
+    if cache_dir is not None:
+        return cache_dir
+
+    cache_dir = os.getenv("SPLITLEARN_CACHE_DIR")
+    if cache_dir:
+        return cache_dir
+
+    local_cache = Path("./models")
+    if local_cache.exists() and local_cache.is_dir():
+        return str(local_cache)
+
+    return None
+
+
+def load_full_model(
+    model_name_or_path: str = "gpt2",
+    cache_dir: Optional[str] = None,
+    device: Optional[str] = None,
+    torch_dtype: Optional[torch.dtype] = None,
+    dtype: Optional[torch.dtype] = None,
+    low_cpu_mem_usage: bool = True,
+    force_download: bool = False,
+):
+    """
+    Download and load a full Hugging Face causal LM model with safe defaults.
+
+    Args:
+        model_name_or_path: Hugging Face model name or local path (default: "gpt2")
+        cache_dir: Cache directory. Priority: argument > $SPLITLEARN_CACHE_DIR > ./models > HF default
+        device: Target device ("cpu", "cuda", "mps"). Auto-detect if None.
+        torch_dtype/dtype: Torch dtype for weights (e.g., torch.float16, torch.bfloat16, torch.float32)
+        low_cpu_mem_usage: Use HF low-memory loading to reduce peak usage
+        force_download: Force re-download even if cache exists
+
+    Returns:
+        (model, tokenizer)
+    """
+    # Resolve cache dir
+    cache_dir = _resolve_cache_dir(cache_dir)
+
+    # Auto-detect device
+    if device is None:
+        if torch.cuda.is_available():
+            device = "cuda"
+        elif torch.backends.mps.is_available():
+            device = "mps"
+        else:
+            device = "cpu"
+
+    # Determine dtype (support alias "dtype")
+    dtype_to_use = dtype or torch_dtype
+
+    # If a local cached copy exists, prefer it
+    if cache_dir and not force_download:
+        candidate = Path(cache_dir) / model_name_or_path
+        if candidate.exists():
+            model_name_or_path = str(candidate)
+            logger.info(f"Using cached model at: {model_name_or_path}")
+
+    logger.info("Loading full Hugging Face causal LM:")
+    logger.info(f"  model: {model_name_or_path}")
+    logger.info(f"  device: {device}")
+    logger.info(f"  dtype: {dtype_to_use or 'default'}")
+    logger.info(f"  cache_dir: {cache_dir or 'hf-default'}")
+    logger.info(f"  low_cpu_mem_usage: {low_cpu_mem_usage}")
+
+    # Configure torch threads before loading to avoid contention
+    _configure_pytorch_threads_for_loading()
+
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(
+            model_name_or_path,
+            cache_dir=cache_dir,
+            force_download=force_download,
+        )
+
+        # 使用 dtype 参数（新版本推荐），兼容 torch_dtype
+        model_kwargs = {
+            "cache_dir": cache_dir,
+            "low_cpu_mem_usage": low_cpu_mem_usage,
+            "force_download": force_download,
+        }
+        if dtype_to_use is not None:
+            model_kwargs["dtype"] = dtype_to_use
+        
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name_or_path,
+            **model_kwargs
+        )
+
+        # Ensure pad_token exists for safe generation
+        if tokenizer.pad_token is None:
+            tokenizer.pad_token = tokenizer.eos_token
+        if model.config.pad_token_id is None and tokenizer.pad_token_id is not None:
+            model.config.pad_token_id = tokenizer.pad_token_id
+
+        model.eval()
+        model.to(device)
+
+        logger.info("✓ Full model loaded successfully")
+        return model, tokenizer
+    except Exception as e:
+        logger.error(f"Failed to load full model '{model_name_or_path}': {e}")
+        raise RuntimeError(
+            f"Failed to load full model '{model_name_or_path}': {e}"
+        ) from e
 
 
 def load_split_model(
@@ -243,6 +354,7 @@ def load_top_model(
 
 
 __all__ = [
+    "load_full_model",
     "load_split_model",
     "load_bottom_model",
     "load_top_model",

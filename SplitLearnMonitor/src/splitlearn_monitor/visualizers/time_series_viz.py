@@ -5,8 +5,80 @@ from typing import List, Optional
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
+import platform
 
 from ..config import ResourceSnapshot
+
+# 配置中文字体支持
+def _configure_chinese_font():
+    """配置 matplotlib 支持中文字体"""
+    try:
+        import matplotlib.font_manager as fm
+        
+        system = platform.system()
+        
+        # 查找系统中可用的中文字体
+        available_fonts = [f.name for f in fm.fontManager.ttflist]
+        
+        if system == "Darwin":  # macOS
+            # macOS 中文字体优先级列表
+            font_candidates = [
+                'PingFang SC',  # macOS 默认简体中文字体
+                'PingFang TC',  # macOS 繁体中文字体
+                'STHeiti',      # 华文黑体
+                'Heiti SC',     # 黑体-简
+                'Heiti TC',     # 黑体-繁
+                'Arial Unicode MS',  # 支持中文的 Arial
+                'Hiragino Sans GB',  # 冬青黑体
+            ]
+        elif system == "Windows":
+            # Windows 中文字体优先级列表
+            font_candidates = [
+                'Microsoft YaHei',  # 微软雅黑
+                'SimHei',           # 黑体
+                'SimSun',           # 宋体
+                'KaiTi',            # 楷体
+            ]
+        else:  # Linux
+            # Linux 中文字体优先级列表
+            font_candidates = [
+                'WenQuanYi Micro Hei',
+                'Noto Sans CJK SC',
+                'Droid Sans Fallback',
+                'AR PL UMing CN',
+            ]
+        
+        # 找到第一个可用的字体
+        found_font = None
+        for font_name in font_candidates:
+            if font_name in available_fonts:
+                found_font = font_name
+                break
+        
+        if found_font:
+            # 设置字体，将找到的中文字体放在最前面
+            plt.rcParams['font.sans-serif'] = [found_font] + [f for f in font_candidates if f != found_font] + ['sans-serif']
+        else:
+            # 如果没有找到，使用默认列表
+            plt.rcParams['font.sans-serif'] = font_candidates + ['sans-serif']
+        
+        # 解决负号显示问题
+        plt.rcParams['axes.unicode_minus'] = False
+        
+        # 设置字体属性，避免警告
+        plt.rcParams['font.family'] = 'sans-serif'
+        
+    except Exception as e:
+        # 如果配置失败，静默处理（不会影响功能，只是中文可能显示为方块）
+        pass
+
+# 在模块加载时配置字体
+_configure_chinese_font()
+
+# 在每次创建图表时确保字体配置生效
+def _ensure_chinese_font():
+    """确保中文字体配置已生效"""
+    _configure_chinese_font()
 
 
 class TimeSeriesVisualizer:
@@ -89,6 +161,9 @@ class TimeSeriesVisualizer:
         n_plots = len([m for m in metrics if m in ["cpu", "memory", "gpu"] and
                       (m != "gpu" or gpu_available)])
 
+        # 确保中文字体配置生效
+        _ensure_chinese_font()
+        
         # Create figure and subplots
         fig, axes = plt.subplots(n_plots, 1, figsize=self.figsize, dpi=self.dpi)
         if n_plots == 1:
@@ -189,6 +264,9 @@ class TimeSeriesVisualizer:
 
         timestamps, values = zip(*valid_data)
 
+        # 确保中文字体配置生效
+        _ensure_chinese_font()
+        
         # Create figure
         fig, ax = plt.subplots(figsize=self.figsize, dpi=self.dpi)
 

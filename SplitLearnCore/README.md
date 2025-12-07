@@ -55,6 +55,24 @@ output = top(hidden_2)
 predicted_token = output.logits.argmax(dim=-1)
 ```
 
+### Load a full Hugging Face causal LM (one-liner)
+
+```python
+from splitlearn_core.quickstart import load_full_model
+import torch
+
+model, tokenizer = load_full_model(
+    model_name_or_path="gpt2",  # any HF causal LM
+    device="cpu",               # auto-detect if None
+    low_cpu_mem_usage=True      # reduce peak memory
+)
+
+inputs = tokenizer("Hello world", return_tensors="pt").to(model.device)
+with torch.inference_mode():
+    out = model(**inputs)
+print(out.logits.shape)
+```
+
 ## Supported Models
 
 | Model | Model Type | Variants |

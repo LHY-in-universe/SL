@@ -1,0 +1,40 @@
+{
+  "resource_statistics": {
+    "duration_seconds": 0.0,
+    "sample_count": 1,
+    "cpu_mean": 108.5,
+    "cpu_max": 108.5,
+    "cpu_p95": 108.5,
+    "memory_mean_mb": 331.328125,
+    "memory_max_mb": 331.328125,
+    "memory_p95_mb": 331.328125,
+    "gpu_available": false,
+    "gpu_mean": null,
+    "gpu_max": null,
+    "gpu_p95": null,
+    "gpu_memory_mean_mb": null,
+    "gpu_memory_max_mb": null,
+    "gpu_memory_p95_mb": null
+  },
+  "phase_statistics": {
+    "inference": {
+      "phase_name": "inference",
+      "count": 1,
+      "total_time_ms": 27.704954147338867,
+      "mean_ms": 27.704954147338867,
+      "median_ms": 27.704954147338867,
+      "min_ms": 27.704954147338867,
+      "max_ms": 27.704954147338867,
+      "p50_ms": 27.704954147338867,
+      "p95_ms": 27.704954147338867,
+      "p99_ms": 27.704954147338867,
+      "std_ms": 0.0,
+      "percentage_of_total": 100.0
+    }
+  },
+  "total_time_ms": 27.704954147338867,
+  "metadata": {
+    "export_time": "2025-12-07T11:43:29.512473",
+    "format_version": "1.0.0"
+  }
+}

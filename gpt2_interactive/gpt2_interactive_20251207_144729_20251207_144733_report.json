@@ -1,0 +1,614 @@
+{
+  "session_name": "gpt2_interactive_20251207_144729",
+  "statistics": {
+    "session_name": "gpt2_interactive_20251207_144729",
+    "total_interactions": 1,
+    "total_tokens": 50,
+    "token_generation": {
+      "mean": 2.043638229370117,
+      "median": 1.5134811401367188,
+      "min": 1.15203857421875,
+      "max": 21.19898796081543,
+      "std": 2.773735257406358,
+      "p50": 1.5134811401367188,
+      "p95": 2.3238658905029297,
+      "p99": 12.805221080779996
+    },
+    "total_time": {
+      "mean": 111.21201515197754,
+      "median": 111.21201515197754,
+      "min": 111.21201515197754,
+      "max": 111.21201515197754,
+      "std": 0.0,
+      "p50": 111.21201515197754,
+      "p95": 111.21201515197754,
+      "p99": 111.21201515197754
+    },
+    "encode_time": {
+      "mean": 6.533145904541016,
+      "median": 6.533145904541016,
+      "min": 6.533145904541016,
+      "max": 6.533145904541016,
+      "std": 0.0,
+      "p50": 6.533145904541016,
+      "p95": 6.533145904541016,
+      "p99": 6.533145904541016
+    },
+    "decode_time": {
+      "mean": 0.23031234741210938,
+      "median": 0.23031234741210938,
+      "min": 0.23031234741210938,
+      "max": 0.23031234741210938,
+      "std": 0.0,
+      "p50": 0.23031234741210938,
+      "p95": 0.23031234741210938,
+      "p99": 0.23031234741210938
+    },
+    "avg_tokens_per_interaction": 50.0
+  },
+  "interactions": [
+    {
+      "interaction_id": 1,
+      "user_input": "de",
+      "start_time": 1765090050.741931,
+      "tokens": [
+        {
+          "step": 1,
+          "token_id": 6943,
+          "token_text": "Most",
+          "generation_time_ms": 21.19898796081543,
+          "timestamp": 1765090050.770379,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 2,
+          "token_id": 30609,
+          "token_text": " Redux",
+          "generation_time_ms": 4.068851470947266,
+          "timestamp": 1765090050.774511,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 3,
+          "token_id": 30815,
+          "token_text": "Outside",
+          "generation_time_ms": 1.4111995697021484,
+          "timestamp": 1765090050.775975,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 4,
+          "token_id": 12551,
+          "token_text": " Singapore",
+          "generation_time_ms": 1.4200210571289062,
+          "timestamp": 1765090050.7774432,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 5,
+          "token_id": 34044,
+          "token_text": " 236",
+          "generation_time_ms": 1.5189647674560547,
+          "timestamp": 1765090050.7790039,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 6,
+          "token_id": 27290,
+          "token_text": " Pocket",
+          "generation_time_ms": 1.2700557708740234,
+          "timestamp": 1765090050.780312,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 7,
+          "token_id": 40169,
+          "token_text": " boils",
+          "generation_time_ms": 1.2061595916748047,
+          "timestamp": 1765090050.781552,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 8,
+          "token_id": 12551,
+          "token_text": " Singapore",
+          "generation_time_ms": 1.2581348419189453,
+          "timestamp": 1765090050.782856,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 9,
+          "token_id": 46435,
+          "token_text": "653",
+          "generation_time_ms": 1.15203857421875,
+          "timestamp": 1765090050.784042,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 10,
+          "token_id": 26874,
+          "token_text": " Bend",
+          "generation_time_ms": 1.6701221466064453,
+          "timestamp": 1765090050.785745,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 11,
+          "token_id": 1572,
+          "token_text": "ived",
+          "generation_time_ms": 1.2888908386230469,
+          "timestamp": 1765090050.787068,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 12,
+          "token_id": 24612,
+          "token_text": " representations",
+          "generation_time_ms": 1.422882080078125,
+          "timestamp": 1765090050.7885299,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 13,
+          "token_id": 44802,
+          "token_text": "Gy",
+          "generation_time_ms": 2.302885055541992,
+          "timestamp": 1765090050.790878,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 14,
+          "token_id": 49596,
+          "token_text": "shows",
+          "generation_time_ms": 1.4181137084960938,
+          "timestamp": 1765090050.7923331,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 15,
+          "token_id": 12551,
+          "token_text": " Singapore",
+          "generation_time_ms": 1.2331008911132812,
+          "timestamp": 1765090050.7935932,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 16,
+          "token_id": 21516,
+          "token_text": " Television",
+          "generation_time_ms": 1.154184341430664,
+          "timestamp": 1765090050.794776,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 17,
+          "token_id": 24557,
+          "token_text": " brutality",
+          "generation_time_ms": 1.5130043029785156,
+          "timestamp": 1765090050.796319,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 18,
+          "token_id": 3737,
+          "token_text": " perhaps",
+          "generation_time_ms": 1.4369487762451172,
+          "timestamp": 1765090050.797784,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 19,
+          "token_id": 49161,
+          "token_text": "Sexual",
+          "generation_time_ms": 1.2922286987304688,
+          "timestamp": 1765090050.799104,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 20,
+          "token_id": 5786,
+          "token_text": " Medic",
+          "generation_time_ms": 1.664876937866211,
+          "timestamp": 1765090050.800798,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 21,
+          "token_id": 44317,
+          "token_text": " Boone",
+          "generation_time_ms": 1.4200210571289062,
+          "timestamp": 1765090050.8022459,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 22,
+          "token_id": 3737,
+          "token_text": " perhaps",
+          "generation_time_ms": 1.4820098876953125,
+          "timestamp": 1765090050.8037498,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 23,
+          "token_id": 21516,
+          "token_text": " Television",
+          "generation_time_ms": 1.4951229095458984,
+          "timestamp": 1765090050.805268,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 24,
+          "token_id": 26002,
+          "token_text": " praying",
+          "generation_time_ms": 1.7557144165039062,
+          "timestamp": 1765090050.807059,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 25,
+          "token_id": 18615,
+          "token_text": " incarcer",
+          "generation_time_ms": 1.7611980438232422,
+          "timestamp": 1765090050.808865,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 26,
+          "token_id": 3737,
+          "token_text": " perhaps",
+          "generation_time_ms": 2.341032028198242,
+          "timestamp": 1765090050.811254,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 27,
+          "token_id": 45292,
+          "token_text": "obl",
+          "generation_time_ms": 1.8739700317382812,
+          "timestamp": 1765090050.813189,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 28,
+          "token_id": 27714,
+          "token_text": " rubbing",
+          "generation_time_ms": 1.5261173248291016,
+          "timestamp": 1765090050.8147461,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 29,
+          "token_id": 30815,
+          "token_text": "Outside",
+          "generation_time_ms": 1.4109611511230469,
+          "timestamp": 1765090050.816179,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 30,
+          "token_id": 21516,
+          "token_text": " Television",
+          "generation_time_ms": 1.4090538024902344,
+          "timestamp": 1765090050.817609,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 31,
+          "token_id": 5087,
+          "token_text": " factors",
+          "generation_time_ms": 1.6620159149169922,
+          "timestamp": 1765090050.819293,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 32,
+          "token_id": 26399,
+          "token_text": " rented",
+          "generation_time_ms": 1.5060901641845703,
+          "timestamp": 1765090050.820819,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 33,
+          "token_id": 6943,
+          "token_text": "Most",
+          "generation_time_ms": 1.489877700805664,
+          "timestamp": 1765090050.822332,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 34,
+          "token_id": 5087,
+          "token_text": " factors",
+          "generation_time_ms": 1.5208721160888672,
+          "timestamp": 1765090050.8238752,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 35,
+          "token_id": 40169,
+          "token_text": " boils",
+          "generation_time_ms": 1.5139579772949219,
+          "timestamp": 1765090050.825408,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 36,
+          "token_id": 37416,
+          "token_text": " Wheels",
+          "generation_time_ms": 2.0530223846435547,
+          "timestamp": 1765090050.8274822,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 37,
+          "token_id": 21516,
+          "token_text": " Television",
+          "generation_time_ms": 1.4801025390625,
+          "timestamp": 1765090050.828985,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 38,
+          "token_id": 22363,
+          "token_text": " clearer",
+          "generation_time_ms": 1.6088485717773438,
+          "timestamp": 1765090050.830613,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 39,
+          "token_id": 46435,
+          "token_text": "653",
+          "generation_time_ms": 1.3949871063232422,
+          "timestamp": 1765090050.832027,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 40,
+          "token_id": 37416,
+          "token_text": " Wheels",
+          "generation_time_ms": 1.4770030975341797,
+          "timestamp": 1765090050.833521,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 41,
+          "token_id": 11976,
+          "token_text": "�",
+          "generation_time_ms": 1.3821125030517578,
+          "timestamp": 1765090050.834923,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 42,
+          "token_id": 24557,
+          "token_text": " brutality",
+          "generation_time_ms": 1.9578933715820312,
+          "timestamp": 1765090050.836898,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 43,
+          "token_id": 27290,
+          "token_text": " Pocket",
+          "generation_time_ms": 1.744985580444336,
+          "timestamp": 1765090050.8386612,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 44,
+          "token_id": 37808,
+          "token_text": " bravery",
+          "generation_time_ms": 2.1440982818603516,
+          "timestamp": 1765090050.840828,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 45,
+          "token_id": 24612,
+          "token_text": " representations",
+          "generation_time_ms": 1.9981861114501953,
+          "timestamp": 1765090050.842846,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 46,
+          "token_id": 14209,
+          "token_text": "acious",
+          "generation_time_ms": 2.105236053466797,
+          "timestamp": 1765090050.844974,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 47,
+          "token_id": 28986,
+          "token_text": " grandchildren",
+          "generation_time_ms": 1.8188953399658203,
+          "timestamp": 1765090050.8468108,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 48,
+          "token_id": 3737,
+          "token_text": " perhaps",
+          "generation_time_ms": 2.034902572631836,
+          "timestamp": 1765090050.848864,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 49,
+          "token_id": 21527,
+          "token_text": " Dreams",
+          "generation_time_ms": 1.979827880859375,
+          "timestamp": 1765090050.8508632,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        },
+        {
+          "step": 50,
+          "token_id": 44802,
+          "token_text": "Gy",
+          "generation_time_ms": 1.9321441650390625,
+          "timestamp": 1765090050.852811,
+          "metadata": {
+            "top_k": 50,
+            "temperature": 0.8
+          }
+        }
+      ],
+      "total_tokens": 50,
+      "total_time_ms": 111.21201515197754,
+      "encode_time_ms": 6.533145904541016,
+      "decode_time_ms": 0.23031234741210938,
+      "end_time": 1765090050.853143,
+      "response": "Most ReduxOutside Singapore 236 Pocket boils Singapore653 Bendived representationsGyshows Singapore Television brutality perhapsSexual Medic Boone perhaps Television praying incarcer perhapsobl rubbingOutside Television factors rentedMost factors boils Wheels Television clearer653 Wheels� brutality Pocket bravery representationsacious grandchildren perhaps DreamsGy"
+    }
+  ]
+}

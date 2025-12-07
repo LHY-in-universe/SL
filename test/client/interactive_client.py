@@ -429,6 +429,16 @@ def main():
                 print()
 
     finally:
+        # 在关闭连接前，先尝试获取服务器监控数据（如果可用）
+        server_monitoring_data = None
+        try:
+            server_monitoring_data = trunk_client._client.get_server_monitoring_data()
+            if server_monitoring_data:
+                print(f"\n[监控] 获取到 {len(server_monitoring_data)} 个服务器监控快照")
+        except Exception as e:
+            # 服务器监控数据不可用是正常的
+            pass
+        
         trunk_client.close()
         
         # 显示最终统计信息
@@ -582,10 +592,27 @@ def main():
                     html_report_path = os.path.join(reports_dir, f"{monitor.session_name}_{timestamp}_report.html")
                     json_report_path = os.path.join(reports_dir, f"{monitor.session_name}_{timestamp}_report.json")
                     
-                    # 保存 HTML 报告
-                    report_path = monitor.save_report(output_path=html_report_path, format="html")
-                    print(f"\n[监控报告]")
-                    print(f"  HTML 报告已保存: {report_path}")
+                    # 使用之前在 finally 块开头获取的服务器监控数据
+                    # 如果有服务器监控数据，生成合并报告
+                    if server_monitoring_data and len(server_monitoring_data) > 0:
+                        try:
+                            merged_report_path = os.path.join(reports_dir, f"{monitor.session_name}_{timestamp}_merged_report.html")
+                            merged_path = monitor.save_merged_report(
+                                server_monitoring_snapshots=server_monitoring_data,
+                                output_path=merged_report_path
+                            )
+                            print(f"\n[监控报告]")
+                            print(f"  ✓ 合并报告已保存（包含客户端+服务器统计）: {merged_path}")
+                        except Exception as merged_e:
+                            print(f"  ⚠️  合并报告生成失败: {merged_e}，将生成客户端报告")
+                            # 如果合并报告失败，回退到普通报告
+                            server_monitoring_data = None
+                    
+                    # 如果没有服务器监控数据或合并失败，生成普通客户端报告
+                    if not server_monitoring_data or len(server_monitoring_data) == 0:
+                        report_path = monitor.save_report(output_path=html_report_path, format="html")
+                        print(f"\n[监控报告]")
+                        print(f"  HTML 报告已保存（仅客户端统计）: {report_path}")
                     
                     # 同时保存 JSON 格式
                     try:

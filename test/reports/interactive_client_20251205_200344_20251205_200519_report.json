@@ -1,0 +1,68 @@
+{
+  "resource_statistics": {
+    "duration_seconds": 95.22608518600464,
+    "sample_count": 931,
+    "cpu_mean": 97.75778732545652,
+    "cpu_max": 310.0,
+    "cpu_p95": 296.25,
+    "memory_mean_mb": 292.57614460257787,
+    "memory_max_mb": 435.578125,
+    "memory_p95_mb": 392.1484375,
+    "gpu_available": false,
+    "gpu_mean": null,
+    "gpu_max": null,
+    "gpu_p95": null,
+    "gpu_memory_mean_mb": null,
+    "gpu_memory_max_mb": null,
+    "gpu_memory_p95_mb": null
+  },
+  "phase_statistics": {
+    "bottom_model": {
+      "phase_name": "bottom_model",
+      "count": 360,
+      "total_time_ms": 1972.1970558166504,
+      "mean_ms": 5.478325155046251,
+      "median_ms": 4.876375198364258,
+      "min_ms": 3.1430721282958984,
+      "max_ms": 48.74992370605469,
+      "p50_ms": 4.876375198364258,
+      "p95_ms": 7.953715324401856,
+      "p99_ms": 24.22862052917482,
+      "std_ms": 3.721038477542048,
+      "percentage_of_total": 6.772413548956702
+    },
+    "trunk_remote": {
+      "phase_name": "trunk_remote",
+      "count": 360,
+      "total_time_ms": 21586.10725402832,
+      "mean_ms": 59.96140903896756,
+      "median_ms": 59.1740608215332,
+      "min_ms": 23.61011505126953,
+      "max_ms": 238.0659580230713,
+      "p50_ms": 59.1740608215332,
+      "p95_ms": 78.99565696716309,
+      "p99_ms": 87.45876073837287,
+      "std_ms": 13.885262222958401,
+      "percentage_of_total": 74.12547585204629
+    },
+    "top_model": {
+      "phase_name": "top_model",
+      "count": 360,
+      "total_time_ms": 5562.732696533203,
+      "mean_ms": 15.452035268147787,
+      "median_ms": 13.953447341918945,
+      "min_ms": 10.637998580932617,
+      "max_ms": 107.59615898132324,
+      "p50_ms": 13.953447341918945,
+      "p95_ms": 18.119072914123535,
+      "p99_ms": 59.826517105102546,
+      "std_ms": 8.835715990873762,
+      "percentage_of_total": 19.102110598996997
+    }
+  },
+  "total_time_ms": 29121.037006378174,
+  "metadata": {
+    "export_time": "2025-12-05T20:05:20.786666",
+    "format_version": "1.0.0"
+  }
+}
