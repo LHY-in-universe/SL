@@ -108,3 +108,4 @@ plt.rcParams['font.sans-serif'] = ['PingFang SC', 'Arial Unicode MS', 'sans-seri
 3. ✅ 跨平台字体支持（macOS/Windows/Linux）
 
 如果仍有警告，可以安全忽略，或使用警告过滤器抑制。
+

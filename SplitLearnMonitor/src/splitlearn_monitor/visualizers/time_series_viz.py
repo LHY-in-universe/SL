@@ -78,7 +78,7 @@ _configure_chinese_font()
 # 在每次创建图表时确保字体配置生效
 def _ensure_chinese_font():
     """确保中文字体配置已生效"""
-    _configure_chinese_font()
+_configure_chinese_font()
 
 
 class TimeSeriesVisualizer:
@@ -163,7 +163,7 @@ class TimeSeriesVisualizer:
 
         # 确保中文字体配置生效
         _ensure_chinese_font()
-        
+
         # Create figure and subplots
         fig, axes = plt.subplots(n_plots, 1, figsize=self.figsize, dpi=self.dpi)
         if n_plots == 1:
@@ -266,7 +266,7 @@ class TimeSeriesVisualizer:
 
         # 确保中文字体配置生效
         _ensure_chinese_font()
-        
+
         # Create figure
         fig, ax = plt.subplots(figsize=self.figsize, dpi=self.dpi)
 

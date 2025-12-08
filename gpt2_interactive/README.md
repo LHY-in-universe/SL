@@ -65,3 +65,4 @@ python3 interactive_gpt2.py
 - 生成回复的质量取决于输入和模型参数
 - 如果遇到 Bus error，脚本会自动回退到更安全的生成方式
 - 可以在 `interactive_gpt2_splitlearn.py` 中修改 `model_name` 变量来使用不同的模型（如 "sshleifer/tiny-gpt2" 用于快速测试）
+

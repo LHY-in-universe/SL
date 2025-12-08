@@ -1,0 +1,68 @@
+{
+  "resource_statistics": {
+    "duration_seconds": 208.81555199623108,
+    "sample_count": 2014,
+    "cpu_mean": 1.225571002979146,
+    "cpu_max": 98.5,
+    "cpu_p95": 0.5,
+    "memory_mean_mb": 65.84558869165839,
+    "memory_max_mb": 599.96875,
+    "memory_p95_mb": 355.609375,
+    "gpu_available": false,
+    "gpu_mean": null,
+    "gpu_max": null,
+    "gpu_p95": null,
+    "gpu_memory_mean_mb": null,
+    "gpu_memory_max_mb": null,
+    "gpu_memory_p95_mb": null
+  },
+  "phase_statistics": {
+    "bottom_model": {
+      "phase_name": "bottom_model",
+      "count": 60,
+      "total_time_ms": 465.726375579834,
+      "mean_ms": 7.762106259663899,
+      "median_ms": 5.251049995422363,
+      "min_ms": 3.425121307373047,
+      "max_ms": 72.5860595703125,
+      "p50_ms": 5.251049995422363,
+      "p95_ms": 8.986318111419674,
+      "p99_ms": 71.43005847930908,
+      "std_ms": 11.927945016117613,
+      "percentage_of_total": 9.585271465038652
+    },
+    "trunk_remote": {
+      "phase_name": "trunk_remote",
+      "count": 60,
+      "total_time_ms": 3236.3481521606445,
+      "mean_ms": 53.93913586934408,
+      "median_ms": 54.39591407775879,
+      "min_ms": 34.333229064941406,
+      "max_ms": 85.11018753051758,
+      "p50_ms": 54.39591407775879,
+      "p95_ms": 70.54002285003662,
+      "p99_ms": 79.1546297073364,
+      "std_ms": 12.102195114361033,
+      "percentage_of_total": 66.60837182608392
+    },
+    "top_model": {
+      "phase_name": "top_model",
+      "count": 60,
+      "total_time_ms": 1156.6963195800781,
+      "mean_ms": 19.2782719930013,
+      "median_ms": 16.975760459899902,
+      "min_ms": 12.097835540771484,
+      "max_ms": 87.44692802429199,
+      "p50_ms": 16.975760459899902,
+      "p95_ms": 23.670339584350586,
+      "p99_ms": 75.77269554138176,
+      "std_ms": 11.402467878934512,
+      "percentage_of_total": 23.80635670887743
+    }
+  },
+  "total_time_ms": 4858.770847320557,
+  "metadata": {
+    "export_time": "2025-12-07T16:57:48.404305",
+    "format_version": "1.0.0"
+  }
+}

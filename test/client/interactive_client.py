@@ -342,7 +342,7 @@ def main():
                 generated_ids, input_length, timing_info = generate_text(
                     bottom, top, tokenizer, trunk_client,
                     user_input,
-                    max_length=30,  # 限制生成长度
+                    max_length=200,  # 限制生成长度
                     temperature=0.8,
                     show_timing=False,  # 不显示每步详情，只显示汇总
                     monitor=monitor  # 传递 monitor 用于内部阶段跟踪
@@ -610,8 +610,8 @@ def main():
                     
                     # 如果没有服务器监控数据或合并失败，生成普通客户端报告
                     if not server_monitoring_data or len(server_monitoring_data) == 0:
-                        report_path = monitor.save_report(output_path=html_report_path, format="html")
-                        print(f"\n[监控报告]")
+                    report_path = monitor.save_report(output_path=html_report_path, format="html")
+                    print(f"\n[监控报告]")
                         print(f"  HTML 报告已保存（仅客户端统计）: {report_path}")
                     
                     # 同时保存 JSON 格式

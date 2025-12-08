@@ -73,3 +73,4 @@ pip install torch==2.0.1 transformers==4.30.0
    - 升级 Python 到 3.11.5+ 或 3.12
    - 或使用更稳定的 PyTorch 版本
    - 或考虑使用 GPU（如果可用）
+

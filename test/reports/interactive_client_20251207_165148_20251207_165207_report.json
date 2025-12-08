@@ -1,0 +1,54 @@
+{
+  "resource_statistics": {
+    "duration_seconds": 19.304816246032715,
+    "sample_count": 187,
+    "cpu_mean": 1.1582887700534759,
+    "cpu_max": 106.3,
+    "cpu_p95": 0.5,
+    "memory_mean_mb": 244.63126671122996,
+    "memory_max_mb": 329.0625,
+    "memory_p95_mb": 311.09375,
+    "gpu_available": false,
+    "gpu_mean": null,
+    "gpu_max": null,
+    "gpu_p95": null,
+    "gpu_memory_mean_mb": null,
+    "gpu_memory_max_mb": null,
+    "gpu_memory_p95_mb": null
+  },
+  "phase_statistics": {
+    "bottom_model": {
+      "phase_name": "bottom_model",
+      "count": 1,
+      "total_time_ms": 67.30103492736816,
+      "mean_ms": 67.30103492736816,
+      "median_ms": 67.30103492736816,
+      "min_ms": 67.30103492736816,
+      "max_ms": 67.30103492736816,
+      "p50_ms": 67.30103492736816,
+      "p95_ms": 67.30103492736816,
+      "p99_ms": 67.30103492736816,
+      "std_ms": 0.0,
+      "percentage_of_total": 0.4320249661427574
+    },
+    "trunk_remote": {
+      "phase_name": "trunk_remote",
+      "count": 1,
+      "total_time_ms": 15510.74194908142,
+      "mean_ms": 15510.74194908142,
+      "median_ms": 15510.74194908142,
+      "min_ms": 15510.74194908142,
+      "max_ms": 15510.74194908142,
+      "p50_ms": 15510.74194908142,
+      "p95_ms": 15510.74194908142,
+      "p99_ms": 15510.74194908142,
+      "std_ms": 0.0,
+      "percentage_of_total": 99.56797503385725
+    }
+  },
+  "total_time_ms": 15578.042984008789,
+  "metadata": {
+    "export_time": "2025-12-07T16:52:08.581576",
+    "format_version": "1.0.0"
+  }
+}

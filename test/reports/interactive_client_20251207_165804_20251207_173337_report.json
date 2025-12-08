@@ -1,0 +1,68 @@
+{
+  "resource_statistics": {
+    "duration_seconds": 1045.1325397491455,
+    "sample_count": 10000,
+    "cpu_mean": 33.076240000000006,
+    "cpu_max": 147.2,
+    "cpu_p95": 106.70499999999993,
+    "memory_mean_mb": 536.129915625,
+    "memory_max_mb": 723.828125,
+    "memory_p95_mb": 631.2710937499999,
+    "gpu_available": false,
+    "gpu_mean": null,
+    "gpu_max": null,
+    "gpu_p95": null,
+    "gpu_memory_mean_mb": null,
+    "gpu_memory_max_mb": null,
+    "gpu_memory_p95_mb": null
+  },
+  "phase_statistics": {
+    "bottom_model": {
+      "phase_name": "bottom_model",
+      "count": 6289,
+      "total_time_ms": 107861.27257347107,
+      "mean_ms": 17.15078272753555,
+      "median_ms": 16.824960708618164,
+      "min_ms": 3.0579566955566406,
+      "max_ms": 149.68299865722656,
+      "p50_ms": 16.824960708618164,
+      "p95_ms": 29.74061965942382,
+      "p99_ms": 41.76963806152344,
+      "std_ms": 7.85594449028081,
+      "percentage_of_total": 5.924219178536908
+    },
+    "trunk_remote": {
+      "phase_name": "trunk_remote",
+      "count": 6289,
+      "total_time_ms": 1384978.9204597473,
+      "mean_ms": 220.2224392526232,
+      "median_ms": 206.30192756652832,
+      "min_ms": -187.8488063812256,
+      "max_ms": 1874.626636505127,
+      "p50_ms": 206.30192756652832,
+      "p95_ms": 448.5694408416743,
+      "p99_ms": 683.948640823364,
+      "std_ms": 132.44738594743657,
+      "percentage_of_total": 76.06918114996365
+    },
+    "top_model": {
+      "phase_name": "top_model",
+      "count": 6288,
+      "total_time_ms": 327843.16325187683,
+      "mean_ms": 52.13790764183792,
+      "median_ms": 52.702903747558594,
+      "min_ms": 7.768154144287109,
+      "max_ms": 458.39810371398926,
+      "p50_ms": 52.702903747558594,
+      "p95_ms": 83.36079120635986,
+      "p99_ms": 104.95562076568605,
+      "std_ms": 22.021876022758157,
+      "percentage_of_total": 18.006599671499433
+    }
+  },
+  "total_time_ms": 1820683.3562850952,
+  "metadata": {
+    "export_time": "2025-12-07T17:33:37.981363",
+    "format_version": "1.0.0"
+  }
+}

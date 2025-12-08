@@ -78,3 +78,4 @@ next_token_id = top_k_indices[sampled_idx].item()
 ## 修复状态
 
 ✅ **已修复**：代码已更新为使用 top-k 采样，输出应该更加多样化。
+

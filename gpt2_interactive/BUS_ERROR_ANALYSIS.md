@@ -62,3 +62,4 @@ model_name = "sshleifer/tiny-gpt2"  # 更小的模型，更稳定
 1. **短期**: 使用 `sshleifer/tiny-gpt2` 进行测试
 2. **中期**: 升级 Python 到 3.11.5+ 或 3.12
 3. **长期**: 考虑使用更稳定的 PyTorch 版本（2.0.x）
+
