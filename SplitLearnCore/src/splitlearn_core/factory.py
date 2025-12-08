@@ -10,6 +10,12 @@ import os
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
 
+# Optional import for qwen2_vl vision-language model
+try:
+    from transformers.models.qwen2_vl import Qwen2VLForConditionalGeneration
+except Exception:  # pragma: no cover - optional dependency
+    Qwen2VLForConditionalGeneration = None
+
 from .registry import ModelRegistry
 
 
@@ -65,6 +71,7 @@ class ModelFactory:
         verbose: bool = False,
         storage_path: Optional[str] = None,
         auto_save: bool = False,
+        parts: Optional[Union[list, tuple]] = None,
     ) -> Tuple:
         """
         Create all three split model parts for any supported architecture
@@ -83,6 +90,7 @@ class ModelFactory:
             verbose: Show detailed progress and memory usage
             storage_path: Base directory for saving split models (optional)
             auto_save: Whether to automatically save split models (default: False)
+            parts: Optional subset of {'bottom','trunk','top'} to build; missing parts return None.
 
         Returns:
             Tuple: (bottom_model, trunk_model, top_model)
@@ -126,6 +134,15 @@ class ModelFactory:
                 f"Registration status: {info}"
             )
 
+        # Normalize and validate requested parts
+        if parts is None:
+            parts_set = {'bottom', 'trunk', 'top'}
+        else:
+            parts_set = set(parts)
+            invalid = parts_set - {'bottom', 'trunk', 'top'}
+            if invalid:
+                raise ValueError(f"Invalid parts {invalid}. Allowed: bottom, trunk, top")
+
         print(f"Loading pretrained model '{model_name_or_path}'...")
 
         # 在 HuggingFace 加载模型之前配置 PyTorch 线程数
@@ -157,6 +174,7 @@ class ModelFactory:
                 verbose=verbose,
                 storage_path=storage_path,
                 auto_save=auto_save,
+                parts=parts_set,
             )
         else:
             if verbose and is_sharded:
@@ -170,6 +188,7 @@ class ModelFactory:
                 device=device,
                 storage_path=storage_path,
                 auto_save=auto_save,
+                parts=parts_set,
             )
 
     @staticmethod
@@ -182,6 +201,7 @@ class ModelFactory:
         device: str,
         storage_path: Optional[str],
         auto_save: bool,
+        parts: set,
     ) -> Tuple:
         """
         Traditional loading: Load full model then split.
@@ -190,7 +210,12 @@ class ModelFactory:
         and for non-sharded models.
         """
         # Load full model and config
-        full_model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
+        if model_type == "qwen2_vl":
+            if Qwen2VLForConditionalGeneration is None:
+                raise ImportError("transformers>=4.46 is required for qwen2_vl support")
+            full_model = Qwen2VLForConditionalGeneration.from_pretrained(model_name_or_path)
+        else:
+            full_model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
         full_state_dict = full_model.state_dict()
 
         # Get number of layers
@@ -204,10 +229,19 @@ class ModelFactory:
             )
 
         # Validate split points
-        if not (0 < split_point_1 < split_point_2 < num_layers):
-            raise ValueError(
+        if model_type == "qwen2_vl":
+            valid = (0 <= split_point_1 < split_point_2 < num_layers)
+            err_msg = (
+                f"Invalid split points for qwen2_vl: "
+                f"require 0 <= {split_point_1} < {split_point_2} < {num_layers}"
+            )
+        else:
+            valid = (0 < split_point_1 < split_point_2 < num_layers)
+            err_msg = (
                 f"Invalid split points: 0 < {split_point_1} < {split_point_2} < {num_layers}"
             )
+        if not valid:
+            raise ValueError(err_msg)
 
         print(f"\nSplitting {model_type} model:")
         print(f"  Total layers: {num_layers}")
@@ -220,47 +254,50 @@ class ModelFactory:
         TrunkCls = ModelRegistry.get_model_class(model_type, 'trunk')
         TopCls = ModelRegistry.get_model_class(model_type, 'top')
 
-        # Create split models
-        print("\nCreating Bottom model...")
-        bottom_model = BottomCls.from_pretrained_split(
-            full_state_dict, config, end_layer=split_point_1
-        )
+        bottom_model = trunk_model = top_model = None
 
-        print("Creating Trunk model...")
-        trunk_model = TrunkCls.from_pretrained_split(
-            full_state_dict, config,
-            start_layer=split_point_1,
-            end_layer=split_point_2
-        )
+        # Create split models based on requested parts
+        if 'bottom' in parts:
+            print("\nCreating Bottom model...")
+            bottom_model = BottomCls.from_pretrained_split(
+                full_state_dict, config, end_layer=split_point_1
+            ).to(device)
 
-        print("Creating Top model...")
-        top_model = TopCls.from_pretrained_split(
-            full_state_dict, config, start_layer=split_point_2
-        )
+        if 'trunk' in parts:
+            print("Creating Trunk model...")
+            trunk_model = TrunkCls.from_pretrained_split(
+                full_state_dict, config,
+                start_layer=split_point_1,
+                end_layer=split_point_2
+            ).to(device)
 
-        # Move to device
-        bottom_model = bottom_model.to(device)
-        trunk_model = trunk_model.to(device)
-        top_model = top_model.to(device)
+        if 'top' in parts:
+            print("Creating Top model...")
+            top_model = TopCls.from_pretrained_split(
+                full_state_dict, config, start_layer=split_point_2
+            ).to(device)
 
         # Print statistics
         print("\nModel Statistics:")
-        print(f"  Bottom: {bottom_model.num_parameters():,} parameters "
-              f"({bottom_model.memory_footprint_mb():.2f} MB)")
-        print(f"  Trunk:  {trunk_model.num_parameters():,} parameters "
-              f"({trunk_model.memory_footprint_mb():.2f} MB)")
-        print(f"  Top:    {top_model.num_parameters():,} parameters "
-              f"({top_model.memory_footprint_mb():.2f} MB)")
+        if bottom_model is not None:
+            print(f"  Bottom: {bottom_model.num_parameters():,} parameters "
+                  f"({bottom_model.memory_footprint_mb():.2f} MB)")
+        if trunk_model is not None:
+            print(f"  Trunk:  {trunk_model.num_parameters():,} parameters "
+                  f"({trunk_model.memory_footprint_mb():.2f} MB)")
+        if top_model is not None:
+            print(f"  Top:    {top_model.num_parameters():,} parameters "
+                  f"({top_model.memory_footprint_mb():.2f} MB)")
 
-        total_split = (bottom_model.num_parameters() +
-                      trunk_model.num_parameters() +
-                      top_model.num_parameters())
         total_full = sum(p.numel() for p in full_model.parameters())
+        total_split = sum(
+            m.num_parameters() for m in [bottom_model, trunk_model, top_model] if m is not None
+        )
 
         print(f"  Total split: {total_split:,} parameters")
         print(f"  Full model:  {total_full:,} parameters")
 
-        if abs(total_split - total_full) > 1000:
+        if (bottom_model and trunk_model and top_model) and abs(total_split - total_full) > 1000:
             print(f"  Warning: Parameter count mismatch! "
                   f"Difference: {abs(total_split - total_full):,}")
 
@@ -283,23 +320,26 @@ class ModelFactory:
             model_basename = model_name_or_path.split('/')[-1]
 
             # Save models
-            bottom_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "bottom", split_config
-            )
-            bottom_model.save_split_model(bottom_path)
-            print(f"  Bottom model saved: {bottom_path}")
+            if bottom_model is not None:
+                bottom_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "bottom", split_config
+                )
+                bottom_model.save_split_model(bottom_path)
+                print(f"  Bottom model saved: {bottom_path}")
 
-            trunk_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "trunk", split_config
-            )
-            trunk_model.save_split_model(trunk_path)
-            print(f"  Trunk model saved: {trunk_path}")
+            if trunk_model is not None:
+                trunk_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "trunk", split_config
+                )
+                trunk_model.save_split_model(trunk_path)
+                print(f"  Trunk model saved: {trunk_path}")
 
-            top_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "top", split_config
-            )
-            top_model.save_split_model(top_path)
-            print(f"  Top model saved: {top_path}")
+            if top_model is not None:
+                top_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "top", split_config
+                )
+                top_model.save_split_model(top_path)
+                print(f"  Top model saved: {top_path}")
 
             print("="*60)
 
@@ -317,6 +357,7 @@ class ModelFactory:
         verbose: bool,
         storage_path: Optional[str],
         auto_save: bool,
+        parts: set,
     ) -> Tuple:
         """
         Incremental loading: Load only required shards for each component.
@@ -338,10 +379,19 @@ class ModelFactory:
             )
 
         # Validate split points
-        if not (0 < split_point_1 < split_point_2 < num_layers):
-            raise ValueError(
+        if model_type == "qwen2_vl":
+            valid = (0 <= split_point_1 < split_point_2 < num_layers)
+            err_msg = (
+                f"Invalid split points for qwen2_vl: "
+                f"require 0 <= {split_point_1} < {split_point_2} < {num_layers}"
+            )
+        else:
+            valid = (0 < split_point_1 < split_point_2 < num_layers)
+            err_msg = (
                 f"Invalid split points: 0 < {split_point_1} < {split_point_2} < {num_layers}"
             )
+        if not valid:
+            raise ValueError(err_msg)
 
         print(f"\nSplitting {model_type} model:")
         print(f"  Total layers: {num_layers}")
@@ -371,74 +421,75 @@ class ModelFactory:
         if verbose:
             mem_tracker.snapshot("Initial")
 
-        # Create Bottom
-        print("\n" + "="*60)
-        print("Creating Bottom Model")
-        print("="*60)
+        bottom_model = trunk_model = top_model = None
 
-        bottom_model = ModelFactory._load_component_incremental(
-            component='bottom',
-            model_type=model_type,
-            model_name_or_path=model_name_or_path,
-            config=config,
-            index_json=index_json,
-            layer_range=(0, split_point_1),
-            device=device_bottom,
-            verbose=verbose,
-        )
+        if 'bottom' in parts:
+            print("\n" + "="*60)
+            print("Creating Bottom Model")
+            print("="*60)
 
-        if verbose:
-            mem_tracker.snapshot("After Bottom")
-            mem_tracker.report()
+            bottom_model = ModelFactory._load_component_incremental(
+                component='bottom',
+                model_type=model_type,
+                model_name_or_path=model_name_or_path,
+                config=config,
+                index_json=index_json,
+                layer_range=(0, split_point_1),
+                device=device_bottom,
+                verbose=verbose,
+            )
 
-        # Force garbage collection
-        gc.collect()
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+            if verbose:
+                mem_tracker.snapshot("After Bottom")
+                mem_tracker.report()
 
-        # Create Trunk
-        print("\n" + "="*60)
-        print("Creating Trunk Model")
-        print("="*60)
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
-        trunk_model = ModelFactory._load_component_incremental(
-            component='trunk',
-            model_type=model_type,
-            model_name_or_path=model_name_or_path,
-            config=config,
-            index_json=index_json,
-            layer_range=(split_point_1, split_point_2),
-            device=device_trunk,
-            verbose=verbose,
-        )
+        if 'trunk' in parts:
+            print("\n" + "="*60)
+            print("Creating Trunk Model")
+            print("="*60)
 
-        if verbose:
-            mem_tracker.snapshot("After Trunk")
-            mem_tracker.report()
+            trunk_model = ModelFactory._load_component_incremental(
+                component='trunk',
+                model_type=model_type,
+                model_name_or_path=model_name_or_path,
+                config=config,
+                index_json=index_json,
+                layer_range=(split_point_1, split_point_2),
+                device=device_trunk,
+                verbose=verbose,
+            )
 
-        gc.collect()
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
+            if verbose:
+                mem_tracker.snapshot("After Trunk")
+                mem_tracker.report()
 
-        # Create Top
-        print("\n" + "="*60)
-        print("Creating Top Model")
-        print("="*60)
+            gc.collect()
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
-        top_model = ModelFactory._load_component_incremental(
-            component='top',
-            model_type=model_type,
-            model_name_or_path=model_name_or_path,
-            config=config,
-            index_json=index_json,
-            layer_range=(split_point_2, num_layers),
-            device=device_top,
-            verbose=verbose,
-        )
+        if 'top' in parts:
+            print("\n" + "="*60)
+            print("Creating Top Model")
+            print("="*60)
 
-        if verbose:
-            mem_tracker.snapshot("After Top")
-            mem_tracker.report()
+            top_model = ModelFactory._load_component_incremental(
+                component='top',
+                model_type=model_type,
+                model_name_or_path=model_name_or_path,
+                config=config,
+                index_json=index_json,
+                layer_range=(split_point_2, num_layers),
+                device=device_top,
+                verbose=verbose,
+            )
+
+            if verbose:
+                mem_tracker.snapshot("After Top")
+                mem_tracker.report()
 
         gc.collect()
 
@@ -446,16 +497,19 @@ class ModelFactory:
         print("\n" + "="*60)
         print("Model Statistics")
         print("="*60)
-        print(f"  Bottom: {bottom_model.num_parameters():,} parameters "
-              f"({bottom_model.memory_footprint_mb():.2f} MB)")
-        print(f"  Trunk:  {trunk_model.num_parameters():,} parameters "
-              f"({trunk_model.memory_footprint_mb():.2f} MB)")
-        print(f"  Top:    {top_model.num_parameters():,} parameters "
-              f"({top_model.memory_footprint_mb():.2f} MB)")
+        if bottom_model is not None:
+            print(f"  Bottom: {bottom_model.num_parameters():,} parameters "
+                  f"({bottom_model.memory_footprint_mb():.2f} MB)")
+        if trunk_model is not None:
+            print(f"  Trunk:  {trunk_model.num_parameters():,} parameters "
+                  f"({trunk_model.memory_footprint_mb():.2f} MB)")
+        if top_model is not None:
+            print(f"  Top:    {top_model.num_parameters():,} parameters "
+                  f"({top_model.memory_footprint_mb():.2f} MB)")
 
-        total_split = (bottom_model.num_parameters() +
-                      trunk_model.num_parameters() +
-                      top_model.num_parameters())
+        total_split = sum(
+            m.num_parameters() for m in [bottom_model, trunk_model, top_model] if m is not None
+        )
 
         print(f"  Total split: {total_split:,} parameters")
 
@@ -476,23 +530,26 @@ class ModelFactory:
             split_config = f"{split_point_1}-{split_point_2}"
             model_basename = model_name_or_path.split('/')[-1]
 
-            bottom_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "bottom", split_config
-            )
-            bottom_model.save_split_model(bottom_path)
-            print(f"  Bottom model saved: {bottom_path}")
+            if bottom_model is not None:
+                bottom_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "bottom", split_config
+                )
+                bottom_model.save_split_model(bottom_path)
+                print(f"  Bottom model saved: {bottom_path}")
 
-            trunk_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "trunk", split_config
-            )
-            trunk_model.save_split_model(trunk_path)
-            print(f"  Trunk model saved: {trunk_path}")
+            if trunk_model is not None:
+                trunk_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "trunk", split_config
+                )
+                trunk_model.save_split_model(trunk_path)
+                print(f"  Trunk model saved: {trunk_path}")
 
-            top_path = StorageManager.get_split_model_path(
-                storage_path, model_basename, "top", split_config
-            )
-            top_model.save_split_model(top_path)
-            print(f"  Top model saved: {top_path}")
+            if top_model is not None:
+                top_path = StorageManager.get_split_model_path(
+                    storage_path, model_basename, "top", split_config
+                )
+                top_model.save_split_model(top_path)
+                print(f"  Top model saved: {top_path}")
 
             print("="*60)
 
@@ -530,6 +587,7 @@ class ModelFactory:
         include_embedding = (component == 'bottom')
         include_final_norm = (component == 'top')
         include_lm_head = (component == 'top')
+        include_visual = (component == 'bottom' and model_type == 'qwen2_vl')
 
         # Calculate required shards
         if verbose:
@@ -543,6 +601,7 @@ class ModelFactory:
             include_embedding=include_embedding,
             include_final_norm=include_final_norm,
             include_lm_head=include_lm_head,
+            include_visual=include_visual,
         )
 
         if verbose:
@@ -568,6 +627,8 @@ class ModelFactory:
         def filter_fn(param_name: str) -> bool:
             """Check if parameter belongs to this component"""
             # Check special components
+            if include_visual and param_name.startswith("visual."):
+                return True
             if include_embedding and ParamMapper.is_embedding(param_name, model_type):
                 return True
             if include_final_norm and ParamMapper.is_final_norm(param_name, model_type):

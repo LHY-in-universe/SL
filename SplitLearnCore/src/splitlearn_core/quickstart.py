@@ -142,6 +142,7 @@ def load_split_model(
     device: Optional[str] = None,
     torch_dtype: Optional[torch.dtype] = None,
     force_download: bool = False,
+    parts: Optional[List[str]] = None,
 ) -> Tuple[BaseBottomModel, BaseTrunkModel, BaseTopModel]:
     """
     Load and split a model with automatic configuration.
@@ -168,6 +169,8 @@ def load_split_model(
         torch_dtype: Data type for model weights (e.g., torch.float16, torch.bfloat16).
             If None, uses model's default.
         force_download: Force redownload even if model exists in cache
+        parts: Optional subset of {"bottom","trunk","top"}，若提供则只加载对应部分，
+               其余返回 None（默认全加载）。
 
     Returns:
         Tuple of (bottom_model, trunk_model, top_model)
@@ -235,11 +238,19 @@ def load_split_model(
 
     split_point_1, split_point_2 = split_points
 
-    if split_point_1 >= split_point_2:
-        raise ValueError(
-            f"split_point_1 ({split_point_1}) must be less than "
-            f"split_point_2 ({split_point_2})"
-        )
+    # 对 qwen2_vl 允许 split_point_1 为 0（仅视觉塔在 bottom）
+    if model_type == "qwen2_vl":
+        if not (0 <= split_point_1 < split_point_2):
+            raise ValueError(
+                f"Invalid split points for qwen2_vl: "
+                f"require 0 <= split_point_1 < split_point_2, got {split_points}"
+            )
+    else:
+        if split_point_1 >= split_point_2:
+            raise ValueError(
+                f"split_point_1 ({split_point_1}) must be less than "
+                f"split_point_2 ({split_point_2})"
+            )
 
     # Log configuration
     logger.info(f"Loading split model:")
@@ -272,12 +283,16 @@ def load_split_model(
             device=device,
             # Note: torch_dtype is not supported by ModelFactory.create_split_models
             # If needed, convert models after loading
+            parts=parts,
         )
 
         logger.info("✓ Models loaded successfully")
-        logger.info(f"  Bottom: {sum(p.numel() for p in bottom.parameters())/1e6:.2f}M parameters")
-        logger.info(f"  Trunk:  {sum(p.numel() for p in trunk.parameters())/1e6:.2f}M parameters")
-        logger.info(f"  Top:    {sum(p.numel() for p in top.parameters())/1e6:.2f}M parameters")
+        if bottom is not None:
+            logger.info(f"  Bottom: {sum(p.numel() for p in bottom.parameters())/1e6:.2f}M parameters")
+        if trunk is not None:
+            logger.info(f"  Trunk:  {sum(p.numel() for p in trunk.parameters())/1e6:.2f}M parameters")
+        if top is not None:
+            logger.info(f"  Top:    {sum(p.numel() for p in top.parameters())/1e6:.2f}M parameters")
 
         return bottom, trunk, top
 

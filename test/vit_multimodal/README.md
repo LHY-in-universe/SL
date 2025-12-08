@@ -11,6 +11,7 @@
 - **run_vit_info.py**: 可运行的 ViT 模型代码，实时显示每一步的张量形状和大小
 - **qwen3vl 2B 拆分策略**: 参见下方概览或 `PROCESSING_FLOW.md` 中的拆分章节
 - **QWEN3VL_SPLIT_CORE.md**: 使用 SplitLearnCore API 进行 qwen3vl 2B 拆分的示例说明
+- **qwen2-vl 拆分示例**: `qwen2vl_split_core.py` 演示 Qwen2-VL-2B 拆分（视觉塔 → Transformer）
 
 ## 快速开始
 

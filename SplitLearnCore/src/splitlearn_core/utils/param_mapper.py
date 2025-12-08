@@ -27,6 +27,7 @@ class ParamMapper:
         'llama': r'\.layers\.([0-9]+)',     # Same as llama2
         'gpt-j': r'\.h\.([0-9]+)',          # Similar to GPT-2
         'qwen2': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama)
+        'qwen2_vl': r'\.layers\.([0-9]+)',  # model.layers.5.self_attn (text decoder part)
         'gemma': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama/qwen2)
     }
 
@@ -48,6 +49,11 @@ class ParamMapper:
             'lm_head': r'lm_head\.weight',
         },
         'qwen2': {
+            'embedding': r'model\.embed_tokens\.weight',
+            'final_norm': r'model\.norm',
+            'lm_head': r'lm_head\.weight',
+        },
+        'qwen2_vl': {
             'embedding': r'model\.embed_tokens\.weight',
             'final_norm': r'model\.norm',
             'lm_head': r'lm_head\.weight',
@@ -119,7 +125,7 @@ class ParamMapper:
         """
         if model_type == 'gpt2' or model_type == 'gpt-j':
             return param_name.replace(f'.h.{old_idx}.', f'.h.{new_idx}.')
-        elif model_type in ['llama2', 'llama', 'qwen2', 'gemma']:
+        elif model_type in ['llama2', 'llama', 'qwen2', 'qwen2_vl', 'gemma']:
             return param_name.replace(f'.layers.{old_idx}.', f'.layers.{new_idx}.')
         else:
             available = ', '.join(sorted(cls.LAYER_PATTERNS.keys()))
@@ -163,6 +169,7 @@ class ParamMapper:
         include_embedding: bool = False,
         include_lm_head: bool = False,
         include_final_norm: bool = False,
+        include_visual: bool = False,
         layer_start: Optional[int] = None,
         layer_end: Optional[int] = None,
         remap_layers: bool = False,
@@ -196,6 +203,11 @@ class ParamMapper:
         filtered = {}
 
         for key, value in state_dict.items():
+            # Visual block (qwen2_vl)
+            if include_visual and key.startswith("visual."):
+                filtered[key] = value
+                continue
+
             # Check special components
             if cls.is_embedding(key, model_type):
                 if include_embedding:

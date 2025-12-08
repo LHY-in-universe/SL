@@ -178,6 +178,7 @@ class ShardLoader:
         include_embedding: bool = False,
         include_final_norm: bool = False,
         include_lm_head: bool = False,
+        include_visual: bool = False,
     ) -> Set[str]:
         """
         Calculate which shard files are needed for a component.
@@ -214,7 +215,9 @@ class ShardLoader:
             should_include = False
 
             # Check special components
-            if include_embedding and ParamMapper.is_embedding(param_name, model_type):
+            if include_visual and param_name.startswith("visual."):
+                should_include = True
+            elif include_embedding and ParamMapper.is_embedding(param_name, model_type):
                 should_include = True
             elif include_final_norm and ParamMapper.is_final_norm(param_name, model_type):
                 should_include = True

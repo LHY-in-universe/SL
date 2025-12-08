@@ -83,3 +83,4 @@ trunk  = Qwen3VLTrunk(transformer_encoder)
 2. 若已在工厂注册，优先用 `load_split_model` + `split_points`；否则按自定义 Bottom/Trunk 实现。
 3. 在客户端加载前端，在服务器加载后端，保持张量维度、精度和位置/CLS 对齐；可选传递 mask。
 4. 先在单机验证前后端拼接的一致性，再接入 gRPC/通信层。
+
