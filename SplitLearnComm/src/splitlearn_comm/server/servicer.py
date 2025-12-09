@@ -184,14 +184,28 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
                 f"Received compute request {request_id}, shape={input_tensor.shape}"
             )
 
-            # 2. 检查是否为训练模式
+            # 2. 解码 KV-cache (如果存在)
+            past_key_values = None
+            use_cache = request.HasField("use_cache") and request.use_cache
+
+            if len(request.past_key_values) > 0:
+                from splitlearn_comm.core.kv_cache_codec import KVCacheCodec
+                kv_codec = KVCacheCodec(tensor_codec=self.codec)
+                past_key_values = kv_codec.decode(request.past_key_values)
+                logger.debug(f"[Request {request_id}] Decoded {len(past_key_values)} KV-cache layers")
+
+            # 3. 检查是否为训练模式
             training_mode = request.HasField("training_mode") and request.training_mode
 
-            # 3. 执行计算
+            # 4. 执行计算
             if training_mode and self.activation_cache is not None:
                 # 训练模式：需要启用梯度并缓存激活值
                 input_tensor.requires_grad_(True)
-                output_tensor = self.compute_fn.compute(input_tensor)
+                output_tensor = self.compute_fn.compute(
+                    input_tensor,
+                    past_key_values=past_key_values,
+                    use_cache=use_cache
+                )
 
                 # 生成 forward_id 并缓存输入激活
                 import uuid
@@ -200,10 +214,22 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
 
                 logger.debug(f"[Request {request_id}] Cached activation with forward_id={forward_id}")
             else:
-                # 推理模式：无需梯度
-                output_tensor = self.compute_fn.compute(input_tensor)
+                # 推理模式：可能使用 KV-cache
+                output_tensor = self.compute_fn.compute(
+                    input_tensor,
+                    past_key_values=past_key_values,
+                    use_cache=use_cache
+                )
 
-            # 4. 编码输出张量
+            # 5. 处理输出（可能包含 present_key_values）
+            present_key_values = None
+            if isinstance(output_tensor, tuple):
+                # 如果使用了 cache，返回值为 (hidden_states, present_key_values)
+                hidden_states, present_key_values = output_tensor
+                output_tensor = hidden_states
+                logger.debug(f"[Request {request_id}] Extracted present_key_values with {len(present_key_values)} layers")
+
+            # 6. 编码输出张量
             output_data, output_shape = self.codec.encode(output_tensor)
 
             # 5. 计算耗时
@@ -229,7 +255,15 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             if training_mode and forward_id:
                 response.forward_id = forward_id
 
-            # 6. 附加服务端监控数据（如果可用）
+            # 如果使用了 cache，编码并返回 present_key_values
+            if present_key_values is not None:
+                from splitlearn_comm.core.kv_cache_codec import KVCacheCodec
+                kv_codec = KVCacheCodec(tensor_codec=self.codec)
+                kv_entries = kv_codec.encode(present_key_values)
+                response.present_key_values.extend(kv_entries)
+                logger.debug(f"[Request {request_id}] Encoded {len(kv_entries)} present_key_values")
+
+            # 7. 附加服务端监控数据（如果可用）
             if self.server_monitor:
                 try:
                     snapshot = self.server_monitor.system_monitor.get_current_snapshot()

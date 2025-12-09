@@ -263,6 +263,7 @@ def main():
         device=args.device,
         use_lora=True,
         lora_config=lora_config,
+        attn_implementation='sdpa',  # Use SDPA for efficient attention
         verbose=True
     )
 

@@ -85,3 +85,4 @@ class Qwen3VLBottomModel(BaseBottomModel):
         if unexpected:
             print(f"    Warning: Unexpected keys in Qwen3VLBottomModel: {unexpected}")
         return model
+

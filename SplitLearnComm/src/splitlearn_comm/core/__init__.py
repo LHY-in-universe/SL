@@ -2,6 +2,7 @@
 
 from .compute_function import ComputeFunction, ModelComputeFunction
 from .tensor_codec import TensorCodec, CompressedTensorCodec
+from .kv_cache_codec import KVCacheCodec
 from .async_compute_function import (
     AsyncComputeFunction,
     AsyncModelComputeFunction,
@@ -14,6 +15,7 @@ __all__ = [
     "ModelComputeFunction",
     "TensorCodec",
     "CompressedTensorCodec",
+    "KVCacheCodec",
     "AsyncComputeFunction",
     "AsyncModelComputeFunction",
     "AsyncLambdaComputeFunction",

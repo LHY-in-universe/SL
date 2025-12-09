@@ -9,7 +9,11 @@ from typing import Optional
 import torch
 import torch.nn as nn
 from transformers.models.qwen3_vl.configuration_qwen3_vl import Qwen3VLConfig
-from transformers.models.qwen3_vl.modeling_qwen3_vl import Qwen3VLTextDecoderLayer, Qwen3VLTextConfig
+from transformers.models.qwen3_vl.modeling_qwen3_vl import (
+    Qwen3VLTextDecoderLayer,
+    Qwen3VLTextConfig,
+    Qwen3VLTextRotaryEmbedding,
+)
 
 from ...utils.param_mapper import ParamMapper
 from ...core import BaseTrunkModel
@@ -31,6 +35,8 @@ class Qwen3VLTrunkModel(BaseTrunkModel):
         self.layers = nn.ModuleList(
             [Qwen3VLTextDecoderLayer(text_cfg, layer_idx=i) for i in range(self.num_layers)]
         )
+        # 添加 rotary_emb 用于生成 position_embeddings
+        self.rotary_emb = Qwen3VLTextRotaryEmbedding(config=text_cfg)
         self._fix_attention_implementation()
         self.apply(self._init_weights)
 
@@ -94,3 +100,4 @@ class Qwen3VLTrunkModel(BaseTrunkModel):
                 if not hasattr(block.self_attn.config, "_attn_implementation") or \
                    block.self_attn.config._attn_implementation is None:
                     block.self_attn.config._attn_implementation = "eager"
+

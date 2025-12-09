@@ -6,10 +6,13 @@ Supports both traditional loading and incremental loading for sharded models.
 """
 from typing import Tuple, Optional, Union, Dict, Any
 import gc
+import logging
 import os
 import json
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
+
+logger = logging.getLogger(__name__)
 
 # Optional import for qwen2_vl / qwen3_vl vision-language model
 try:
@@ -132,6 +135,7 @@ class ModelFactory:
         parts: Optional[Union[list, tuple]] = None,
         use_lora: bool = False,
         lora_config: Optional['SplitLoraConfig'] = None,
+        attn_implementation: Optional[str] = 'sdpa',
     ) -> Tuple:
         """
         Create all three split model parts for any supported architecture
@@ -153,6 +157,12 @@ class ModelFactory:
             parts: Optional subset of {'bottom','trunk','top'} to build; missing parts return None.
             use_lora: Whether to apply LoRA adapters to the models (default: False)
             lora_config: LoRA configuration (if None, will use default for model_type)
+            attn_implementation: Attention implementation ('sdpa', 'flash_attention_2', 'eager')
+                - 'sdpa': PyTorch's Scaled Dot Product Attention (fastest, memory efficient)
+                - 'flash_attention_2': FlashAttention2 (requires flash-attn package)
+                - 'eager': Standard eager attention (slowest, most memory)
+                - None: No change to default
+                Default: 'sdpa' for best performance
 
         Returns:
             Tuple: (bottom_model, trunk_model, top_model)
@@ -224,6 +234,24 @@ class ModelFactory:
         else:
             config = AutoConfig.from_pretrained(model_name_or_path)
 
+        # Set attention implementation (SDPA, FlashAttention2, or eager)
+        if attn_implementation is not None:
+            # Check if FlashAttention2 is available when requested
+            if attn_implementation == 'flash_attention_2':
+                try:
+                    import flash_attn
+                    config._attn_implementation = 'flash_attention_2'
+                    if verbose:
+                        print(f"✓ Using FlashAttention2 for efficient attention")
+                except ImportError:
+                    if verbose:
+                        print("⚠ FlashAttention2 not available, falling back to SDPA")
+                    config._attn_implementation = 'sdpa'
+            else:
+                config._attn_implementation = attn_implementation
+                if verbose:
+                    print(f"✓ Using {attn_implementation} attention implementation")
+
         # Detect if model is sharded
         from splitlearn_core.utils.shard_loader import ShardLoader
         is_sharded = ShardLoader.is_sharded_model(model_name_or_path)
@@ -263,6 +291,8 @@ class ModelFactory:
                 storage_path=storage_path,
                 auto_save=auto_save,
                 parts=parts_set,
+                use_lora=use_lora,
+                lora_config=lora_config,
             )
 
     @staticmethod
@@ -276,6 +306,8 @@ class ModelFactory:
         storage_path: Optional[str],
         auto_save: bool,
         parts: set,
+        use_lora: bool = False,
+        lora_config: Optional['SplitLoraConfig'] = None,
     ) -> Tuple:
         """
         Traditional loading: Load full model then split.

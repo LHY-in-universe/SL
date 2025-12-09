@@ -34,7 +34,12 @@ class BaseTopModel(BaseSplitModel):
             start_layer: Starting layer index in original model
         """
         # Calculate end_layer based on total layers in config
-        num_layers = getattr(config, 'n_layer', None) or getattr(config, 'num_hidden_layers', None)
+        # Special handling for qwen3_vl where layers are in config.text_config
+        if hasattr(config, 'text_config') and hasattr(config.text_config, 'num_hidden_layers'):
+            num_layers = config.text_config.num_hidden_layers
+        else:
+            num_layers = getattr(config, 'n_layer', None) or getattr(config, 'num_hidden_layers', None)
+        
         if num_layers is None:
             raise ValueError("Config must have 'n_layer' or 'num_hidden_layers' attribute")
 

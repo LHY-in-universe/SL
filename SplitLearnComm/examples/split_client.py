@@ -71,3 +71,4 @@ if __name__ == "__main__":
     for k in ["HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"]:
         os.environ.pop(k, None)
     run_once(device="cpu", dtype=torch.float32)
+

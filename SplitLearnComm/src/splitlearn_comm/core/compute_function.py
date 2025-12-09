@@ -30,15 +30,27 @@ class ComputeFunction(ABC):
     """
 
     @abstractmethod
-    def compute(self, input_tensor: torch.Tensor) -> torch.Tensor:
+    def compute(
+        self,
+        input_tensor: torch.Tensor,
+        past_key_values: Optional[tuple] = None,
+        use_cache: bool = False,
+        **kwargs
+    ):
         """
-        执行计算，返回输出张量
+        执行计算，返回输出张量（可能包含 KV-cache）
 
         Args:
             input_tensor: 输入张量
+            past_key_values: 过去的 Key-Value cache (可选)
+            use_cache: 是否返回 present_key_values (可选)
+            **kwargs: 其他参数
 
         Returns:
-            计算后的输出张量
+            如果 use_cache=True:
+                (output_tensor, present_key_values)
+            否则:
+                output_tensor
 
         Raises:
             NotImplementedError: 子类必须实现此方法
@@ -108,11 +120,31 @@ class ModelComputeFunction(ComputeFunction):
         self.device = device
         self.model_name = model_name or model.__class__.__name__
 
-    def compute(self, input_tensor: torch.Tensor) -> torch.Tensor:
-        """执行模型前向传播"""
+    def compute(
+        self,
+        input_tensor: torch.Tensor,
+        past_key_values: Optional[tuple] = None,
+        use_cache: bool = False,
+        **kwargs
+    ):
+        """执行模型前向传播（支持 KV-cache）"""
         input_tensor = input_tensor.to(self.device)
         with torch.no_grad():
-            return self.model(input_tensor)
+            # 尝试传递 KV-cache 参数（如果模型支持）
+            import inspect
+            sig = inspect.signature(self.model.forward)
+
+            # 检查模型是否支持 past_key_values 和 use_cache
+            model_kwargs = {}
+            if 'past_key_values' in sig.parameters and past_key_values is not None:
+                model_kwargs['past_key_values'] = past_key_values
+            if 'use_cache' in sig.parameters:
+                model_kwargs['use_cache'] = use_cache
+
+            # 调用模型
+            output = self.model(input_tensor, **model_kwargs)
+
+            return output
 
     def get_info(self) -> Dict[str, Any]:
         """返回模型信息"""

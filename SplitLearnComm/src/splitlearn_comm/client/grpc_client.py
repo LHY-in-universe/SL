@@ -178,7 +178,8 @@ class GRPCComputeClient:
 
             # 4. 更新统计
             self.total_network_time += network_time_ms
-            self.total_compute_time += response.compute_time_ms
+            compute_time = response.compute_time_ms if response.HasField("compute_time_ms") else 0.0
+            self.total_compute_time += compute_time
 
             # 5. 接收并存储服务端监控数据
             if response.HasField("monitoring_data"):
@@ -209,7 +210,7 @@ class GRPCComputeClient:
             logger.debug(
                 f"[Request {self.request_count}] "
                 f"Network {network_time_ms:.2f}ms, "
-                f"Compute {response.compute_time_ms:.2f}ms"
+                f"Compute {server_compute_ms:.2f}ms" if server_compute_ms is not None else f"Network {network_time_ms:.2f}ms"
             )
 
             timing = {
@@ -219,6 +220,120 @@ class GRPCComputeClient:
             }
 
             return output_tensor, timing
+
+        try:
+            # 使用重试策略执行
+            return self.retry_strategy.execute(_do_compute)
+
+        except grpc.RpcError as e:
+            logger.error(f"RPC Error: {e.code()}")
+            logger.error(f"Details: {e.details()}")
+            raise
+
+    def compute_with_cache(
+        self,
+        input_tensor: torch.Tensor,
+        past_key_values: Optional[tuple] = None,
+        use_cache: bool = False,
+        model_id: Optional[str] = None,
+        training_mode: bool = False,
+        forward_id: Optional[str] = None
+    ):
+        """
+        执行远程计算，支持 KV-cache（用于快速推理）
+
+        Args:
+            input_tensor: 输入张量
+            past_key_values: 过去的 Key-Value cache（来自前一次生成）
+            use_cache: 是否返回 present_key_values
+            model_id: 目标模型 ID (可选)
+            training_mode: 是否为训练模式
+            forward_id: 前向传播 ID（训练模式使用）
+
+        Returns:
+            如果 use_cache=True:
+                (output_tensor, present_key_values, timing_dict)
+            否则:
+                (output_tensor, None, timing_dict)
+
+        Raises:
+            grpc.RpcError: RPC 调用失败
+        """
+        if self.stub is None:
+            raise RuntimeError("Client not connected. Call connect() first.")
+
+        def _do_compute():
+            self.request_count += 1
+
+            # 1. 编码输入张量
+            input_data, input_shape = self.codec.encode(input_tensor)
+
+            # 2. 编码 past_key_values（如果有）
+            kv_entries = []
+            if past_key_values is not None:
+                from splitlearn_comm.core.kv_cache_codec import KVCacheCodec
+                kv_codec = KVCacheCodec(tensor_codec=self.codec)
+                kv_entries = kv_codec.encode(past_key_values)
+                logger.debug(f"Encoded {len(kv_entries)} past_key_values layers")
+
+            # 3. 构建请求
+            request_kwargs = {
+                "data": input_data,
+                "shape": list(input_shape),
+                "request_id": self.request_count,
+                "use_cache": use_cache,
+            }
+
+            if model_id:
+                request_kwargs["model_id"] = model_id
+
+            if training_mode:
+                request_kwargs["training_mode"] = training_mode
+                if forward_id:
+                    request_kwargs["forward_id"] = forward_id
+
+            request = compute_service_pb2.ComputeRequest(**request_kwargs)
+
+            # 添加 past_key_values 到请求
+            if kv_entries:
+                request.past_key_values.extend(kv_entries)
+
+            # 4. RPC 调用
+            start_time = time.time()
+            response = self.stub.Compute(request, timeout=self.timeout)
+            network_time_ms = (time.time() - start_time) * 1000  # ms
+
+            # 5. 更新统计
+            self.total_network_time += network_time_ms
+            compute_time = response.compute_time_ms if response.HasField("compute_time_ms") else 0.0
+            self.total_compute_time += compute_time
+
+            # 6. 解码输出张量
+            output_tensor = self.codec.decode(
+                data=response.data,
+                shape=tuple(response.shape)
+            )
+
+            # 7. 解码 present_key_values（如果有）
+            present_key_values = None
+            if len(response.present_key_values) > 0:
+                from splitlearn_comm.core.kv_cache_codec import KVCacheCodec
+                kv_codec = KVCacheCodec(tensor_codec=self.codec)
+                present_key_values = kv_codec.decode(response.present_key_values)
+                logger.debug(f"Decoded {len(present_key_values)} present_key_values layers")
+
+            server_compute_ms = response.compute_time_ms if response.HasField("compute_time_ms") else None
+            network_overhead_ms = None
+            if server_compute_ms is not None:
+                network_overhead_ms = max(network_time_ms - server_compute_ms, 0.0)
+
+            timing = {
+                "network_total_ms": network_time_ms,
+                "server_compute_ms": server_compute_ms,
+                "network_overhead_ms": network_overhead_ms,
+            }
+
+            return output_tensor, present_key_values, timing
 
         try:
             # 使用重试策略执行

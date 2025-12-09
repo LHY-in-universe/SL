@@ -14,6 +14,7 @@ from transformers.models.qwen3_vl.modeling_qwen3_vl import (
     Qwen3VLTextDecoderLayer,
     Qwen3VLTextRMSNorm,
     Qwen3VLTextConfig,
+    Qwen3VLTextRotaryEmbedding,
 )
 
 from ...utils.param_mapper import ParamMapper
@@ -37,9 +38,30 @@ class Qwen3VLTopModel(BaseTopModel):
             [Qwen3VLTextDecoderLayer(text_cfg, layer_idx=i) for i in range(self.num_layers)]
         )
         self.norm = Qwen3VLTextRMSNorm(text_cfg.hidden_size, eps=text_cfg.rms_norm_eps)
-        self.lm_head = nn.Linear(text_cfg.hidden_size, config.vocab_size, bias=False)
+        # 添加 rotary_emb 用于生成 position_embeddings
+        self.rotary_emb = Qwen3VLTextRotaryEmbedding(config=text_cfg)
+        # vocab_size 在 text_config 中
+        vocab_size = getattr(text_cfg, 'vocab_size', None) or getattr(config, 'vocab_size', None)
+        if vocab_size is None:
+            raise ValueError("Cannot find vocab_size in config or text_config")
+        self.lm_head = nn.Linear(text_cfg.hidden_size, vocab_size, bias=False)
         self._fix_attention_implementation()
+        # 保存 text_config 用于 _init_weights
+        self._text_config = text_cfg
         self.apply(self._init_weights)
+    
+    def _init_weights(self, module):
+        """
+        重写 _init_weights，从 text_config 获取 initializer_range
+        """
+        if isinstance(module, (nn.Linear, nn.Embedding)):
+            initializer_range = getattr(self._text_config, 'initializer_range', 0.02)
+            module.weight.data.normal_(mean=0.0, std=initializer_range)
+            if isinstance(module, nn.Linear) and module.bias is not None:
+                module.bias.data.zero_()
+        elif isinstance(module, nn.LayerNorm):
+            module.bias.data.zero_()
+            module.weight.data.fill_(1.0)
 
     def get_transformer_blocks(self) -> nn.ModuleList:
         return self.layers
@@ -111,20 +133,42 @@ class Qwen3VLTopModel(BaseTopModel):
         labels: Optional[torch.LongTensor] = None,
         past_key_values: Optional[tuple] = None,
         use_cache: Optional[bool] = None,
+        position_embeddings: Optional[tuple] = None,
     ) -> CausalLMOutputWithPast:
         attention_mask = self.prepare_attention_mask(attention_mask, hidden_states)
+        
+        # 生成 position_embeddings（如果未提供）
+        if position_embeddings is None:
+            batch_size, seq_len = hidden_states.shape[:2]
+            device = hidden_states.device
+            
+            # 创建 position_ids（Qwen3VL 需要 3D position_ids: [3, batch_size, seq_len]）
+            # 对于纯文本，使用简单的递增序列
+            position_ids = torch.arange(0, seq_len, device=device, dtype=torch.long)
+            position_ids = position_ids.unsqueeze(0).expand(batch_size, -1)  # [batch_size, seq_len]
+            position_ids = position_ids.unsqueeze(0).expand(3, -1, -1)  # [3, batch_size, seq_len]
+            
+            # 使用 rotary_emb 生成 position_embeddings
+            # rotary_emb.forward(x, position_ids) 返回 position_embeddings
+            position_embeddings = self.rotary_emb(hidden_states, position_ids)
+        
         presents = () if use_cache else None
         for i, block in enumerate(self.get_transformer_blocks()):
             layer_past = past_key_values[i] if past_key_values is not None else None
             outputs = block(
                 hidden_states,
+                position_embeddings=position_embeddings,
                 attention_mask=attention_mask,
-                layer_past=layer_past,
+                past_key_values=layer_past,
                 use_cache=use_cache,
             )
-            hidden_states = outputs[0]
-            if use_cache:
-                presents = presents + (outputs[1],)
+            # Qwen3VLTextDecoderLayer 返回单个张量或元组
+            if isinstance(outputs, tuple):
+                hidden_states = outputs[0]
+                if use_cache and len(outputs) > 1:
+                    presents = presents + (outputs[1],)
+            else:
+                hidden_states = outputs
 
         hidden_states = self.get_final_norm()(hidden_states)
         logits = self.get_lm_head()(hidden_states).float()
@@ -152,3 +196,4 @@ class Qwen3VLTopModel(BaseTopModel):
                 if not hasattr(block.self_attn.config, "_attn_implementation") or \
                    block.self_attn.config._attn_implementation is None:
                     block.self_attn.config._attn_implementation = "eager"
+

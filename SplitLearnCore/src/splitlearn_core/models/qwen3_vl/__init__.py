@@ -7,3 +7,4 @@ Qwen3-VL split model components.
 from .bottom import Qwen3VLBottomModel  # noqa: F401
 from .trunk import Qwen3VLTrunkModel    # noqa: F401
 from .top import Qwen3VLTopModel        # noqa: F401
+

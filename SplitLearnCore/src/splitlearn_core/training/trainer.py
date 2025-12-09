@@ -24,6 +24,7 @@ class TrainingConfig:
     eval_interval: int = 500
     save_interval: int = 1000
     max_grad_norm: float = 1.0
+    output_dir: str = "./checkpoints"  # 检查点保存目录
     mixed_precision: bool = False  # 是否使用混合精度训练
 
 
@@ -157,15 +158,19 @@ class SplitTrainer:
             # ============ 前向传播 ============
 
             # 1. Bottom 模型前向
-            with torch.cuda.amp.autocast() if self.config.mixed_precision else torch.no_grad():
-                # Bottom 需要梯度（但在推理模式下运行以节省内存）
-                self.bottom_model.eval()  # 使用 eval 模式（不影响 LoRA 训练）
+            # Bottom 需要梯度（但在推理模式下运行以节省内存）
+            self.bottom_model.eval()  # 使用 eval 模式（不影响 LoRA 训练）
+
+            if self.config.mixed_precision:
+                with torch.cuda.amp.autocast():
+                    hidden_1 = self.bottom_model(input_ids)
+            else:
                 hidden_1 = self.bottom_model(input_ids)
 
-                # 确保 hidden_1 需要梯度
-                if not hidden_1.requires_grad:
-                    hidden_1.requires_grad_(True)
-                hidden_1.retain_grad()
+            # 确保 hidden_1 需要梯度
+            if not hidden_1.requires_grad:
+                hidden_1.requires_grad_(True)
+            hidden_1.retain_grad()
 
             # 2. Trunk 模型前向（通过 gRPC）
             forward_id = str(uuid.uuid4())
@@ -182,17 +187,20 @@ class SplitTrainer:
             # 3. Top 模型前向
             self.top_model.train()  # Top 在训练模式
 
-            with torch.cuda.amp.autocast() if self.config.mixed_precision else torch.enable_grad():
-                # Top 模型需要返回损失
+            # Top 模型需要返回损失
+            if self.config.mixed_precision:
+                with torch.cuda.amp.autocast():
+                    output = self.top_model(hidden_2, attention_mask=attention_mask, labels=labels)
+            else:
                 output = self.top_model(hidden_2, attention_mask=attention_mask, labels=labels)
 
-                # 提取损失
-                if hasattr(output, 'loss') and output.loss is not None:
-                    loss = output.loss
-                else:
-                    # 如果模型不自动计算损失，手动计算
-                    logits = output.logits if hasattr(output, 'logits') else output
-                    loss = self._compute_loss(logits, labels)
+            # 提取损失
+            if hasattr(output, 'loss') and output.loss is not None:
+                loss = output.loss
+            else:
+                # 如果模型不自动计算损失，手动计算
+                logits = output.logits if hasattr(output, 'logits') else output
+                loss = self._compute_loss(logits, labels)
 
             # 梯度累积
             loss = loss / self.config.gradient_accumulation_steps
