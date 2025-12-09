@@ -62,7 +62,28 @@ cover/
 .dmypy.json
 dmypy.json
 
-# SplitLearn specific
+# SplitLearn specific - Model weights and cache
 *.pt
 *.pth
 *.bin
+*.safetensors
+*.ckpt
+*.h5
+*.pb
+*.onnx
+*.tflite
+*.tfl
+*.hdf5
+*.pkl
+*.pickle
+
+# Hugging Face model cache
+models/.locks/
+models/models--*/
+models/*/blobs/
+models/*/refs/
+models/*/.no_exist/
+
+# Model weight directories (keep metadata files if needed)
+# Uncomment the following line to ignore all model files including metadata:
+# models/

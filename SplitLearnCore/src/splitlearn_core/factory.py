@@ -7,14 +7,25 @@ Supports both traditional loading and incremental loading for sharded models.
 from typing import Tuple, Optional, Union, Dict, Any
 import gc
 import os
+import json
 import torch
 from transformers import AutoConfig, AutoModelForCausalLM
 
-# Optional import for qwen2_vl vision-language model
+# Optional import for qwen2_vl / qwen3_vl vision-language model
 try:
     from transformers.models.qwen2_vl import Qwen2VLForConditionalGeneration
+    from transformers.models.qwen2_vl.configuration_qwen2_vl import (
+        Qwen2VLConfig,
+        Qwen2VLVisionConfig,
+    )
+    from transformers.models.qwen3_vl import Qwen3VLForConditionalGeneration
+    from transformers.models.qwen3_vl.configuration_qwen3_vl import Qwen3VLConfig
 except Exception:  # pragma: no cover - optional dependency
     Qwen2VLForConditionalGeneration = None
+    Qwen2VLConfig = None
+    Qwen2VLVisionConfig = None
+    Qwen3VLForConditionalGeneration = None
+    Qwen3VLConfig = None
 
 from .registry import ModelRegistry
 
@@ -51,6 +62,53 @@ class ModelFactory:
     - Incremental loading: Load only required shards for each component (low memory)
     """
 
+    @staticmethod
+    def _load_qwen3_vl_config(model_name_or_path: str):
+        """
+        加载 qwen3_vl 配置，并转换为 Qwen2VLConfig 以复用现有实现。
+        """
+        if Qwen2VLConfig is None:
+            raise ImportError("transformers>=4.46 is required for qwen3_vl support")
+
+        try:
+            base_config = AutoConfig.from_pretrained(model_name_or_path)
+        except Exception:
+            base_config = None
+
+        if base_config is None or not isinstance(base_config, Qwen2VLConfig):
+            # 手动加载 config.json
+            config_dict = None
+            local_config = os.path.join(model_name_or_path, "config.json")
+            if os.path.exists(local_config):
+                with open(local_config, "r") as f:
+                    config_dict = json.load(f)
+            else:
+                try:
+                    from huggingface_hub import hf_hub_download
+                    path = hf_hub_download(model_name_or_path, "config.json")
+                    with open(path, "r") as f:
+                        config_dict = json.load(f)
+                except Exception as e:
+                    raise RuntimeError(
+                        f"Failed to load config for qwen3_vl from {model_name_or_path}: {e}"
+                    )
+
+            base_config = Qwen2VLConfig.from_dict(config_dict)
+
+        config = base_config if isinstance(base_config, Qwen2VLConfig) else Qwen2VLConfig.from_dict(base_config.to_dict())
+        if Qwen2VLVisionConfig is not None and isinstance(getattr(config, "vision_config", None), dict):
+            config.vision_config = Qwen2VLVisionConfig.from_dict(config.vision_config)
+        # qwen3_vl 配置中的子配置可能是 dict，全部置为 None，避免 GenerationConfig 访问 .to_dict
+        if isinstance(getattr(config, "text_config", None), dict):
+            config.text_config = None
+        if isinstance(getattr(config, "encoder_config", None), dict):
+            config.encoder_config = None
+        if isinstance(getattr(config, "decoder_config", None), dict):
+            config.decoder_config = None
+        config.model_type = "qwen2_vl"
+        config.architectures = ["Qwen2VLForConditionalGeneration"]
+        return config
+
     # Map common model names to their HuggingFace model classes
     _MODEL_CLASS_MAP = {
         'gpt2': 'GPT2LMHeadModel',
@@ -72,6 +130,8 @@ class ModelFactory:
         storage_path: Optional[str] = None,
         auto_save: bool = False,
         parts: Optional[Union[list, tuple]] = None,
+        use_lora: bool = False,
+        lora_config: Optional['SplitLoraConfig'] = None,
     ) -> Tuple:
         """
         Create all three split model parts for any supported architecture
@@ -91,9 +151,12 @@ class ModelFactory:
             storage_path: Base directory for saving split models (optional)
             auto_save: Whether to automatically save split models (default: False)
             parts: Optional subset of {'bottom','trunk','top'} to build; missing parts return None.
+            use_lora: Whether to apply LoRA adapters to the models (default: False)
+            lora_config: LoRA configuration (if None, will use default for model_type)
 
         Returns:
             Tuple: (bottom_model, trunk_model, top_model)
+                   If use_lora=True, models will have LoRA adapters applied
 
         Raises:
             KeyError: If model_type is not registered
@@ -150,7 +213,16 @@ class ModelFactory:
         _configure_pytorch_threads_for_loading()
 
         # Load config (lightweight)
-        config = AutoConfig.from_pretrained(model_name_or_path)
+        if model_type == "qwen3_vl":
+            if Qwen3VLConfig is None:
+                raise ImportError("transformers>=4.57 is required for qwen3_vl support")
+            config = AutoConfig.from_pretrained(model_name_or_path)
+            if not isinstance(config, Qwen3VLConfig):
+                # fallback: construct explicitly
+                from transformers import Qwen3VLConfig as C
+                config = C.from_pretrained(model_name_or_path)
+        else:
+            config = AutoConfig.from_pretrained(model_name_or_path)
 
         # Detect if model is sharded
         from splitlearn_core.utils.shard_loader import ShardLoader
@@ -175,6 +247,8 @@ class ModelFactory:
                 storage_path=storage_path,
                 auto_save=auto_save,
                 parts=parts_set,
+                use_lora=use_lora,
+                lora_config=lora_config,
             )
         else:
             if verbose and is_sharded:
@@ -210,17 +284,30 @@ class ModelFactory:
         and for non-sharded models.
         """
         # Load full model and config
-        if model_type == "qwen2_vl":
-            if Qwen2VLForConditionalGeneration is None:
-                raise ImportError("transformers>=4.46 is required for qwen2_vl support")
-            full_model = Qwen2VLForConditionalGeneration.from_pretrained(model_name_or_path)
+        if model_type in ["qwen2_vl", "qwen3_vl"]:
+            if model_type == "qwen2_vl":
+                if Qwen2VLForConditionalGeneration is None:
+                    raise ImportError("transformers>=4.46 is required for qwen2_vl support")
+                full_model = Qwen2VLForConditionalGeneration.from_pretrained(
+                    model_name_or_path,
+                    config=config,
+                )
+            else:
+                if Qwen3VLForConditionalGeneration is None:
+                    raise ImportError("transformers>=4.57 is required for qwen3_vl support")
+                full_model = Qwen3VLForConditionalGeneration.from_pretrained(
+                    model_name_or_path,
+                    config=config,
+                )
         else:
             full_model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
         full_state_dict = full_model.state_dict()
 
         # Get number of layers
-        num_layers = getattr(config, 'n_layer', None) or \
-                    getattr(config, 'num_hidden_layers', None)
+        if model_type == "qwen3_vl" and hasattr(config, "text_config"):
+            num_layers = getattr(config.text_config, "num_hidden_layers", None)
+        else:
+            num_layers = getattr(config, 'n_layer', None) or getattr(config, 'num_hidden_layers', None)
 
         if num_layers is None:
             raise ValueError(
@@ -229,10 +316,10 @@ class ModelFactory:
             )
 
         # Validate split points
-        if model_type == "qwen2_vl":
+        if model_type in ["qwen2_vl", "qwen3_vl"]:
             valid = (0 <= split_point_1 < split_point_2 < num_layers)
             err_msg = (
-                f"Invalid split points for qwen2_vl: "
+                f"Invalid split points for {model_type}: "
                 f"require 0 <= {split_point_1} < {split_point_2} < {num_layers}"
             )
         else:
@@ -343,6 +430,41 @@ class ModelFactory:
 
             print("="*60)
 
+        # 应用 LoRA（如果启用）
+        if use_lora:
+            from .training import SplitLoraConfig, apply_lora_to_model
+
+            # 如果未提供配置，使用默认配置
+            if lora_config is None:
+                if model_type in ['qwen3_vl', 'qwen2_vl']:
+                    lora_config = SplitLoraConfig.for_qwen3_vl()
+                elif model_type == 'qwen2':
+                    lora_config = SplitLoraConfig.for_qwen2()
+                elif model_type == 'gpt2':
+                    lora_config = SplitLoraConfig.for_gpt2()
+                elif model_type == 'gemma':
+                    lora_config = SplitLoraConfig.for_gemma()
+                else:
+                    lora_config = SplitLoraConfig()  # 使用默认配置
+                    logger.warning(
+                        f"No default LoRA config for {model_type}, using generic config"
+                    )
+
+            logger.info(f"Applying LoRA to split models (rank={lora_config.rank})")
+
+            # 为每个部分应用 LoRA
+            if bottom_model is not None:
+                logger.info("Applying LoRA to Bottom model...")
+                bottom_model = apply_lora_to_model(bottom_model, lora_config, freeze_base=True)
+
+            if trunk_model is not None:
+                logger.info("Applying LoRA to Trunk model...")
+                trunk_model = apply_lora_to_model(trunk_model, lora_config, freeze_base=True)
+
+            if top_model is not None:
+                logger.info("Applying LoRA to Top model...")
+                top_model = apply_lora_to_model(top_model, lora_config, freeze_base=True)
+
         return bottom_model, trunk_model, top_model
 
     @staticmethod
@@ -358,6 +480,8 @@ class ModelFactory:
         storage_path: Optional[str],
         auto_save: bool,
         parts: set,
+        use_lora: bool = False,
+        lora_config: Optional['SplitLoraConfig'] = None,
     ) -> Tuple:
         """
         Incremental loading: Load only required shards for each component.
@@ -379,10 +503,10 @@ class ModelFactory:
             )
 
         # Validate split points
-        if model_type == "qwen2_vl":
+        if model_type in ["qwen2_vl", "qwen3_vl"]:
             valid = (0 <= split_point_1 < split_point_2 < num_layers)
             err_msg = (
-                f"Invalid split points for qwen2_vl: "
+                f"Invalid split points for {model_type}: "
                 f"require 0 <= {split_point_1} < {split_point_2} < {num_layers}"
             )
         else:
@@ -553,6 +677,41 @@ class ModelFactory:
 
             print("="*60)
 
+        # 应用 LoRA（如果启用）- 增量加载路径
+        if use_lora:
+            from .training import SplitLoraConfig, apply_lora_to_model
+
+            # 如果未提供配置，使用默认配置
+            if lora_config is None:
+                if model_type in ['qwen3_vl', 'qwen2_vl']:
+                    lora_config = SplitLoraConfig.for_qwen3_vl()
+                elif model_type == 'qwen2':
+                    lora_config = SplitLoraConfig.for_qwen2()
+                elif model_type == 'gpt2':
+                    lora_config = SplitLoraConfig.for_gpt2()
+                elif model_type == 'gemma':
+                    lora_config = SplitLoraConfig.for_gemma()
+                else:
+                    lora_config = SplitLoraConfig()
+                    logger.warning(
+                        f"No default LoRA config for {model_type}, using generic config"
+                    )
+
+            logger.info(f"Applying LoRA to split models (rank={lora_config.rank})")
+
+            # 为每个部分应用 LoRA
+            if bottom_model is not None:
+                logger.info("Applying LoRA to Bottom model...")
+                bottom_model = apply_lora_to_model(bottom_model, lora_config, freeze_base=True)
+
+            if trunk_model is not None:
+                logger.info("Applying LoRA to Trunk model...")
+                trunk_model = apply_lora_to_model(trunk_model, lora_config, freeze_base=True)
+
+            if top_model is not None:
+                logger.info("Applying LoRA to Top model...")
+                top_model = apply_lora_to_model(top_model, lora_config, freeze_base=True)
+
         return bottom_model, trunk_model, top_model
 
     @staticmethod
@@ -587,7 +746,7 @@ class ModelFactory:
         include_embedding = (component == 'bottom')
         include_final_norm = (component == 'top')
         include_lm_head = (component == 'top')
-        include_visual = (component == 'bottom' and model_type == 'qwen2_vl')
+        include_visual = (component == 'bottom' and model_type in ['qwen2_vl', 'qwen3_vl'])
 
         # Calculate required shards
         if verbose:

@@ -13,6 +13,7 @@ import grpc
 from ..core import ComputeFunction, TensorCodec
 from ..protocol import compute_service_pb2, compute_service_pb2_grpc
 from ..monitoring import MetricsManager, LogManager, LogLevel, MonitoringConfig
+from .activation_cache import ActivationCache
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,10 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
         version: str = "1.0.0",
         history_size: int = 100,
         monitoring_config: Optional[MonitoringConfig] = None,
-        enable_resource_monitoring: bool = True
+        enable_resource_monitoring: bool = True,
+        enable_training: bool = False,
+        activation_cache_size: int = 100,
+        activation_cache_ttl: float = 60.0
     ):
         """
         Args:
@@ -46,19 +50,35 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             history_size: 保留的请求历史记录数量
             monitoring_config: 监控配置（默认使用 MonitoringConfig）
             enable_resource_monitoring: 是否启用资源监控（CPU/GPU/内存）
+            enable_training: 是否启用训练模式（激活值缓存和反向传播）
+            activation_cache_size: 激活值缓存最大条目数
+            activation_cache_ttl: 激活值缓存存活时间（秒）
         """
         self.compute_fn = compute_fn
         self.codec = codec or TensorCodec()
         self.version = version
+        self.enable_training = enable_training
 
         # 统计信息
         self.total_requests = 0
+        self.total_backward_requests = 0
         self.total_compute_time = 0.0
+        self.total_backward_time = 0.0
         self.server_start_time = time.time()
         self.failed_requests = 0
+        self.failed_backward_requests = 0
 
         # 请求历史（用于监控 UI）
         self.request_history: deque = deque(maxlen=history_size)
+
+        # 激活值缓存（用于训练）
+        self.activation_cache = None
+        if enable_training:
+            self.activation_cache = ActivationCache(
+                max_size=activation_cache_size,
+                ttl_seconds=activation_cache_ttl
+            )
+            logger.info(f"Training mode enabled with activation cache")
 
         # 监控管理器
         config = monitoring_config or MonitoringConfig()
@@ -117,14 +137,37 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             f"ComputeServicer initialized: {self.service_info}"
         )
 
+    def _snapshot_to_proto(self, snapshot):
+        """将监控快照转换为 protobuf 对象"""
+        if snapshot is None:
+            return None
+
+        monitoring_data = compute_service_pb2.MonitoringSnapshot(
+            timestamp=snapshot.timestamp,
+            cpu_percent=snapshot.cpu_percent,
+            memory_mb=snapshot.memory_mb,
+            memory_percent=snapshot.memory_percent,
+            gpu_available=snapshot.gpu_available
+        )
+
+        if snapshot.gpu_available and snapshot.gpu_utilization is not None:
+            monitoring_data.gpu_utilization = snapshot.gpu_utilization
+            if snapshot.gpu_memory_used_mb is not None:
+                monitoring_data.gpu_memory_used_mb = snapshot.gpu_memory_used_mb
+            if snapshot.gpu_memory_total_mb is not None:
+                monitoring_data.gpu_memory_total_mb = snapshot.gpu_memory_total_mb
+
+        return monitoring_data
+
     def Compute(self, request, context):
-        """执行计算"""
+        """执行计算（前向传播）"""
         self.total_requests += 1
         request_id = self.total_requests
         start_time = time.time()
         success = False
         compute_time = 0.0
         error_msg = None
+        forward_id = None
 
         try:
             # 1. 解码输入张量
@@ -141,13 +184,29 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
                 f"Received compute request {request_id}, shape={input_tensor.shape}"
             )
 
-            # 2. 执行计算
-            output_tensor = self.compute_fn.compute(input_tensor)
+            # 2. 检查是否为训练模式
+            training_mode = request.HasField("training_mode") and request.training_mode
 
-            # 3. 编码输出张量
+            # 3. 执行计算
+            if training_mode and self.activation_cache is not None:
+                # 训练模式：需要启用梯度并缓存激活值
+                input_tensor.requires_grad_(True)
+                output_tensor = self.compute_fn.compute(input_tensor)
+
+                # 生成 forward_id 并缓存输入激活
+                import uuid
+                forward_id = request.forward_id if request.HasField("forward_id") else str(uuid.uuid4())
+                self.activation_cache.store(forward_id, input_tensor)
+
+                logger.debug(f"[Request {request_id}] Cached activation with forward_id={forward_id}")
+            else:
+                # 推理模式：无需梯度
+                output_tensor = self.compute_fn.compute(input_tensor)
+
+            # 4. 编码输出张量
             output_data, output_shape = self.codec.encode(output_tensor)
 
-            # 4. 计算耗时
+            # 5. 计算耗时
             compute_time = (time.time() - start_time) * 1000  # ms
             self.total_compute_time += compute_time
             success = True
@@ -155,7 +214,7 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             # 记录延迟到 MetricsManager
             self.metrics_manager.record_latency(compute_time / 1000.0)  # 转换为秒
 
-            # 5. 构建响应
+            # 6. 构建响应
             response = compute_service_pb2.ComputeResponse(
                 data=output_data,
                 shape=list(output_shape),
@@ -166,28 +225,16 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             if request.HasField("request_id"):
                 response.request_id = request.request_id
 
+            # 如果是训练模式，返回 forward_id
+            if training_mode and forward_id:
+                response.forward_id = forward_id
+
             # 6. 附加服务端监控数据（如果可用）
             if self.server_monitor:
                 try:
                     snapshot = self.server_monitor.system_monitor.get_current_snapshot()
-                    if snapshot:
-                        # 转换为 protobuf 格式
-                        monitoring_data = compute_service_pb2.MonitoringSnapshot(
-                            timestamp=snapshot.timestamp,
-                            cpu_percent=snapshot.cpu_percent,
-                            memory_mb=snapshot.memory_mb,
-                            memory_percent=snapshot.memory_percent,
-                            gpu_available=snapshot.gpu_available
-                        )
-
-                        # 添加 GPU 数据（如果可用）
-                        if snapshot.gpu_available and snapshot.gpu_utilization is not None:
-                            monitoring_data.gpu_utilization = snapshot.gpu_utilization
-                            if snapshot.gpu_memory_used_mb is not None:
-                                monitoring_data.gpu_memory_used_mb = snapshot.gpu_memory_used_mb
-                            if snapshot.gpu_memory_total_mb is not None:
-                                monitoring_data.gpu_memory_total_mb = snapshot.gpu_memory_total_mb
-
+                    monitoring_data = self._snapshot_to_proto(snapshot)
+                    if monitoring_data:
                         response.monitoring_data.CopyFrom(monitoring_data)
                 except Exception as e:
                     logger.warning(f"Failed to attach monitoring data: {e}")
@@ -227,6 +274,125 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
                 "request_id": request_id,
                 "success": success,
                 "compute_time_ms": compute_time,
+                "error": error_msg
+            })
+
+    def ComputeBackward(self, request, context):
+        """执行反向传播"""
+        # 检查是否启用训练模式
+        if not self.enable_training or self.activation_cache is None:
+            context.set_code(grpc.StatusCode.FAILED_PRECONDITION)
+            context.set_details("Training mode not enabled on server")
+            logger.error("ComputeBackward called but training mode not enabled")
+            return compute_service_pb2.BackwardResponse()
+
+        self.total_backward_requests += 1
+        request_id = self.total_backward_requests
+        start_time = time.time()
+        success = False
+        backward_time = 0.0
+        error_msg = None
+
+        try:
+            # 1. 解码梯度张量
+            grad_output = self.codec.decode(
+                data=request.grad_output_data,
+                shape=tuple(request.grad_output_shape)
+            )
+
+            forward_id = request.forward_id
+
+            logger.debug(
+                f"[Backward {request_id}] forward_id={forward_id}, "
+                f"grad_output shape: {grad_output.shape}"
+            )
+            self.log_manager.add_log(
+                LogLevel.DEBUG,
+                f"Received backward request {request_id}, forward_id={forward_id}"
+            )
+
+            # 2. 检索缓存的激活值
+            try:
+                cached_activation = self.activation_cache.retrieve(forward_id)
+            except KeyError as e:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details(str(e))
+                logger.error(f"[Backward {request_id}] {e}")
+                self.failed_backward_requests += 1
+                return compute_service_pb2.BackwardResponse()
+
+            # 3. 执行反向传播
+            # cached_activation 已经 requires_grad=True
+            # 调用 backward 将计算 cached_activation 的梯度
+            cached_activation.backward(grad_output, retain_graph=False)
+
+            # 4. 提取输入梯度
+            grad_input = cached_activation.grad
+
+            if grad_input is None:
+                raise RuntimeError("Gradient not computed for cached activation")
+
+            # 5. 编码输入梯度
+            grad_input_data, grad_input_shape = self.codec.encode(grad_input)
+
+            # 6. 计算耗时
+            backward_time = (time.time() - start_time) * 1000  # ms
+            self.total_backward_time += backward_time
+            success = True
+
+            # 7. 构建响应
+            response = compute_service_pb2.BackwardResponse(
+                grad_input_data=grad_input_data,
+                grad_input_shape=list(grad_input_shape),
+                forward_id=forward_id,
+                backward_time_ms=backward_time
+            )
+
+            # 8. 附加监控数据（如果可用）
+            if self.server_monitor:
+                try:
+                    snapshot = self.server_monitor.system_monitor.get_current_snapshot()
+                    monitoring_data = self._snapshot_to_proto(snapshot)
+                    if monitoring_data:
+                        response.monitoring_data.CopyFrom(monitoring_data)
+                except Exception as e:
+                    logger.warning(f"Failed to attach monitoring data: {e}")
+
+            logger.debug(
+                f"[Backward {request_id}] "
+                f"grad_input shape: {grad_input_shape}, "
+                f"Time: {backward_time:.2f}ms"
+            )
+            self.log_manager.add_log(
+                LogLevel.INFO,
+                f"Backward request {request_id} completed successfully in {backward_time:.2f}ms"
+            )
+
+            return response
+
+        except Exception as e:
+            self.failed_backward_requests += 1
+            success = False
+            error_msg = str(e)
+            backward_time = (time.time() - start_time) * 1000  # ms
+
+            logger.error(f"Error in ComputeBackward: {e}", exc_info=True)
+            self.log_manager.add_log(
+                LogLevel.ERROR,
+                f"Backward request {request_id} failed: {error_msg}"
+            )
+
+            context.set_code(grpc.StatusCode.INTERNAL)
+            context.set_details(str(e))
+            return compute_service_pb2.BackwardResponse()
+
+        finally:
+            # 记录请求历史
+            self.request_history.append({
+                "timestamp": datetime.now(),
+                "request_id": f"backward_{request_id}",
+                "success": success,
+                "compute_time_ms": backward_time,
                 "error": error_msg
             })
 
@@ -283,6 +449,35 @@ class ComputeServicer(compute_service_pb2_grpc.ComputeServiceServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details(str(e))
             return compute_service_pb2.ServiceInfoResponse()
+
+    def StreamMonitoring(self, request, context):
+        """流式推送监控快照"""
+        if not self.server_monitor:
+            context.set_code(grpc.StatusCode.FAILED_PRECONDITION)
+            context.set_details("Resource monitoring is not enabled on server")
+            return
+
+        # 默认 1.0s，限定 0.1~5.0s
+        interval = 1.0
+        try:
+            if request.HasField("sampling_interval") and request.sampling_interval > 0:
+                interval = request.sampling_interval
+        except Exception:
+            pass
+        interval = max(0.1, min(interval, 5.0))
+
+        while context.is_active():
+            try:
+                snapshot = self.server_monitor.system_monitor.get_current_snapshot()
+                monitoring_data = self._snapshot_to_proto(snapshot)
+                if monitoring_data:
+                    yield compute_service_pb2.MonitoringSnapshotResponse(
+                        snapshot=monitoring_data
+                    )
+            except Exception as e:
+                logger.warning(f"StreamMonitoring error: {e}")
+                break
+            time.sleep(interval)
 
     def get_metrics(self) -> Dict[str, Any]:
         """

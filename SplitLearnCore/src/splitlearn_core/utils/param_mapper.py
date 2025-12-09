@@ -28,6 +28,7 @@ class ParamMapper:
         'gpt-j': r'\.h\.([0-9]+)',          # Similar to GPT-2
         'qwen2': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama)
         'qwen2_vl': r'\.layers\.([0-9]+)',  # model.layers.5.self_attn (text decoder part)
+        'qwen3_vl': r'\.language_model\.layers\.([0-9]+)',  # model.language_model.layers.N.*
         'gemma': r'\.layers\.([0-9]+)',     # model.layers.5.self_attn (same as llama/qwen2)
     }
 
@@ -56,6 +57,11 @@ class ParamMapper:
         'qwen2_vl': {
             'embedding': r'model\.embed_tokens\.weight',
             'final_norm': r'model\.norm',
+            'lm_head': r'lm_head\.weight',
+        },
+        'qwen3_vl': {
+            'embedding': r'model\.language_model\.embed_tokens\.weight',
+            'final_norm': r'model\.language_model\.norm',
             'lm_head': r'lm_head\.weight',
         },
         'gemma': {
@@ -127,6 +133,8 @@ class ParamMapper:
             return param_name.replace(f'.h.{old_idx}.', f'.h.{new_idx}.')
         elif model_type in ['llama2', 'llama', 'qwen2', 'qwen2_vl', 'gemma']:
             return param_name.replace(f'.layers.{old_idx}.', f'.layers.{new_idx}.')
+        elif model_type == 'qwen3_vl':
+            return param_name.replace(f'.language_model.layers.{old_idx}.', f'.language_model.layers.{new_idx}.')
         else:
             available = ', '.join(sorted(cls.LAYER_PATTERNS.keys()))
             raise ValueError(
@@ -203,8 +211,8 @@ class ParamMapper:
         filtered = {}
 
         for key, value in state_dict.items():
-            # Visual block (qwen2_vl)
-            if include_visual and key.startswith("visual."):
+            # Visual block (qwen2_vl / qwen3_vl)
+            if include_visual and key.startswith("model.visual."):
                 filtered[key] = value
                 continue
 

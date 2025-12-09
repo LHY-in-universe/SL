@@ -155,28 +155,31 @@ def generate_text(bottom, top, tokenizer, trunk_client, prompt, max_length=50, t
             trunk_start = time.time()
             if monitor:
                 with monitor.track_phase("trunk_remote", metadata={"step": step + 1}):
-                    hidden_2 = trunk_client.compute(hidden_1)
+                    hidden_2, trunk_timing = trunk_client.compute_with_timing(hidden_1)
             else:
-                hidden_2 = trunk_client.compute(hidden_1)
-            trunk_time = time.time() - trunk_start
-            timing_info['trunk_times'].append(trunk_time)
-            
-            # 获取客户端统计信息（如果可用）
-            try:
-                stats = trunk_client._client.get_statistics()
-                network_time = trunk_time  # 总时间
-            except:
-                network_time = trunk_time  # 总时间包括编码+网络+解码+服务器计算
-            
-            timing_info['network_times'].append(network_time)
-            
+                hidden_2, trunk_timing = trunk_client.compute_with_timing(hidden_1)
+            trunk_time = time.time() - trunk_start  # 仅用于兼容旧字段（秒）
+
+            # 拆分时间：网络总耗时、服务端计算耗时、网络开销
+            network_total_ms = trunk_timing.get('network_total_ms')
+            server_compute_ms = trunk_timing.get('server_compute_ms')
+            network_overhead_ms = trunk_timing.get('network_overhead_ms')
+
+            # 旧字段保持：trunk_times（秒，往返）、network_times（秒，网络开销），新字段增加毫秒级细分
+            timing_info['trunk_times'].append(network_total_ms / 1000.0 if network_total_ms is not None else trunk_time)
+            timing_info['network_times'].append(network_overhead_ms / 1000.0 if network_overhead_ms is not None else trunk_time)
+            timing_info.setdefault('server_compute_times_ms', []).append(server_compute_ms)
+            timing_info.setdefault('network_overhead_times_ms', []).append(network_overhead_ms)
+            timing_info.setdefault('network_total_times_ms', []).append(network_total_ms)
+
             timing_info['trunk_round_trips'].append({
                 'step': step + 1,
                 'time': trunk_time,
                 'timestamp': time.time()
             })
             step_detail['trunk_time'] = trunk_time
-            step_detail['network_time'] = network_time
+            step_detail['network_time'] = network_overhead_ms / 1000.0 if network_overhead_ms is not None else trunk_time
+            step_detail['server_compute_ms'] = server_compute_ms
 
             # Top 模型处理（使用 monitor 跟踪）
             top_start = time.time()

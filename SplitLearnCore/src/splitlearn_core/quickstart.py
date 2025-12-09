@@ -238,11 +238,11 @@ def load_split_model(
 
     split_point_1, split_point_2 = split_points
 
-    # 对 qwen2_vl 允许 split_point_1 为 0（仅视觉塔在 bottom）
-    if model_type == "qwen2_vl":
+    # 对 qwen2_vl / qwen3_vl 允许 split_point_1 为 0（仅视觉塔在 bottom）
+    if model_type in ["qwen2_vl", "qwen3_vl"]:
         if not (0 <= split_point_1 < split_point_2):
             raise ValueError(
-                f"Invalid split points for qwen2_vl: "
+                f"Invalid split points for {model_type}: "
                 f"require 0 <= split_point_1 < split_point_2, got {split_points}"
             )
     else:

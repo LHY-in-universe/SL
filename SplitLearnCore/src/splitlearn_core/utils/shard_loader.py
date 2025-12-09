@@ -215,7 +215,7 @@ class ShardLoader:
             should_include = False
 
             # Check special components
-            if include_visual and param_name.startswith("visual."):
+            if include_visual and param_name.startswith("model.visual."):
                 should_include = True
             elif include_embedding and ParamMapper.is_embedding(param_name, model_type):
                 should_include = True

@@ -5,14 +5,32 @@ package splitlearn.comm;
 // ComputeService - 通用计算服务
 // 提供远程计算能力，完全解耦具体模型实现
 service ComputeService {
-    // 执行计算
+    // 执行计算（前向传播）
     rpc Compute(ComputeRequest) returns (ComputeResponse);
+
+    // 反向传播计算
+    rpc ComputeBackward(BackwardRequest) returns (BackwardResponse);
 
     // 健康检查
     rpc HealthCheck(HealthRequest) returns (HealthResponse);
 
     // 获取服务信息
     rpc GetServiceInfo(ServiceInfoRequest) returns (ServiceInfoResponse);
+}
+
+// KV-Cache 条目（用于增量生成）
+message KVCacheEntry {
+    // Key 张量数据
+    bytes key_data = 1;
+
+    // Key 张量形状 [batch, num_heads, seq_len, head_dim]
+    repeated int32 key_shape = 2;
+
+    // Value 张量数据
+    bytes value_data = 3;
+
+    // Value 张量形状 [batch, num_heads, seq_len, head_dim]
+    repeated int32 value_shape = 4;
 }
 
 // 计算请求
@@ -31,6 +49,18 @@ message ComputeRequest {
 
     // 模型 ID (用于多模型路由)
     string model_id = 5;
+
+    // 前向传播 ID（用于链接前向和反向传播，训练时使用）
+    optional string forward_id = 6;
+
+    // 训练模式标志（启用激活值缓存）
+    optional bool training_mode = 7;
+
+    // 过去的 KV cache（用于增量生成，推理时使用）
+    repeated KVCacheEntry past_key_values = 8;
+
+    // 启用 KV 缓存（推理时使用）
+    optional bool use_cache = 9;
 }
 
 // 服务端监控快照
@@ -76,6 +106,12 @@ message ComputeResponse {
 
     // 服务端监控快照
     optional MonitoringSnapshot monitoring_data = 5;
+
+    // 前向传播 ID（训练模式时返回，用于反向传播）
+    optional string forward_id = 6;
+
+    // 当前的 KV cache（use_cache=true 时返回）
+    repeated KVCacheEntry present_key_values = 7;
 }
 
 // 健康检查请求
@@ -118,4 +154,43 @@ message ServiceInfoResponse {
 
     // 自定义信息
     map<string, string> custom_info = 6;
+}
+
+// 反向传播请求
+message BackwardRequest {
+    // 输出梯度数据（∂loss/∂output）
+    bytes grad_output_data = 1;
+
+    // 梯度张量形状
+    repeated int32 grad_output_shape = 2;
+
+    // 前向传播 ID（用于检索缓存的激活值）
+    string forward_id = 3;
+
+    // 模型 ID
+    optional string model_id = 4;
+
+    // 学习率（可选，用于服务端参数更新）
+    optional float learning_rate = 5;
+
+    // 梯度累积步数（可选，用于梯度累积）
+    optional int32 accumulation_step = 6;
+}
+
+// 反向传播响应
+message BackwardResponse {
+    // 输入梯度数据（∂loss/∂input）
+    bytes grad_input_data = 1;
+
+    // 梯度张量形状
+    repeated int32 grad_input_shape = 2;
+
+    // 前向传播 ID（回显）
+    string forward_id = 3;
+
+    // 反向传播计算耗时（毫秒）
+    optional float backward_time_ms = 4;
+
+    // 服务端监控快照
+    optional MonitoringSnapshot monitoring_data = 5;
 }

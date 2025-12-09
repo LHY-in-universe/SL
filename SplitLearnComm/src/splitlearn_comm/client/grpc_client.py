@@ -4,7 +4,7 @@ GRPCComputeClient - gRPC 客户端实现
 
 import logging
 import time
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Iterator
 
 import grpc
 import torch
@@ -127,14 +127,26 @@ class GRPCComputeClient:
 
     def compute(self, input_tensor: torch.Tensor, model_id: Optional[str] = None) -> torch.Tensor:
         """
-        执行远程计算
+        执行远程计算，仅返回输出张量（向后兼容）。
+        如需获取时间拆分信息，请使用 compute_with_timing。
+        """
+        output, _ = self.compute_with_timing(input_tensor, model_id=model_id)
+        return output
+
+    def compute_with_timing(self, input_tensor: torch.Tensor, model_id: Optional[str] = None):
+        """
+        执行远程计算，返回 (输出张量, timing_dict)
 
         Args:
             input_tensor: 输入张量
             model_id: 目标模型 ID (可选)
 
         Returns:
-            输出张量
+            (输出张量, timing_dict)
+            timing_dict 包含：
+                - network_total_ms: 往返总耗时（编码+网络+解码+服务端计算）
+                - server_compute_ms: 服务端计算时间（来自响应 compute_time_ms，如缺失则为 None）
+                - network_overhead_ms: network_total_ms - server_compute_ms（若 server_compute_ms 缺失则为 None）
 
         Raises:
             grpc.RpcError: RPC 调用失败
@@ -162,10 +174,10 @@ class GRPCComputeClient:
             # 3. RPC 调用
             start_time = time.time()
             response = self.stub.Compute(request, timeout=self.timeout)
-            network_time = (time.time() - start_time) * 1000  # ms
+            network_time_ms = (time.time() - start_time) * 1000  # ms
 
             # 4. 更新统计
-            self.total_network_time += network_time
+            self.total_network_time += network_time_ms
             self.total_compute_time += response.compute_time_ms
 
             # 5. 接收并存储服务端监控数据
@@ -189,13 +201,24 @@ class GRPCComputeClient:
                 shape=tuple(response.shape)
             )
 
+            server_compute_ms = response.compute_time_ms if response.HasField("compute_time_ms") else None
+            network_overhead_ms = None
+            if server_compute_ms is not None:
+                network_overhead_ms = max(network_time_ms - server_compute_ms, 0.0)
+
             logger.debug(
                 f"[Request {self.request_count}] "
-                f"Network {network_time:.2f}ms, "
+                f"Network {network_time_ms:.2f}ms, "
                 f"Compute {response.compute_time_ms:.2f}ms"
             )
 
-            return output_tensor
+            timing = {
+                "network_total_ms": network_time_ms,
+                "server_compute_ms": server_compute_ms,
+                "network_overhead_ms": network_overhead_ms,
+            }
+
+            return output_tensor, timing
 
         try:
             # 使用重试策略执行
@@ -203,6 +226,93 @@ class GRPCComputeClient:
 
         except grpc.RpcError as e:
             logger.error(f"RPC Error: {e.code()}")
+            logger.error(f"Details: {e.details()}")
+            raise
+
+    def compute_backward(
+        self,
+        grad_output: torch.Tensor,
+        forward_id: str,
+        model_id: Optional[str] = None
+    ) -> torch.Tensor:
+        """
+        执行反向传播
+
+        Args:
+            grad_output: 输出梯度张量（∂loss/∂output）
+            forward_id: 前向传播 ID（用于检索缓存的激活值）
+            model_id: 目标模型 ID (可选)
+
+        Returns:
+            输入梯度张量（∂loss/∂input）
+
+        Raises:
+            grpc.RpcError: RPC 调用失败
+            RuntimeError: 客户端未连接或服务端训练模式未启用
+        """
+        if self.stub is None:
+            raise RuntimeError("Client not connected. Call connect() first.")
+
+        def _do_backward():
+            # 1. 编码梯度张量
+            grad_output_data, grad_output_shape = self.codec.encode(grad_output)
+
+            # 2. 构建反向传播请求
+            request_kwargs = {
+                "grad_output_data": grad_output_data,
+                "grad_output_shape": list(grad_output_shape),
+                "forward_id": forward_id
+            }
+            if model_id:
+                request_kwargs["model_id"] = model_id
+
+            request = compute_service_pb2.BackwardRequest(**request_kwargs)
+
+            # 3. RPC 调用
+            start_time = time.time()
+            response = self.stub.ComputeBackward(request, timeout=self.timeout)
+            network_time = (time.time() - start_time) * 1000  # ms
+
+            # 4. 更新统计
+            self.total_network_time += network_time
+            if response.HasField("backward_time_ms"):
+                self.total_compute_time += response.backward_time_ms
+
+            # 5. 接收并存储服务端监控数据
+            if response.HasField("monitoring_data"):
+                monitoring_data = response.monitoring_data
+                snapshot_dict = {
+                    "timestamp": monitoring_data.timestamp,
+                    "cpu_percent": monitoring_data.cpu_percent,
+                    "memory_mb": monitoring_data.memory_mb,
+                    "memory_percent": monitoring_data.memory_percent,
+                    "gpu_available": monitoring_data.gpu_available,
+                    "gpu_utilization": monitoring_data.gpu_utilization if monitoring_data.HasField("gpu_utilization") else None,
+                    "gpu_memory_used_mb": monitoring_data.gpu_memory_used_mb if monitoring_data.HasField("gpu_memory_used_mb") else None,
+                    "gpu_memory_total_mb": monitoring_data.gpu_memory_total_mb if monitoring_data.HasField("gpu_memory_total_mb") else None,
+                }
+                self.server_monitoring_snapshots.append(snapshot_dict)
+
+            # 6. 解码输入梯度
+            grad_input = self.codec.decode(
+                data=response.grad_input_data,
+                shape=tuple(response.grad_input_shape)
+            )
+
+            logger.debug(
+                f"[Backward forward_id={forward_id}] "
+                f"Network {network_time:.2f}ms, "
+                f"Compute {response.backward_time_ms:.2f}ms"
+            )
+
+            return grad_input
+
+        try:
+            # 使用重试策略执行
+            return self.retry_strategy.execute(_do_backward)
+
+        except grpc.RpcError as e:
+            logger.error(f"RPC Error in ComputeBackward: {e.code()}")
             logger.error(f"Details: {e.details()}")
             raise
 
@@ -294,6 +404,43 @@ class GRPCComputeClient:
     def clear_server_monitoring_data(self):
         """清空服务端监控数据"""
         self.server_monitoring_snapshots.clear()
+
+    def stream_monitoring(self, sampling_interval: float = 1.0) -> Iterator[Dict[str, Any]]:
+        """
+        订阅服务端实时监控流
+
+        Args:
+            sampling_interval: 采样间隔秒数（服务端限制 0.1~5.0）
+
+        Yields:
+            监控快照字典
+        """
+        if self.stub is None:
+            raise RuntimeError("Client not connected. Call connect() first.")
+
+        interval = sampling_interval if sampling_interval and sampling_interval > 0 else 0
+        # 具体限流由服务端控制，这里只做简单校验
+        request = compute_service_pb2.MonitoringStreamRequest(
+            sampling_interval=interval
+        )
+
+        try:
+            for resp in self.stub.StreamMonitoring(request):
+                snap = resp.snapshot
+                yield {
+                    "timestamp": snap.timestamp,
+                    "cpu_percent": snap.cpu_percent,
+                    "memory_mb": snap.memory_mb,
+                    "memory_percent": snap.memory_percent,
+                    "gpu_available": snap.gpu_available,
+                    "gpu_utilization": snap.gpu_utilization if snap.HasField("gpu_utilization") else None,
+                    "gpu_memory_used_mb": snap.gpu_memory_used_mb if snap.HasField("gpu_memory_used_mb") else None,
+                    "gpu_memory_total_mb": snap.gpu_memory_total_mb if snap.HasField("gpu_memory_total_mb") else None,
+                }
+        except grpc.RpcError as e:
+            logger.warning(f"StreamMonitoring RPC ended: {e.code()} {e.details()}")
+        except Exception as e:
+            logger.warning(f"StreamMonitoring error: {e}")
 
     def close(self):
         """关闭连接"""
