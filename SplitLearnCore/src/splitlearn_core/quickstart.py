@@ -281,8 +281,7 @@ def load_split_model(
             split_point_1=split_point_1,
             split_point_2=split_point_2,
             device=device,
-            # Note: torch_dtype is not supported by ModelFactory.create_split_models
-            # If needed, convert models after loading
+            torch_dtype=torch_dtype,
             parts=parts,
         )
 

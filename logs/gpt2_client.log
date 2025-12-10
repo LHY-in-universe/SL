@@ -1,0 +1,324 @@
+2025-12-10 14:19:59,103 - INFO - ======================================================================
+2025-12-10 14:19:59,103 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:19:59,103 - INFO - ======================================================================
+2025-12-10 14:19:59,103 - INFO - 本地设备: mps
+2025-12-10 14:19:59,103 - INFO - 远程服务: localhost:50051
+2025-12-10 14:19:59,103 - INFO - 拆分点: [2, 10]
+2025-12-10 14:19:59,103 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:19:59,103 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:19:59,103 - INFO - Loading split model:
+2025-12-10 14:19:59,103 - INFO -   Model type: gpt2
+2025-12-10 14:19:59,103 - INFO -   Model name/path: gpt2
+2025-12-10 14:19:59,103 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:19:59,103 - INFO -   Device: mps
+2025-12-10 14:19:59,103 - INFO -   dtype: default
+2025-12-10 14:20:04,328 - INFO - ✓ Models loaded successfully
+2025-12-10 14:20:04,328 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:20:04,328 - INFO -   Top:    52.77M parameters
+2025-12-10 14:20:13,131 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:20:13,132 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:20:13,132 - INFO -   Top 参数: 52.77M
+2025-12-10 14:20:13,132 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:20:13,134 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:20:13,166 - ERROR - ✗ Connection failed: StatusCode.UNAVAILABLE
+2025-12-10 14:20:13,166 - ERROR -   Details: failed to connect to all addresses; last error: UNKNOWN: ipv4:127.0.0.1:50051: Failed to connect to remote host: connect: Connection refused (61)
+2025-12-10 14:37:58,579 - INFO - ======================================================================
+2025-12-10 14:37:58,579 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:37:58,579 - INFO - ======================================================================
+2025-12-10 14:37:58,579 - INFO - 本地设备: mps
+2025-12-10 14:37:58,579 - INFO - 远程服务: localhost:50051
+2025-12-10 14:37:58,579 - INFO - 拆分点: [2, 10]
+2025-12-10 14:37:58,579 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:37:58,580 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:37:58,580 - INFO - Loading split model:
+2025-12-10 14:37:58,580 - INFO -   Model type: gpt2
+2025-12-10 14:37:58,580 - INFO -   Model name/path: gpt2
+2025-12-10 14:37:58,580 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:37:58,580 - INFO -   Device: mps
+2025-12-10 14:37:58,580 - INFO -   dtype: default
+2025-12-10 14:38:05,947 - INFO - ✓ Models loaded successfully
+2025-12-10 14:38:05,948 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:38:05,948 - INFO -   Top:    52.77M parameters
+2025-12-10 14:38:09,073 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:38:09,074 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:38:09,074 - INFO -   Top 参数: 52.77M
+2025-12-10 14:38:09,074 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:38:09,074 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:38:09,099 - INFO - ✓ Connected to server
+2025-12-10 14:38:09,099 - INFO -   Status: ok
+2025-12-10 14:38:09,099 - INFO -   Version: 1.0.0
+2025-12-10 14:38:09,099 - INFO -   Uptime: 10.7s
+2025-12-10 14:38:09,099 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:38:09,145 - INFO - 
+启动 Gradio 界面...
+2025-12-10 14:40:48,278 - INFO - ======================================================================
+2025-12-10 14:40:48,278 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:40:48,278 - INFO - ======================================================================
+2025-12-10 14:40:48,278 - INFO - 本地设备: mps
+2025-12-10 14:40:48,278 - INFO - 远程服务: localhost:50051
+2025-12-10 14:40:48,278 - INFO - 拆分点: [2, 10]
+2025-12-10 14:40:48,278 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:40:48,278 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:40:48,278 - INFO - Loading split model:
+2025-12-10 14:40:48,278 - INFO -   Model type: gpt2
+2025-12-10 14:40:48,278 - INFO -   Model name/path: gpt2
+2025-12-10 14:40:48,278 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:40:48,278 - INFO -   Device: mps
+2025-12-10 14:40:48,278 - INFO -   dtype: default
+2025-12-10 14:40:53,421 - INFO - ✓ Models loaded successfully
+2025-12-10 14:40:53,421 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:40:53,421 - INFO -   Top:    52.77M parameters
+2025-12-10 14:40:55,165 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:40:55,165 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:40:55,165 - INFO -   Top 参数: 52.77M
+2025-12-10 14:40:55,165 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:40:55,166 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:40:55,205 - INFO - ✓ Connected to server
+2025-12-10 14:40:55,205 - INFO -   Status: ok
+2025-12-10 14:40:55,205 - INFO -   Version: 1.0.0
+2025-12-10 14:40:55,205 - INFO -   Uptime: 176.8s
+2025-12-10 14:40:55,205 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:40:56,393 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 14:43:10,033 - INFO - ======================================================================
+2025-12-10 14:43:10,033 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:43:10,033 - INFO - ======================================================================
+2025-12-10 14:43:10,033 - INFO - 本地设备: mps
+2025-12-10 14:43:10,033 - INFO - 远程服务: localhost:50051
+2025-12-10 14:43:10,033 - INFO - 拆分点: [2, 10]
+2025-12-10 14:43:10,033 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:43:10,033 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:43:10,033 - INFO - Loading split model:
+2025-12-10 14:43:10,034 - INFO -   Model type: gpt2
+2025-12-10 14:43:10,034 - INFO -   Model name/path: gpt2
+2025-12-10 14:43:10,034 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:43:10,034 - INFO -   Device: mps
+2025-12-10 14:43:10,034 - INFO -   dtype: default
+2025-12-10 14:43:15,915 - INFO - ✓ Models loaded successfully
+2025-12-10 14:43:15,918 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:43:15,918 - INFO -   Top:    52.77M parameters
+2025-12-10 14:43:17,943 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:43:17,943 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:43:17,943 - INFO -   Top 参数: 52.77M
+2025-12-10 14:43:17,943 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:43:17,945 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:43:18,008 - INFO - ✓ Connected to server
+2025-12-10 14:43:18,008 - INFO -   Status: ok
+2025-12-10 14:43:18,008 - INFO -   Version: 1.0.0
+2025-12-10 14:43:18,008 - INFO -   Uptime: 319.6s
+2025-12-10 14:43:18,008 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:43:18,219 - INFO - 
+启动 Gradio 界面...
+2025-12-10 14:43:19,208 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 14:43:19,943 - INFO - HTTP Request: GET http://localhost:7860/gradio_api/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:44:36,918 - INFO - ======================================================================
+2025-12-10 14:44:36,918 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:44:36,918 - INFO - ======================================================================
+2025-12-10 14:44:36,918 - INFO - 本地设备: mps
+2025-12-10 14:44:36,918 - INFO - 远程服务: localhost:50051
+2025-12-10 14:44:36,918 - INFO - 拆分点: [2, 10]
+2025-12-10 14:44:36,918 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:44:36,918 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:44:36,918 - INFO - Loading split model:
+2025-12-10 14:44:36,918 - INFO -   Model type: gpt2
+2025-12-10 14:44:36,919 - INFO -   Model name/path: gpt2
+2025-12-10 14:44:36,919 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:44:36,919 - INFO -   Device: mps
+2025-12-10 14:44:36,919 - INFO -   dtype: default
+2025-12-10 14:44:42,544 - INFO - ✓ Models loaded successfully
+2025-12-10 14:44:42,545 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:44:42,545 - INFO -   Top:    52.77M parameters
+2025-12-10 14:44:44,545 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:44:44,545 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:44:44,545 - INFO -   Top 参数: 52.77M
+2025-12-10 14:44:44,545 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:44:44,546 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:44:44,589 - INFO - ✓ Connected to server
+2025-12-10 14:44:44,589 - INFO -   Status: ok
+2025-12-10 14:44:44,589 - INFO -   Version: 1.0.0
+2025-12-10 14:44:44,589 - INFO -   Uptime: 406.2s
+2025-12-10 14:44:44,589 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:44:44,730 - INFO - 
+启动 Gradio 界面...
+2025-12-10 14:44:46,321 - INFO - HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:46:40,822 - INFO - ======================================================================
+2025-12-10 14:46:40,823 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:46:40,823 - INFO - ======================================================================
+2025-12-10 14:46:40,823 - INFO - 本地设备: mps
+2025-12-10 14:46:40,823 - INFO - 远程服务: localhost:50051
+2025-12-10 14:46:40,823 - INFO - 拆分点: [2, 10]
+2025-12-10 14:46:40,823 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:46:40,824 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:46:40,824 - INFO - Loading split model:
+2025-12-10 14:46:40,824 - INFO -   Model type: gpt2
+2025-12-10 14:46:40,824 - INFO -   Model name/path: gpt2
+2025-12-10 14:46:40,824 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:46:40,824 - INFO -   Device: mps
+2025-12-10 14:46:40,824 - INFO -   dtype: default
+2025-12-10 14:46:47,400 - INFO - ✓ Models loaded successfully
+2025-12-10 14:46:47,404 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:46:47,404 - INFO -   Top:    52.77M parameters
+2025-12-10 14:46:49,365 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:46:49,366 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:46:49,367 - INFO -   Top 参数: 52.77M
+2025-12-10 14:46:49,367 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:46:49,370 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:46:49,534 - INFO - ✓ Connected to server
+2025-12-10 14:46:49,534 - INFO -   Status: ok
+2025-12-10 14:46:49,534 - INFO -   Version: 1.0.0
+2025-12-10 14:46:49,534 - INFO -   Uptime: 531.2s
+2025-12-10 14:46:49,534 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:46:49,768 - INFO - 
+启动 Gradio 界面...
+2025-12-10 14:47:05,086 - INFO - HTTP Request: GET http://127.0.0.1:7860/gradio_api/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:50:57,971 - INFO - ======================================================================
+2025-12-10 14:50:57,972 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 14:50:57,972 - INFO - ======================================================================
+2025-12-10 14:50:57,972 - INFO - 本地设备: mps
+2025-12-10 14:50:57,972 - INFO - 远程服务: localhost:50051
+2025-12-10 14:50:57,972 - INFO - 拆分点: [2, 10]
+2025-12-10 14:50:57,972 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 14:50:57,972 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:50:57,972 - INFO - Loading split model:
+2025-12-10 14:50:57,972 - INFO -   Model type: gpt2
+2025-12-10 14:50:57,972 - INFO -   Model name/path: gpt2
+2025-12-10 14:50:57,972 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:50:57,972 - INFO -   Device: mps
+2025-12-10 14:50:57,972 - INFO -   dtype: default
+2025-12-10 14:51:04,058 - INFO - ✓ Models loaded successfully
+2025-12-10 14:51:04,059 - INFO -   Bottom: 53.56M parameters
+2025-12-10 14:51:04,060 - INFO -   Top:    52.77M parameters
+2025-12-10 14:51:06,019 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 14:51:06,022 - INFO -   Bottom 参数: 53.56M
+2025-12-10 14:51:06,022 - INFO -   Top 参数: 52.77M
+2025-12-10 14:51:06,022 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 14:51:06,035 - INFO - Connecting to server: localhost:50051
+2025-12-10 14:51:07,890 - INFO - ✓ Connected to server
+2025-12-10 14:51:07,890 - INFO -   Status: ok
+2025-12-10 14:51:07,890 - INFO -   Version: 1.0.0
+2025-12-10 14:51:07,890 - INFO -   Uptime: 789.5s
+2025-12-10 14:51:07,890 - INFO - ✓ 已连接到远程服务
+2025-12-10 14:51:07,993 - INFO - 
+启动 Gradio 界面...
+2025-12-10 14:51:08,374 - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-12-10 14:51:09,705 - INFO - HTTP Request: GET http://127.0.0.1:7860/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:10,268 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 14:51:10,998 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:12,773 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:14,558 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:16,334 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:18,354 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 14:51:21,671 - INFO - HTTP Request: GET https://api.gradio.app/v2/tunnel-request "HTTP/1.1 200 OK"
+2025-12-10 15:52:14,386 - INFO - ======================================================================
+2025-12-10 15:52:14,387 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 15:52:14,387 - INFO - ======================================================================
+2025-12-10 15:52:14,387 - INFO - 本地设备: mps
+2025-12-10 15:52:14,387 - INFO - 远程服务: localhost:50051
+2025-12-10 15:52:14,387 - INFO - 拆分点: [2, 10]
+2025-12-10 15:52:14,387 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 15:52:14,387 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 15:52:14,387 - INFO - Loading split model:
+2025-12-10 15:52:14,387 - INFO -   Model type: gpt2
+2025-12-10 15:52:14,387 - INFO -   Model name/path: gpt2
+2025-12-10 15:52:14,387 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 15:52:14,387 - INFO -   Device: mps
+2025-12-10 15:52:14,387 - INFO -   dtype: default
+2025-12-10 15:52:21,868 - INFO - ✓ Models loaded successfully
+2025-12-10 15:52:21,872 - INFO -   Bottom: 53.56M parameters
+2025-12-10 15:52:21,872 - INFO -   Top:    52.77M parameters
+2025-12-10 15:52:24,811 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 15:52:24,812 - INFO -   Bottom 参数: 53.56M
+2025-12-10 15:52:24,813 - INFO -   Top 参数: 52.77M
+2025-12-10 15:52:24,813 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 15:52:24,814 - INFO - Connecting to server: localhost:50051
+2025-12-10 15:52:24,988 - INFO - ✓ Connected to server
+2025-12-10 15:52:24,988 - INFO -   Status: ok
+2025-12-10 15:52:24,988 - INFO -   Version: 1.0.0
+2025-12-10 15:52:24,988 - INFO -   Uptime: 4466.6s
+2025-12-10 15:52:24,988 - INFO - ✓ 已连接到远程服务
+2025-12-10 15:52:25,085 - INFO - 
+启动 Gradio 界面...
+2025-12-10 15:52:25,433 - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-12-10 15:52:26,177 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 15:52:26,794 - INFO - HTTP Request: GET http://127.0.0.1:7861/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:28,067 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:29,865 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:31,651 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:33,538 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:35,644 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:52:37,496 - INFO - HTTP Request: GET https://api.gradio.app/v2/tunnel-request "HTTP/1.1 200 OK"
+2025-12-10 15:54:10,699 - INFO - ======================================================================
+2025-12-10 15:54:10,699 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 15:54:10,699 - INFO - ======================================================================
+2025-12-10 15:54:10,699 - INFO - 本地设备: mps
+2025-12-10 15:54:10,699 - INFO - 远程服务: localhost:50051
+2025-12-10 15:54:10,699 - INFO - 拆分点: [2, 10]
+2025-12-10 15:54:10,700 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 15:54:10,700 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 15:54:10,700 - INFO - Loading split model:
+2025-12-10 15:54:10,700 - INFO -   Model type: gpt2
+2025-12-10 15:54:10,700 - INFO -   Model name/path: gpt2
+2025-12-10 15:54:10,700 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 15:54:10,700 - INFO -   Device: mps
+2025-12-10 15:54:10,700 - INFO -   dtype: default
+2025-12-10 15:54:15,724 - WARNING - '(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /gpt2/resolve/main/config.json (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:992)')))"), '(Request ID: b991b32d-d6b1-4a4a-827a-6c9f8b51f2b2)')' thrown while requesting HEAD https://huggingface.co/gpt2/resolve/main/config.json
+2025-12-10 15:54:15,725 - WARNING - Retrying in 1s [Retry 1/5].
+2025-12-10 15:54:22,518 - INFO - ✓ Models loaded successfully
+2025-12-10 15:54:22,520 - INFO -   Bottom: 53.56M parameters
+2025-12-10 15:54:22,520 - INFO -   Top:    52.77M parameters
+2025-12-10 15:54:24,357 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 15:54:24,358 - INFO -   Bottom 参数: 53.56M
+2025-12-10 15:54:24,358 - INFO -   Top 参数: 52.77M
+2025-12-10 15:54:24,358 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 15:54:24,360 - INFO - Connecting to server: localhost:50051
+2025-12-10 15:54:24,432 - INFO - ✓ Connected to server
+2025-12-10 15:54:24,432 - INFO -   Status: ok
+2025-12-10 15:54:24,432 - INFO -   Version: 1.0.0
+2025-12-10 15:54:24,432 - INFO -   Uptime: 4586.1s
+2025-12-10 15:54:24,432 - INFO - ✓ 已连接到远程服务
+2025-12-10 15:54:24,523 - INFO - 
+启动 Gradio 界面...
+2025-12-10 15:54:24,851 - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "
+2025-12-10 15:54:25,628 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 15:54:26,150 - INFO - HTTP Request: GET http://127.0.0.1:7860/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:27,434 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:29,191 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:31,000 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:32,756 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:34,487 - INFO - HTTP Request: HEAD http://127.0.0.1:7860/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 15:54:36,125 - INFO - HTTP Request: GET https://api.gradio.app/v2/tunnel-request "HTTP/1.1 200 OK"
+2025-12-10 16:00:59,410 - INFO - ======================================================================
+2025-12-10 16:00:59,411 - INFO - GPT-2 分拆客户端（Gradio + gRPC）
+2025-12-10 16:00:59,411 - INFO - ======================================================================
+2025-12-10 16:00:59,411 - INFO - 本地设备: mps
+2025-12-10 16:00:59,411 - INFO - 远程服务: localhost:50051
+2025-12-10 16:00:59,411 - INFO - 拆分点: [2, 10]
+2025-12-10 16:00:59,411 - INFO - 加载 Bottom 和 Top 模型...
+2025-12-10 16:00:59,411 - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 16:00:59,411 - INFO - Loading split model:
+2025-12-10 16:00:59,411 - INFO -   Model type: gpt2
+2025-12-10 16:00:59,411 - INFO -   Model name/path: gpt2
+2025-12-10 16:00:59,411 - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 16:00:59,411 - INFO -   Device: mps
+2025-12-10 16:00:59,411 - INFO -   dtype: default
+2025-12-10 16:01:18,986 - WARNING - '(ReadTimeoutError("HTTPSConnectionPool(host='huggingface.co', port=443): Read timed out. (read timeout=10)"), '(Request ID: 17d37a01-2890-425f-9dfa-b1f67b79ec4b)')' thrown while requesting HEAD https://huggingface.co/gpt2/resolve/main/generation_config.json
+2025-12-10 16:01:18,991 - WARNING - Retrying in 1s [Retry 1/5].
+2025-12-10 16:01:25,593 - INFO - ✓ Models loaded successfully
+2025-12-10 16:01:25,594 - INFO -   Bottom: 53.56M parameters
+2025-12-10 16:01:25,594 - INFO -   Top:    52.77M parameters
+2025-12-10 16:01:28,556 - INFO - ✓ Bottom 和 Top 模型加载完成
+2025-12-10 16:01:28,557 - INFO -   Bottom 参数: 53.56M
+2025-12-10 16:01:28,557 - INFO -   Top 参数: 52.77M
+2025-12-10 16:01:28,557 - INFO - 连接远程服务 localhost:50051...
+2025-12-10 16:01:28,560 - INFO - Connecting to server: localhost:50051
+2025-12-10 16:01:28,644 - INFO - ✓ Connected to server
+2025-12-10 16:01:28,644 - INFO -   Status: ok
+2025-12-10 16:01:28,644 - INFO -   Version: 1.0.0
+2025-12-10 16:01:28,644 - INFO -   Uptime: 5010.3s
+2025-12-10 16:01:28,644 - INFO - ✓ 已连接到远程服务
+2025-12-10 16:01:28,750 - INFO - 
+启动 Gradio 界面...
+2025-12-10 16:01:30,205 - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-12-10 16:01:31,136 - INFO - HTTP Request: GET http://127.0.0.1:7861/startup-events "HTTP/1.1 502 Bad Gateway"
+2025-12-10 16:01:32,788 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 16:01:35,037 - INFO - HTTP Request: HEAD http://127.0.0.1:7861/ "HTTP/1.1 502 Bad Gateway"
+2025-12-10 16:02:08,965 - INFO - HTTP Request: GET https://checkip.amazonaws.com/ "HTTP/1.1 200 "

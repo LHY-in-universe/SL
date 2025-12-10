@@ -384,3 +384,258 @@ class ShardLoader:
                 f"Unsupported shard format: {shard_path.suffix}. "
                 f"Supported formats: .safetensors, .bin"
             )
+
+    @staticmethod
+    def extract_embed_tokens(
+        model_path: str,
+        model_type: str,
+        device: str = 'cpu',
+        torch_dtype: Optional[torch.dtype] = None,
+        cache_dir: Optional[str] = None,
+    ) -> torch.nn.Embedding:
+        """
+        从模型中提取 embed_tokens 层，无需加载完整模型。
+
+        支持分片和非分片模型。比加载完整模型更节省内存。
+
+        参数：
+            model_path: 模型路径（本地目录或 HuggingFace 模型 ID）
+            model_type: 模型架构（'qwen3_vl'、'qwen2_vl'、'qwen2'、'gpt2' 等）
+            device: 目标设备（'cpu'、'cuda'、'mps'）
+            torch_dtype: 权重数据类型（如 torch.float16）。如果为 None，使用原始 dtype
+            cache_dir: 可选的缓存目录用于下载
+
+        返回：
+            torch.nn.Embedding: embed_tokens 层，可直接使用
+
+        异常：
+            ValueError: 如果 model_type 无效或找不到 embed_tokens
+            FileNotFoundError: 如果找不到模型文件
+
+        示例：
+            >>> # 高效提取 embed_tokens
+            >>> embed_tokens = ShardLoader.extract_embed_tokens(
+            ...     model_path="Qwen/Qwen3-VL-2B-Instruct",
+            ...     model_type="qwen3_vl",
+            ...     device="cuda",
+            ...     torch_dtype=torch.float16,
+            ...     cache_dir="./models"
+            ... )
+            >>>
+            >>> # 用于文本处理
+            >>> input_ids = torch.tensor([[1, 2, 3, 4, 5]])
+            >>> text_embeds = embed_tokens(input_ids)
+            >>> print(text_embeds.shape)  # [1, 5, hidden_size]
+
+        注意：
+            - 对于 qwen3_vl: 查找 'model.language_model.embed_tokens.weight'
+            - 对于 qwen2_vl/qwen2: 查找 'model.embed_tokens.weight'
+            - 对于 gpt2: 查找 'transformer.wte.weight'
+            - 自动检测分片/非分片模型
+            - 比加载完整模型快得多（秒级 vs 分钟级）
+            - 使用更少内存（MB 级 vs GB 级）
+        """
+        from splitlearn_core.utils.param_mapper import ParamMapper
+
+        # 检查模型是否分片
+        is_sharded = ShardLoader.is_sharded_model(model_path)
+        print(f"  检测模型类型: {'分片模型' if is_sharded else '非分片模型'}")
+
+        if is_sharded:
+            # 分片模型：从索引文件加载
+            print(f"  正在加载分片索引文件...")
+            index_json = ShardLoader.load_index_json(model_path)
+            weight_map = index_json.get("weight_map", {})
+        else:
+            # 非分片模型：直接从单个文件加载
+            print(f"  使用非分片模式加载...")
+            return ShardLoader._extract_embed_tokens_from_single_file(
+                model_path=model_path,
+                model_type=model_type,
+                device=device,
+                torch_dtype=torch_dtype,
+                cache_dir=cache_dir,
+            )
+
+        # 查找 embed_tokens 参数名称
+        embed_param_name = None
+        for param_name in weight_map.keys():
+            if ParamMapper.is_embedding(param_name, model_type):
+                embed_param_name = param_name
+                break
+
+        if embed_param_name is None:
+            raise ValueError(
+                f"在 {model_path} 中找不到 embed_tokens（model_type='{model_type}'）。"
+                f"可用参数: {list(weight_map.keys())[:5]}..."
+            )
+
+        # 获取包含 embed_tokens 的分片文件
+        shard_file = weight_map[embed_param_name]
+
+        # 如果需要则下载分片
+        shard_paths = ShardLoader.download_shards_if_needed(
+            model_path,
+            {shard_file},
+            cache_dir=cache_dir,
+            progress_bar=False
+        )
+        shard_path = shard_paths[shard_file]
+
+        # 仅从分片中加载 embed_tokens（非常高效！）
+        def filter_fn(name):
+            return ParamMapper.is_embedding(name, model_type)
+
+        embed_dict = ShardLoader.load_shard_partial(shard_path, filter_fn)
+
+        if embed_param_name not in embed_dict:
+            raise RuntimeError(
+                f"从 {shard_file} 加载 {embed_param_name} 失败。"
+                f"已加载的键: {list(embed_dict.keys())}"
+            )
+
+        # 获取 embed_tokens 权重张量
+        embed_weight = embed_dict[embed_param_name]
+
+        # 如果指定了 dtype，进行转换
+        if torch_dtype is not None and embed_weight.is_floating_point():
+            embed_weight = embed_weight.to(dtype=torch_dtype)
+
+        # 创建 Embedding 层
+        vocab_size, hidden_size = embed_weight.shape
+        embed_layer = torch.nn.Embedding(vocab_size, hidden_size)
+        embed_layer.weight.data = embed_weight
+        embed_layer.requires_grad_(False)  # 推理时通常冻结
+
+        # 移动到目标设备
+        embed_layer.to(device)
+
+        return embed_layer
+
+    @staticmethod
+    def _extract_embed_tokens_from_single_file(
+        model_path: str,
+        model_type: str,
+        device: str = 'cpu',
+        torch_dtype: Optional[torch.dtype] = None,
+        cache_dir: Optional[str] = None,
+    ) -> torch.nn.Embedding:
+        """
+        从非分片模型文件中提取 embed_tokens（内部辅助方法）。
+
+        参数：
+            model_path: 模型路径（本地目录或 HuggingFace 模型 ID）
+            model_type: 模型架构
+            device: 目标设备
+            torch_dtype: 权重数据类型
+            cache_dir: 缓存目录
+
+        返回：
+            torch.nn.Embedding: embed_tokens 层
+        """
+        from splitlearn_core.utils.param_mapper import ParamMapper
+
+        # 查找模型文件
+        model_file = None
+
+        # 尝试本地路径
+        print(f"  检查本地路径: {model_path}")
+        if os.path.exists(model_path):
+            model_dir = Path(model_path)
+            print(f"  本地路径存在，查找模型文件...")
+
+            # 优先尝试 safetensors
+            safetensors_file = model_dir / "model.safetensors"
+            if safetensors_file.exists():
+                print(f"  找到 safetensors 文件: {safetensors_file}")
+                model_file = safetensors_file
+            else:
+                # 尝试 PyTorch bin 文件
+                pytorch_file = model_dir / "pytorch_model.bin"
+                if pytorch_file.exists():
+                    print(f"  找到 PyTorch bin 文件: {pytorch_file}")
+                    model_file = pytorch_file
+                else:
+                    print(f"  本地未找到 model.safetensors 或 pytorch_model.bin")
+
+        # 从 HuggingFace Hub 下载
+        if model_file is None:
+            print(f"  尝试从 HuggingFace Hub 下载...")
+            try:
+                from huggingface_hub import hf_hub_download
+
+                # 优先尝试 safetensors
+                try:
+                    print(f"    尝试下载 model.safetensors...")
+                    model_file = Path(hf_hub_download(
+                        repo_id=model_path,
+                        filename="model.safetensors",
+                        cache_dir=cache_dir,
+                    ))
+                    print(f"    ✓ 下载成功: {model_file}")
+                except Exception as e1:
+                    print(f"    model.safetensors 下载失败: {e1}")
+                    # 回退到 PyTorch bin
+                    try:
+                        print(f"    尝试下载 pytorch_model.bin...")
+                        model_file = Path(hf_hub_download(
+                            repo_id=model_path,
+                            filename="pytorch_model.bin",
+                            cache_dir=cache_dir,
+                        ))
+                        print(f"    ✓ 下载成功: {model_file}")
+                    except Exception as e2:
+                        raise FileNotFoundError(
+                            f"无法找到 {model_path} 的模型文件。"
+                            f"尝试了 model.safetensors 和 pytorch_model.bin。"
+                            f"错误1: {e1}\n错误2: {e2}"
+                        )
+
+            except ImportError:
+                raise ImportError(
+                    "huggingface_hub is required to download models. "
+                    "Install with: pip install huggingface-hub"
+                )
+
+        if model_file is None:
+            raise FileNotFoundError(
+                f"在 {model_path} 中找不到模型文件 "
+                f"(model.safetensors 或 pytorch_model.bin)"
+            )
+
+        # 定义过滤函数
+        def filter_fn(name):
+            result = ParamMapper.is_embedding(name, model_type)
+            if result:
+                print(f"    找到 embedding 参数: {name}")
+            return result
+
+        # 使用现有的 load_shard_partial 方法加载
+        print(f"  从文件加载 embed_tokens: {model_file}")
+        embed_dict = ShardLoader.load_shard_partial(model_file, filter_fn)
+
+        if not embed_dict:
+            raise ValueError(
+                f"在 {model_file} 中找不到 embed_tokens（model_type='{model_type}'）"
+            )
+
+        # 获取 embed_tokens 权重（应该只有一个键）
+        embed_param_name = list(embed_dict.keys())[0]
+        print(f"  提取参数: {embed_param_name}")
+        embed_weight = embed_dict[embed_param_name]
+        print(f"  权重形状: {embed_weight.shape}, dtype: {embed_weight.dtype}")
+
+        # 如果指定了 dtype，进行转换
+        if torch_dtype is not None and embed_weight.is_floating_point():
+            embed_weight = embed_weight.to(dtype=torch_dtype)
+
+        # 创建 Embedding 层
+        vocab_size, hidden_size = embed_weight.shape
+        embed_layer = torch.nn.Embedding(vocab_size, hidden_size)
+        embed_layer.weight.data = embed_weight
+        embed_layer.requires_grad_(False)
+
+        # 移动到目标设备
+        embed_layer.to(device)
+
+        return embed_layer

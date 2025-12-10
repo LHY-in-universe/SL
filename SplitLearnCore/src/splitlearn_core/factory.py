@@ -65,53 +65,6 @@ class ModelFactory:
     - Incremental loading: Load only required shards for each component (low memory)
     """
 
-    @staticmethod
-    def _load_qwen3_vl_config(model_name_or_path: str):
-        """
-        加载 qwen3_vl 配置，并转换为 Qwen2VLConfig 以复用现有实现。
-        """
-        if Qwen2VLConfig is None:
-            raise ImportError("transformers>=4.46 is required for qwen3_vl support")
-
-        try:
-            base_config = AutoConfig.from_pretrained(model_name_or_path)
-        except Exception:
-            base_config = None
-
-        if base_config is None or not isinstance(base_config, Qwen2VLConfig):
-            # 手动加载 config.json
-            config_dict = None
-            local_config = os.path.join(model_name_or_path, "config.json")
-            if os.path.exists(local_config):
-                with open(local_config, "r") as f:
-                    config_dict = json.load(f)
-            else:
-                try:
-                    from huggingface_hub import hf_hub_download
-                    path = hf_hub_download(model_name_or_path, "config.json")
-                    with open(path, "r") as f:
-                        config_dict = json.load(f)
-                except Exception as e:
-                    raise RuntimeError(
-                        f"Failed to load config for qwen3_vl from {model_name_or_path}: {e}"
-                    )
-
-            base_config = Qwen2VLConfig.from_dict(config_dict)
-
-        config = base_config if isinstance(base_config, Qwen2VLConfig) else Qwen2VLConfig.from_dict(base_config.to_dict())
-        if Qwen2VLVisionConfig is not None and isinstance(getattr(config, "vision_config", None), dict):
-            config.vision_config = Qwen2VLVisionConfig.from_dict(config.vision_config)
-        # qwen3_vl 配置中的子配置可能是 dict，全部置为 None，避免 GenerationConfig 访问 .to_dict
-        if isinstance(getattr(config, "text_config", None), dict):
-            config.text_config = None
-        if isinstance(getattr(config, "encoder_config", None), dict):
-            config.encoder_config = None
-        if isinstance(getattr(config, "decoder_config", None), dict):
-            config.decoder_config = None
-        config.model_type = "qwen2_vl"
-        config.architectures = ["Qwen2VLForConditionalGeneration"]
-        return config
-
     # Map common model names to their HuggingFace model classes
     _MODEL_CLASS_MAP = {
         'gpt2': 'GPT2LMHeadModel',
@@ -136,6 +89,7 @@ class ModelFactory:
         use_lora: bool = False,
         lora_config: Optional['SplitLoraConfig'] = None,
         attn_implementation: Optional[str] = 'sdpa',
+        torch_dtype: Optional[torch.dtype] = None,
     ) -> Tuple:
         """
         Create all three split model parts for any supported architecture
@@ -163,6 +117,11 @@ class ModelFactory:
                 - 'eager': Standard eager attention (slowest, most memory)
                 - None: No change to default
                 Default: 'sdpa' for best performance
+            torch_dtype: Data type for model weights (e.g., torch.float16, torch.bfloat16)
+                - If None, defaults to float16 for qwen3_vl/qwen2_vl models, otherwise uses
+                  model's native precision
+                - Using float16 reduces memory usage by ~50% vs float32
+                - Example: torch.float16, torch.bfloat16, torch.float32
 
         Returns:
             Tuple: (bottom_model, trunk_model, top_model)
@@ -252,6 +211,15 @@ class ModelFactory:
                 if verbose:
                     print(f"✓ Using {attn_implementation} attention implementation")
 
+        # Set default dtype for VL models (float16 for memory efficiency)
+        effective_dtype = torch_dtype
+        if effective_dtype is None and model_type in ["qwen3_vl", "qwen2_vl"]:
+            effective_dtype = torch.float16
+            if verbose:
+                print(f"✓ Using default dtype for {model_type}: {effective_dtype}")
+        elif effective_dtype is not None and verbose:
+            print(f"✓ Using specified dtype: {effective_dtype}")
+
         # Detect if model is sharded
         from splitlearn_core.utils.shard_loader import ShardLoader
         is_sharded = ShardLoader.is_sharded_model(model_name_or_path)
@@ -277,6 +245,7 @@ class ModelFactory:
                 parts=parts_set,
                 use_lora=use_lora,
                 lora_config=lora_config,
+                torch_dtype=effective_dtype,
             )
         else:
             if verbose and is_sharded:
@@ -293,6 +262,7 @@ class ModelFactory:
                 parts=parts_set,
                 use_lora=use_lora,
                 lora_config=lora_config,
+                torch_dtype=effective_dtype,
             )
 
     @staticmethod
@@ -308,6 +278,7 @@ class ModelFactory:
         parts: set,
         use_lora: bool = False,
         lora_config: Optional['SplitLoraConfig'] = None,
+        torch_dtype: Optional[torch.dtype] = None,
     ) -> Tuple:
         """
         Traditional loading: Load full model then split.
@@ -323,6 +294,7 @@ class ModelFactory:
                 full_model = Qwen2VLForConditionalGeneration.from_pretrained(
                     model_name_or_path,
                     config=config,
+                    dtype=torch_dtype,
                 )
             else:
                 if Qwen3VLForConditionalGeneration is None:
@@ -330,9 +302,13 @@ class ModelFactory:
                 full_model = Qwen3VLForConditionalGeneration.from_pretrained(
                     model_name_or_path,
                     config=config,
+                    dtype=torch_dtype,
                 )
         else:
-            full_model = AutoModelForCausalLM.from_pretrained(model_name_or_path)
+            full_model = AutoModelForCausalLM.from_pretrained(
+                model_name_or_path,
+                dtype=torch_dtype,
+            )
         full_state_dict = full_model.state_dict()
 
         # Get number of layers
@@ -514,6 +490,7 @@ class ModelFactory:
         parts: set,
         use_lora: bool = False,
         lora_config: Optional['SplitLoraConfig'] = None,
+        torch_dtype: Optional[torch.dtype] = None,
     ) -> Tuple:
         """
         Incremental loading: Load only required shards for each component.
@@ -593,6 +570,7 @@ class ModelFactory:
                 layer_range=(0, split_point_1),
                 device=device_bottom,
                 verbose=verbose,
+                torch_dtype=torch_dtype,
             )
 
             if verbose:
@@ -617,6 +595,7 @@ class ModelFactory:
                 layer_range=(split_point_1, split_point_2),
                 device=device_trunk,
                 verbose=verbose,
+                torch_dtype=torch_dtype,
             )
 
             if verbose:
@@ -641,6 +620,7 @@ class ModelFactory:
                 layer_range=(split_point_2, num_layers),
                 device=device_top,
                 verbose=verbose,
+                torch_dtype=torch_dtype,
             )
 
             if verbose:
@@ -756,6 +736,7 @@ class ModelFactory:
         layer_range: tuple,
         device: str,
         verbose: bool,
+        torch_dtype: Optional[torch.dtype] = None,
     ) -> Any:
         """
         Load a single component incrementally from shards.
@@ -843,6 +824,14 @@ class ModelFactory:
 
         for shard_name, shard_path in iterator:
             partial_dict = ShardLoader.load_shard_partial(shard_path, filter_fn)
+
+            # Apply dtype conversion if specified
+            if torch_dtype is not None:
+                partial_dict = {
+                    k: v.to(dtype=torch_dtype) if v.is_floating_point() else v
+                    for k, v in partial_dict.items()
+                }
+
             component_state_dict.update(partial_dict)
 
             if verbose:

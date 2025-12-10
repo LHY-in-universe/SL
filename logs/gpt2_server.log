@@ -1,0 +1,69 @@
+2025-12-10 14:19:20,128 - __main__ - INFO - ======================================================================
+2025-12-10 14:19:20,128 - __main__ - INFO - GPT-2 Trunk 服务端（gRPC）
+2025-12-10 14:19:20,128 - __main__ - INFO - ======================================================================
+2025-12-10 14:19:20,128 - __main__ - INFO - 设备: cpu
+2025-12-10 14:19:20,128 - __main__ - INFO - 端口: 50051
+2025-12-10 14:19:20,128 - __main__ - INFO - 拆分点: [2, 10] (Trunk 包含 layers 2-9)
+2025-12-10 14:19:20,128 - __main__ - INFO - 加载 Trunk 模型...
+2025-12-10 14:19:20,128 - splitlearn_core.quickstart - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:19:20,128 - splitlearn_core.quickstart - INFO - Loading split model:
+2025-12-10 14:19:20,128 - splitlearn_core.quickstart - INFO -   Model type: gpt2
+2025-12-10 14:19:20,129 - splitlearn_core.quickstart - INFO -   Model name/path: gpt2
+2025-12-10 14:19:20,129 - splitlearn_core.quickstart - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:19:20,129 - splitlearn_core.quickstart - INFO -   Device: cpu
+2025-12-10 14:19:20,129 - splitlearn_core.quickstart - INFO -   dtype: default
+2025-12-10 14:19:23,664 - splitlearn_core.quickstart - INFO - ✓ Models loaded successfully
+2025-12-10 14:19:23,664 - splitlearn_core.quickstart - INFO -   Trunk:  56.70M parameters
+2025-12-10 14:19:23,664 - __main__ - INFO - ✓ Trunk 模型加载完成
+2025-12-10 14:19:23,664 - __main__ - INFO - GPT2TrunkFunction initialized on cpu
+2025-12-10 14:19:23,664 - __main__ - INFO - Model parameters: 56.70M
+2025-12-10 14:19:23,664 - __main__ - INFO - 创建 gRPC 服务器...
+2025-12-10 14:19:23,665 - splitlearn_comm.server.servicer - WARNING - splitlearn_monitor not available, resource monitoring disabled
+2025-12-10 14:19:23,665 - splitlearn_comm.server.servicer - INFO - ComputeFunction setup completed
+2025-12-10 14:19:23,665 - splitlearn_comm.server.servicer - INFO - ComputeServicer initialized: {'name': 'GPT2Trunk', 'device': 'cpu', 'parameters': 56702976, 'layers': '2-9 (8 layers)', 'total_requests': 0}
+2025-12-10 14:19:23,677 - splitlearn_comm.server.grpc_server - INFO - GRPCComputeServer initialized at 0.0.0.0:50051
+2025-12-10 14:19:23,677 - __main__ - INFO - 启动 gRPC 服务器在 0.0.0.0:50051...
+2025-12-10 14:19:23,679 - splitlearn_comm.server.grpc_server - INFO - ✓ Server started on 0.0.0.0:50051
+2025-12-10 14:19:23,679 - splitlearn_comm.server.grpc_server - INFO -   Max workers: 4
+2025-12-10 14:19:23,679 - splitlearn_comm.server.grpc_server - INFO -   Max message length: 100.0 MB
+2025-12-10 14:19:23,679 - splitlearn_comm.server.grpc_server - INFO -   Version: 1.0.0
+2025-12-10 14:19:23,679 - splitlearn_comm.server.grpc_server - INFO - Waiting for requests... (Press Ctrl+C to stop)
+2025-12-10 14:19:23,679 - __main__ - INFO - ✓ 服务器已启动，等待客户端连接...
+2025-12-10 14:19:23,679 - __main__ - INFO - 按 Ctrl+C 停止服务器
+2025-12-10 14:19:32,254 - splitlearn_comm.server.grpc_server - INFO - Received shutdown signal, stopping server...
+2025-12-10 14:19:32,255 - splitlearn_comm.server.grpc_server - INFO - Shutting down server...
+2025-12-10 14:19:32,255 - splitlearn_comm.server.servicer - INFO - ComputeServicer shutdown completed
+2025-12-10 14:19:32,255 - splitlearn_comm.server.servicer - INFO - Total requests processed: 0
+2025-12-10 14:19:32,258 - splitlearn_comm.server.grpc_server - INFO - Server stopped
+2025-12-10 14:37:53,032 - __main__ - INFO - ======================================================================
+2025-12-10 14:37:53,033 - __main__ - INFO - GPT-2 Trunk 服务端（gRPC）
+2025-12-10 14:37:53,033 - __main__ - INFO - ======================================================================
+2025-12-10 14:37:53,033 - __main__ - INFO - 设备: cpu
+2025-12-10 14:37:53,033 - __main__ - INFO - 端口: 50051
+2025-12-10 14:37:53,033 - __main__ - INFO - 拆分点: [2, 10] (Trunk 包含 layers 2-9)
+2025-12-10 14:37:53,033 - __main__ - INFO - 加载 Trunk 模型...
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO - Model not found in cache, will download from HuggingFace
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO - Loading split model:
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO -   Model type: gpt2
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO -   Model name/path: gpt2
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO -   Split points: Bottom(0-2), Trunk(2-10), Top(10-end)
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO -   Device: cpu
+2025-12-10 14:37:53,033 - splitlearn_core.quickstart - INFO -   dtype: default
+2025-12-10 14:37:58,361 - splitlearn_core.quickstart - INFO - ✓ Models loaded successfully
+2025-12-10 14:37:58,361 - splitlearn_core.quickstart - INFO -   Trunk:  56.70M parameters
+2025-12-10 14:37:58,361 - __main__ - INFO - ✓ Trunk 模型加载完成
+2025-12-10 14:37:58,361 - __main__ - INFO - GPT2TrunkFunction initialized on cpu
+2025-12-10 14:37:58,362 - __main__ - INFO - Model parameters: 56.70M
+2025-12-10 14:37:58,362 - __main__ - INFO - 创建 gRPC 服务器...
+2025-12-10 14:37:58,362 - splitlearn_comm.server.servicer - WARNING - splitlearn_monitor not available, resource monitoring disabled
+2025-12-10 14:37:58,362 - splitlearn_comm.server.servicer - INFO - ComputeFunction setup completed
+2025-12-10 14:37:58,362 - splitlearn_comm.server.servicer - INFO - ComputeServicer initialized: {'name': 'GPT2Trunk', 'device': 'cpu', 'parameters': 56702976, 'layers': '2-9 (8 layers)', 'total_requests': 0}
+2025-12-10 14:37:58,380 - splitlearn_comm.server.grpc_server - INFO - GRPCComputeServer initialized at 0.0.0.0:50051
+2025-12-10 14:37:58,380 - __main__ - INFO - 启动 gRPC 服务器在 0.0.0.0:50051...
+2025-12-10 14:37:58,383 - splitlearn_comm.server.grpc_server - INFO - ✓ Server started on 0.0.0.0:50051
+2025-12-10 14:37:58,383 - splitlearn_comm.server.grpc_server - INFO -   Max workers: 4
+2025-12-10 14:37:58,383 - splitlearn_comm.server.grpc_server - INFO -   Max message length: 100.0 MB
+2025-12-10 14:37:58,383 - splitlearn_comm.server.grpc_server - INFO -   Version: 1.0.0
+2025-12-10 14:37:58,383 - splitlearn_comm.server.grpc_server - INFO - Waiting for requests... (Press Ctrl+C to stop)
+2025-12-10 14:37:58,383 - __main__ - INFO - ✓ 服务器已启动，等待客户端连接...
+2025-12-10 14:37:58,383 - __main__ - INFO - 按 Ctrl+C 停止服务器

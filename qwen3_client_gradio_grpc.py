@@ -26,6 +26,7 @@ import gradio as gr
 from PIL import Image
 
 from splitlearn_core.quickstart import load_split_model
+from splitlearn_core.utils.shard_loader import ShardLoader
 from transformers import AutoProcessor
 from splitlearn_comm.client import GRPCComputeClient
 
@@ -64,20 +65,37 @@ bottom, trunk, top = load_split_model(
 )
 processor = AutoProcessor.from_pretrained(model_id)
 
-# 加载 embed_tokens 用于处理文本输入
-from transformers.models.qwen3_vl.modeling_qwen3_vl import Qwen3VLForConditionalGeneration
+# 加载 embed_tokens 用于处理文本输入（高效提取，无需加载完整模型）
 print("\n加载 embed_tokens（用于文本处理）...")
-full_model_temp = Qwen3VLForConditionalGeneration.from_pretrained(
-    model_id,
-    cache_dir="./models",
-    dtype=dtype,
-    device_map="cpu",  # 只加载到 CPU，只用于获取 embed_tokens
-)
-embed_tokens = full_model_temp.model.language_model.embed_tokens.to(device)  # 移到目标设备
-del full_model_temp  # 释放完整模型
-import gc
-gc.collect()
-print("✓ embed_tokens 加载完成")
+try:
+    embed_tokens = ShardLoader.extract_embed_tokens(
+        model_path=model_id,
+        model_type="qwen3_vl",
+        device=device,
+        torch_dtype=dtype,
+        cache_dir="./models",
+    )
+    print("✓ embed_tokens 加载完成（高效提取，无需完整模型）")
+except Exception as e:
+    print(f"\n❌ 加载 embed_tokens 失败！")
+    print(f"错误类型: {type(e).__name__}")
+    print(f"错误消息: {str(e)}")
+    import traceback
+    print("\n完整堆栈跟踪:")
+    traceback.print_exc()
+    print("\n回退到传统加载方式...")
+    from transformers.models.qwen3_vl.modeling_qwen3_vl import Qwen3VLForConditionalGeneration
+    full_model_temp = Qwen3VLForConditionalGeneration.from_pretrained(
+        model_id,
+        cache_dir="./models",
+        dtype=dtype,
+        device_map="cpu",
+    )
+    embed_tokens = full_model_temp.model.language_model.embed_tokens.to(device)
+    del full_model_temp
+    import gc
+    gc.collect()
+    print("✓ embed_tokens 加载完成（使用传统方式）")
 
 print("✓ bottom（视觉层）加载完成")
 print("✓ top（最后一层 LLM layer 27 + norm + lm_head）加载完成")
