@@ -14,9 +14,12 @@ GPT-2 分拆模型客户端（Gradio + gRPC）
 import os
 import sys
 import time
+import socket
 import logging
 from pathlib import Path
 from typing import Dict, List
+
+os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "false")
 
 import torch
 import gradio as gr
@@ -35,8 +38,12 @@ from splitlearn_comm.client import GRPCComputeClient
 log_dir = Path("./logs")
 log_dir.mkdir(exist_ok=True)
 
+LOG_LEVEL_NAME = os.environ.get("GPT2_LOG_LEVEL", "INFO").upper()
+LOG_LEVEL = getattr(logging, LOG_LEVEL_NAME, logging.INFO)
+GRPC_VERBOSE = os.environ.get("GPT2_GRPC_LOG", "1") == "1"
+
 logging.basicConfig(
-    level=logging.INFO,
+    level=LOG_LEVEL,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(log_dir / "gpt2_client.log"),
@@ -53,13 +60,21 @@ model_id = "gpt2"
 split_points = [2, 10]  # Bottom: 0-1, Trunk: 2-9, Top: 10-11
 device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 SERVER_ADDRESS = os.environ.get("GPT2_TRUNK_SERVER", "localhost:50051")
+CLIENT_PORT = int(os.environ.get("GPT2_CLIENT_PORT", "7860"))
+SHARE_ENABLED = os.environ.get("GRADIO_SHARE", "1") == "1"
+MODEL_CACHE = str(Path("./models").resolve())
 
 logger.info("=" * 70)
 logger.info("GPT-2 分拆客户端（Gradio + gRPC）")
 logger.info("=" * 70)
+logger.info(f"日志级别: {LOG_LEVEL_NAME}")
 logger.info(f"本地设备: {device}")
 logger.info(f"远程服务: {SERVER_ADDRESS}")
 logger.info(f"拆分点: {split_points}")
+logger.info(f"Gradio 端口: {CLIENT_PORT}")
+logger.info(f"公网分享: {SHARE_ENABLED}")
+logger.info(f"模型缓存目录: {MODEL_CACHE}")
+logger.info(f"gRPC 传输日志: {GRPC_VERBOSE}")
 
 # 加载分拆模型（只加载 bottom 和 top）
 logger.info("加载 Bottom 和 Top 模型...")
@@ -83,7 +98,7 @@ if hasattr(torch, 'compile') and device == "cuda":
         logger.warning(f"torch.compile() 优化失败: {e}")
 
 # 加载分词器
-tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir="./models")
+tokenizer = AutoTokenizer.from_pretrained(model_id, cache_dir=MODEL_CACHE)
 if tokenizer.pad_token is None:
     tokenizer.pad_token = tokenizer.eos_token
 
@@ -116,6 +131,12 @@ def generate_text_with_kv_cache(
     """使用 KV Cache 的高效文本生成（生成器函数，流式输出）"""
     global all_token_stats
 
+    logger.info(
+        f"[generate] 收到生成请求 "
+        f"prompt_len={len(prompt)} max_new_tokens={max_new_tokens} "
+        f"temp={temperature} top_k={top_k}"
+    )
+
     # 编码输入
     input_ids = tokenizer.encode(prompt, return_tensors="pt").to(device)
 
@@ -130,6 +151,9 @@ def generate_text_with_kv_cache(
     past_key_values = None  # KV cache
 
     total_start = time.time()
+
+    def _tensor_bytes(t: torch.Tensor) -> int:
+        return t.numel() * t.element_size()
 
     with torch.no_grad():
         for step in range(max_new_tokens):
@@ -151,12 +175,28 @@ def generate_text_with_kv_cache(
             # 2. Trunk (远程 gRPC): 中间 8 层 + KV Cache
             trunk_start = time.time()
             try:
+                if GRPC_VERBOSE:
+                    logger.info(
+                        f"[gRPC->trunk] step={step} "
+                        f"input_shape={list(bottom_out.shape)} "
+                        f"bytes={_tensor_bytes(bottom_out)} "
+                        f"dtype={bottom_out.dtype} "
+                        f"use_cache={past_key_values is not None}"
+                    )
                 trunk_out, present_kv, timing = client.compute_with_cache(
                     bottom_out.to("cpu"),
                     past_key_values=past_key_values,  # 传入历史 KV
                     use_cache=True,           # 返回新 KV
                     model_id="gpt2"
                 )
+                if GRPC_VERBOSE:
+                    logger.info(
+                        f"[gRPC<-trunk] step={step} "
+                        f"output_shape={list(trunk_out.shape)} "
+                        f"bytes={_tensor_bytes(trunk_out)} "
+                        f"server_ms={timing.get('server_compute_ms', 0)} "
+                        f"network_ms={timing.get('network_overhead_ms', 0)}"
+                    )
             except Exception as e:
                 logger.error(f"gRPC 调用失败: {e}")
                 yield {
@@ -516,8 +556,37 @@ with gr.Blocks(title="GPT-2 分拆客户端", theme=gr.themes.Soft()) as demo:
 if __name__ == "__main__":
     logger.info("\n启动 Gradio 界面...")
     demo.queue()  # Gradio 6.0 推荐添加队列
-    demo.launch(
-        share=True,  # 使用 Gradio 公网分享链接
-        show_error=True,
-        inbrowser=True,
+    logger.info(
+        f"启动 Gradio: share={SHARE_ENABLED}, server_name=0.0.0.0, "
+        f"port={CLIENT_PORT}"
     )
+    launch_kwargs = dict(
+        share=SHARE_ENABLED,
+        server_name="127.0.0.1",  # 使用 127.0.0.1 而不是 0.0.0.0，避免 localhost 访问问题
+        server_port=CLIENT_PORT,
+        show_error=True,
+        inbrowser=SHARE_ENABLED,
+    )
+    local_url = share_url = None
+    try:
+        _, local_url, share_url = demo.launch(**launch_kwargs)
+    except (OSError, ValueError) as e:
+        # 处理端口被占用或 localhost 不可访问的情况
+        if "localhost" in str(e).lower() or "share" in str(e).lower():
+            # localhost 不可访问，强制启用 share
+            logger.warning(f"localhost 不可访问，自动启用公网分享: {e}")
+            launch_kwargs["share"] = True
+            launch_kwargs["server_name"] = "127.0.0.1"
+            _, local_url, share_url = demo.launch(**launch_kwargs)
+        else:
+            # 端口被占用，自动切换端口
+            logger.warning(f"端口 {CLIENT_PORT} 被占用，尝试自动切换: {e}")
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(("", 0))
+                free_port = s.getsockname()[1]
+            launch_kwargs["server_port"] = free_port
+            logger.info(f"改用空闲端口: {free_port}")
+            _, local_url, share_url = demo.launch(**launch_kwargs)
+
+    logger.info(f"Gradio 本地地址: {local_url}")
+    logger.info(f"Gradio 分享链接: {share_url if share_url else '未开启或创建失败'}")

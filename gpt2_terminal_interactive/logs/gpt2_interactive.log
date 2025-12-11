@@ -1,0 +1,1180 @@
+2025-12-10 22:58:16,524 - INFO - ======================================================================
+2025-12-10 22:58:16,524 - INFO - GPT-2 终端交互式生成工具
+2025-12-10 22:58:16,524 - INFO - ======================================================================
+2025-12-10 22:58:16,524 - INFO - 设备: mps
+2025-12-10 22:58:16,524 - INFO - 模型: gpt2
+2025-12-10 22:58:16,524 - INFO - 模型缓存: /Users/lhy/Desktop/Git/SL/models
+2025-12-10 22:58:16,524 - INFO - 
+加载模型...
+2025-12-10 22:58:21,385 - INFO - ✓ 模型加载完成 (4.86s)
+2025-12-10 22:58:21,387 - INFO - ✓ 参数量: 124.44M
+2025-12-10 22:58:46,174 - INFO - [GENERATE] prompt='ai in the future is what', max_tokens=50, temp=1.0, top_k=50
+2025-12-10 22:58:49,371 - INFO - Token #1: ' is' (ID=318) | Time=3043.80ms
+2025-12-10 22:58:49,430 - INFO - Token #2: ' seen' (ID=1775) | Time=56.89ms
+2025-12-10 22:58:49,449 - INFO - Token #3: ' as' (ID=355) | Time=19.08ms
+2025-12-10 22:58:49,469 - INFO - Token #4: ' "' (ID=366) | Time=19.78ms
+2025-12-10 22:58:49,487 - INFO - Token #5: 'the' (ID=1169) | Time=17.55ms
+2025-12-10 22:58:49,508 - INFO - Token #6: ' future' (ID=2003) | Time=21.45ms
+2025-12-10 22:58:49,528 - INFO - Token #7: '"' (ID=1) | Time=19.69ms
+2025-12-10 22:58:49,546 - INFO - Token #8: ' in' (ID=287) | Time=17.99ms
+2025-12-10 22:58:49,564 - INFO - Token #9: ' our' (ID=674) | Time=16.89ms
+2025-12-10 22:58:49,583 - INFO - Token #10: ' modern' (ID=3660) | Time=19.52ms
+2025-12-10 22:58:49,601 - INFO - Token #11: ' political' (ID=1964) | Time=18.03ms
+2025-12-10 22:58:49,622 - INFO - Token #12: ' space' (ID=2272) | Time=20.47ms
+2025-12-10 22:58:49,640 - INFO - Token #13: '.' (ID=13) | Time=18.00ms
+2025-12-10 22:58:49,658 - INFO - Token #14: ' This' (ID=770) | Time=17.26ms
+2025-12-10 22:58:49,677 - INFO - Token #15: ' has' (ID=468) | Time=18.66ms
+2025-12-10 22:58:49,695 - INFO - Token #16: ' in' (ID=287) | Time=18.50ms
+2025-12-10 22:58:49,715 - INFO - Token #17: ' some' (ID=617) | Time=19.32ms
+2025-12-10 22:58:49,733 - INFO - Token #18: ' ways' (ID=2842) | Time=18.06ms
+2025-12-10 22:58:49,752 - INFO - Token #19: ' become' (ID=1716) | Time=19.00ms
+2025-12-10 22:58:49,770 - INFO - Token #20: ' clearer' (ID=22363) | Time=17.08ms
+2025-12-10 22:58:49,787 - INFO - Token #21: ' upon' (ID=2402) | Time=16.90ms
+2025-12-10 22:58:49,805 - INFO - Token #22: ' reflection' (ID=14580) | Time=18.35ms
+2025-12-10 22:58:49,823 - INFO - Token #23: ' in' (ID=287) | Time=17.12ms
+2025-12-10 22:58:49,841 - INFO - Token #24: ' the' (ID=262) | Time=18.46ms
+2025-12-10 22:58:49,861 - INFO - Token #25: ' current' (ID=1459) | Time=19.96ms
+2025-12-10 22:58:49,883 - INFO - Token #26: ' political' (ID=1964) | Time=21.17ms
+2025-12-10 22:58:49,900 - INFO - Token #27: ' climate' (ID=4258) | Time=16.85ms
+2025-12-10 22:58:49,918 - INFO - Token #28: ' which' (ID=543) | Time=17.67ms
+2025-12-10 22:58:49,934 - INFO - Token #29: ' sees' (ID=7224) | Time=16.29ms
+2025-12-10 22:58:49,953 - INFO - Token #30: ' Russia' (ID=3284) | Time=18.29ms
+2025-12-10 22:58:49,971 - INFO - Token #31: ' as' (ID=355) | Time=18.20ms
+2025-12-10 22:58:49,988 - INFO - Token #32: ' the' (ID=262) | Time=17.12ms
+2025-12-10 22:58:50,007 - INFO - Token #33: ' "' (ID=366) | Time=18.02ms
+2025-12-10 22:58:50,024 - INFO - Token #34: 'new' (ID=3605) | Time=16.92ms
+2025-12-10 22:58:50,040 - INFO - Token #35: '"' (ID=1) | Time=16.44ms
+2025-12-10 22:58:50,064 - INFO - Token #36: ' center' (ID=3641) | Time=23.14ms
+2025-12-10 22:58:50,082 - INFO - Token #37: ' of' (ID=286) | Time=18.22ms
+2025-12-10 22:58:50,100 - INFO - Token #38: ' the' (ID=262) | Time=17.29ms
+2025-12-10 22:58:50,118 - INFO - Token #39: ' world' (ID=995) | Time=18.56ms
+2025-12-10 22:58:50,136 - INFO - Token #40: '.' (ID=13) | Time=17.34ms
+2025-12-10 22:58:50,154 - INFO - Token #41: ' We' (ID=775) | Time=17.95ms
+2025-12-10 22:58:50,170 - INFO - Token #42: ' are' (ID=389) | Time=16.09ms
+2025-12-10 22:58:50,191 - INFO - Token #43: ' all' (ID=477) | Time=20.31ms
+2025-12-10 22:58:50,210 - INFO - Token #44: ' aware' (ID=3910) | Time=19.29ms
+2025-12-10 22:58:50,229 - INFO - Token #45: ' of' (ID=286) | Time=18.46ms
+2025-12-10 22:58:50,246 - INFO - Token #46: ' this' (ID=428) | Time=16.87ms
+2025-12-10 22:58:50,263 - INFO - Token #47: ' tendency' (ID=13542) | Time=16.70ms
+2025-12-10 22:58:50,280 - INFO - Token #48: ',' (ID=11) | Time=17.32ms
+2025-12-10 22:58:50,297 - INFO - Token #49: ' and' (ID=290) | Time=17.08ms
+2025-12-10 22:58:50,315 - INFO - Token #50: ' its' (ID=663) | Time=17.50ms
+2025-12-10 22:58:50,527 - INFO - ✅ 生成完成: 50 tokens in 4.00s (12.50 tokens/s)
+2025-12-10 23:03:10,317 - INFO - ======================================================================
+2025-12-10 23:03:10,317 - INFO - GPT-2 终端交互式生成工具
+2025-12-10 23:03:10,317 - INFO - ======================================================================
+2025-12-10 23:03:10,317 - INFO - 设备: mps
+2025-12-10 23:03:10,317 - INFO - 模型: gpt2
+2025-12-10 23:03:10,317 - INFO - 模型缓存: /Users/lhy/Desktop/Git/SL/models
+2025-12-10 23:03:10,317 - INFO - 
+加载模型...
+2025-12-10 23:03:15,229 - INFO - ✓ 模型加载完成 (4.91s)
+2025-12-10 23:03:15,232 - INFO - ✓ 参数量: 124.44M
+2025-12-10 23:03:17,894 - INFO - [GENERATE] prompt='the future of ai is whatthe future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:03:19,275 - INFO - Token #1: 'the' (ID=1169) | Time=1227.01ms
+2025-12-10 23:03:19,320 - INFO - Token #2: ' future' (ID=2003) | Time=44.64ms
+2025-12-10 23:03:19,338 - INFO - Token #3: ' of' (ID=286) | Time=17.50ms
+2025-12-10 23:03:19,360 - INFO - Token #4: ' s' (ID=264) | Time=21.30ms
+2025-12-10 23:03:19,378 - INFO - Token #5: '1' (ID=16) | Time=18.55ms
+2025-12-10 23:03:19,396 - INFO - Token #6: 'a' (ID=64) | Time=17.04ms
+2025-12-10 23:03:19,412 - INFO - Token #7: ' is' (ID=318) | Time=16.61ms
+2025-12-10 23:03:19,431 - INFO - Token #8: ' what' (ID=644) | Time=18.24ms
+2025-12-10 23:03:19,448 - INFO - Token #9: 'this' (ID=5661) | Time=17.27ms
+2025-12-10 23:03:19,466 - INFO - Token #10: ' has' (ID=468) | Time=17.74ms
+2025-12-10 23:03:19,483 - INFO - Token #11: ' always' (ID=1464) | Time=16.86ms
+2025-12-10 23:03:19,501 - INFO - Token #12: ' been' (ID=587) | Time=17.88ms
+2025-12-10 23:03:19,518 - INFO - Token #13: ' .' (ID=764) | Time=16.48ms
+2025-12-10 23:03:19,542 - INFO - Token #14: ' It' (ID=632) | Time=23.78ms
+2025-12-10 23:03:19,559 - INFO - Token #15: ' has' (ID=468) | Time=17.19ms
+2025-12-10 23:03:19,577 - INFO - Token #16: ' been' (ID=587) | Time=17.40ms
+2025-12-10 23:03:19,595 - INFO - Token #17: ' so' (ID=523) | Time=17.82ms
+2025-12-10 23:03:19,612 - INFO - Token #18: ' and' (ID=290) | Time=16.70ms
+2025-12-10 23:03:19,629 - INFO - Token #19: ' that' (ID=326) | Time=17.51ms
+2025-12-10 23:03:19,646 - INFO - Token #20: ' it' (ID=340) | Time=16.83ms
+2025-12-10 23:03:19,664 - INFO - Token #21: ' hasn' (ID=5818) | Time=17.97ms
+2025-12-10 23:03:19,682 - INFO - Token #22: ''t' (ID=470) | Time=17.10ms
+2025-12-10 23:03:19,700 - INFO - Token #23: ' been' (ID=587) | Time=18.10ms
+2025-12-10 23:03:19,717 - INFO - Token #24: ' this' (ID=428) | Time=17.26ms
+2025-12-10 23:03:19,741 - INFO - Token #25: ' day' (ID=1110) | Time=23.43ms
+2025-12-10 23:03:19,758 - INFO - Token #26: ',' (ID=11) | Time=16.39ms
+2025-12-10 23:03:19,774 - INFO - Token #27: ' it' (ID=340) | Time=16.22ms
+2025-12-10 23:03:19,791 - INFO - Token #28: ' doesn' (ID=1595) | Time=17.27ms
+2025-12-10 23:03:19,808 - INFO - Token #29: ''t' (ID=470) | Time=16.10ms
+2025-12-10 23:03:19,825 - INFO - Token #30: ' have' (ID=423) | Time=16.90ms
+2025-12-10 23:03:19,841 - INFO - Token #31: ' ever' (ID=1683) | Time=16.07ms
+2025-12-10 23:03:19,858 - INFO - Token #32: ' been' (ID=587) | Time=16.82ms
+2025-12-10 23:03:19,874 - INFO - Token #33: ' this' (ID=428) | Time=16.15ms
+2025-12-10 23:03:19,892 - INFO - Token #34: ' day' (ID=1110) | Time=17.11ms
+2025-12-10 23:03:19,908 - INFO - Token #35: '.' (ID=13) | Time=15.84ms
+2025-12-10 23:03:19,925 - INFO - Token #36: '' (ID=50256) | Time=16.88ms
+2025-12-10 23:03:20,135 - INFO - ✅ 生成完成: 36 tokens in 1.88s (19.14 tokens/s)
+2025-12-10 23:03:27,937 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:03:28,915 - INFO - Token #1: ' makes' (ID=1838) | Time=859.18ms
+2025-12-10 23:03:28,937 - INFO - Token #2: ' this' (ID=428) | Time=21.99ms
+2025-12-10 23:03:28,956 - INFO - Token #3: ' game' (ID=983) | Time=19.10ms
+2025-12-10 23:03:28,977 - INFO - Token #4: ' worth' (ID=2861) | Time=19.98ms
+2025-12-10 23:03:28,995 - INFO - Token #5: ' it' (ID=340) | Time=18.05ms
+2025-12-10 23:03:29,014 - INFO - Token #6: '!).' (ID=19588) | Time=19.36ms
+2025-12-10 23:03:29,032 - INFO - Token #7: '
+' (ID=198) | Time=17.38ms
+2025-12-10 23:03:29,050 - INFO - Token #8: '
+' (ID=198) | Time=18.17ms
+2025-12-10 23:03:29,069 - INFO - Token #9: 'For' (ID=1890) | Time=18.60ms
+2025-12-10 23:03:29,093 - INFO - Token #10: ' more' (ID=517) | Time=23.44ms
+2025-12-10 23:03:29,112 - INFO - Token #11: ' info' (ID=7508) | Time=18.67ms
+2025-12-10 23:03:29,129 - INFO - Token #12: ',' (ID=11) | Time=17.09ms
+2025-12-10 23:03:29,147 - INFO - Token #13: ' visit' (ID=3187) | Time=18.21ms
+2025-12-10 23:03:29,164 - INFO - Token #14: ' the' (ID=262) | Time=16.58ms
+2025-12-10 23:03:29,182 - INFO - Token #15: ' links' (ID=6117) | Time=18.33ms
+2025-12-10 23:03:29,199 - INFO - Token #16: ' above' (ID=2029) | Time=16.81ms
+2025-12-10 23:03:29,217 - INFO - Token #17: '.' (ID=13) | Time=17.37ms
+2025-12-10 23:03:29,237 - INFO - Token #18: '
+' (ID=198) | Time=19.99ms
+2025-12-10 23:03:29,260 - INFO - Token #19: '
+' (ID=198) | Time=22.27ms
+2025-12-10 23:03:29,278 - INFO - Token #20: 'Share' (ID=11649) | Time=17.83ms
+2025-12-10 23:03:29,295 - INFO - Token #21: ' this' (ID=428) | Time=16.86ms
+2025-12-10 23:03:29,313 - INFO - Token #22: ':' (ID=25) | Time=17.85ms
+2025-12-10 23:03:29,329 - INFO - Token #23: ' Twitter' (ID=3009) | Time=16.32ms
+2025-12-10 23:03:29,347 - INFO - Token #24: '
+' (ID=198) | Time=17.72ms
+2025-12-10 23:03:29,364 - INFO - Token #25: '
+' (ID=198) | Time=16.88ms
+2025-12-10 23:03:29,382 - INFO - Token #26: 'Facebook' (ID=12025) | Time=18.01ms
+2025-12-10 23:03:29,399 - INFO - Token #27: '
+' (ID=198) | Time=17.07ms
+2025-12-10 23:03:29,418 - INFO - Token #28: '
+' (ID=198) | Time=18.23ms
+2025-12-10 23:03:29,437 - INFO - Token #29: 'Google' (ID=11708) | Time=19.04ms
+2025-12-10 23:03:29,458 - INFO - Token #30: '' (ID=50256) | Time=21.19ms
+2025-12-10 23:03:29,668 - INFO - ✅ 生成完成: 30 tokens in 1.40s (21.38 tokens/s)
+2025-12-10 23:03:31,865 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:03:32,044 - INFO - Token #1: ' it' (ID=340) | Time=72.83ms
+2025-12-10 23:03:32,066 - INFO - Token #2: ' is' (ID=318) | Time=21.48ms
+2025-12-10 23:03:32,085 - INFO - Token #3: ' because' (ID=780) | Time=18.62ms
+2025-12-10 23:03:32,109 - INFO - Token #4: ' the' (ID=262) | Time=24.25ms
+2025-12-10 23:03:32,128 - INFO - Token #5: ' person' (ID=1048) | Time=19.09ms
+2025-12-10 23:03:32,146 - INFO - Token #6: ' is' (ID=318) | Time=17.75ms
+2025-12-10 23:03:32,165 - INFO - Token #7: ' capable' (ID=6007) | Time=18.75ms
+2025-12-10 23:03:32,183 - INFO - Token #8: ' of' (ID=286) | Time=17.32ms
+2025-12-10 23:03:32,201 - INFO - Token #9: ' knowing' (ID=6970) | Time=17.93ms
+2025-12-10 23:03:32,218 - INFO - Token #10: ' what' (ID=644) | Time=16.94ms
+2025-12-10 23:03:32,241 - INFO - Token #11: ' he' (ID=339) | Time=23.39ms
+2025-12-10 23:03:32,259 - INFO - Token #12: ' or' (ID=393) | Time=17.90ms
+2025-12-10 23:03:32,277 - INFO - Token #13: ' she' (ID=673) | Time=16.97ms
+2025-12-10 23:03:32,295 - INFO - Token #14: ' wants' (ID=3382) | Time=18.22ms
+2025-12-10 23:03:32,312 - INFO - Token #15: ' to' (ID=284) | Time=16.99ms
+2025-12-10 23:03:32,331 - INFO - Token #16: ' know' (ID=760) | Time=18.23ms
+2025-12-10 23:03:32,347 - INFO - Token #17: '."' (ID=526) | Time=16.66ms
+2025-12-10 23:03:32,366 - INFO - Token #18: ' While' (ID=2893) | Time=18.31ms
+2025-12-10 23:03:32,383 - INFO - Token #19: ' I' (ID=314) | Time=17.34ms
+2025-12-10 23:03:32,401 - INFO - Token #20: ' think' (ID=892) | Time=17.94ms
+2025-12-10 23:03:32,427 - INFO - Token #21: ' the' (ID=262) | Time=25.49ms
+2025-12-10 23:03:32,445 - INFO - Token #22: ' new' (ID=649) | Time=17.31ms
+2025-12-10 23:03:32,462 - INFO - Token #23: ' generation' (ID=5270) | Time=17.26ms
+2025-12-10 23:03:32,480 - INFO - Token #24: ' of' (ID=286) | Time=17.97ms
+2025-12-10 23:03:32,497 - INFO - Token #25: ' young' (ID=1862) | Time=16.71ms
+2025-12-10 23:03:32,515 - INFO - Token #26: ' researchers' (ID=4837) | Time=17.34ms
+2025-12-10 23:03:32,531 - INFO - Token #27: ' may' (ID=743) | Time=16.17ms
+2025-12-10 23:03:32,548 - INFO - Token #28: ' feel' (ID=1254) | Time=17.31ms
+2025-12-10 23:03:32,565 - INFO - Token #29: ' more' (ID=517) | Time=16.28ms
+2025-12-10 23:03:32,583 - INFO - Token #30: ' comfortable' (ID=6792) | Time=18.00ms
+2025-12-10 23:03:32,600 - INFO - Token #31: ' with' (ID=351) | Time=16.96ms
+2025-12-10 23:03:32,618 - INFO - Token #32: ' the' (ID=262) | Time=18.03ms
+2025-12-10 23:03:32,637 - INFO - Token #33: ' notion' (ID=9495) | Time=18.68ms
+2025-12-10 23:03:32,658 - INFO - Token #34: ' of' (ID=286) | Time=21.10ms
+2025-12-10 23:03:32,675 - INFO - Token #35: ' personal' (ID=2614) | Time=16.52ms
+2025-12-10 23:03:32,693 - INFO - Token #36: 'ization' (ID=1634) | Time=17.81ms
+2025-12-10 23:03:32,711 - INFO - Token #37: ' of' (ID=286) | Time=17.39ms
+2025-12-10 23:03:32,728 - INFO - Token #38: ' knowledge' (ID=3725) | Time=17.36ms
+2025-12-10 23:03:32,747 - INFO - Token #39: ' transfer' (ID=4351) | Time=18.53ms
+2025-12-10 23:03:32,763 - INFO - Token #40: ' between' (ID=1022) | Time=16.15ms
+2025-12-10 23:03:32,781 - INFO - Token #41: ' academic' (ID=8233) | Time=17.61ms
+2025-12-10 23:03:32,797 - INFO - Token #42: ' and' (ID=290) | Time=15.98ms
+2025-12-10 23:03:32,815 - INFO - Token #43: ' professional' (ID=4708) | Time=17.23ms
+2025-12-10 23:03:32,831 - INFO - Token #44: ' contexts' (ID=26307) | Time=16.18ms
+2025-12-10 23:03:32,848 - INFO - Token #45: ',' (ID=11) | Time=17.08ms
+2025-12-10 23:03:32,864 - INFO - Token #46: ' we' (ID=356) | Time=16.07ms
+2025-12-10 23:03:32,882 - INFO - Token #47: ' do' (ID=466) | Time=17.46ms
+2025-12-10 23:03:32,898 - INFO - Token #48: ' not' (ID=407) | Time=16.28ms
+2025-12-10 23:03:32,916 - INFO - Token #49: ' yet' (ID=1865) | Time=17.42ms
+2025-12-10 23:03:32,933 - INFO - Token #50: ' appear' (ID=1656) | Time=16.84ms
+2025-12-10 23:03:32,951 - INFO - Token #51: ' to' (ID=284) | Time=17.73ms
+2025-12-10 23:03:32,970 - INFO - Token #52: ' have' (ID=423) | Time=19.35ms
+2025-12-10 23:03:32,991 - INFO - Token #53: ' an' (ID=281) | Time=20.43ms
+2025-12-10 23:03:33,007 - INFO - Token #54: ' accurate' (ID=7187) | Time=15.98ms
+2025-12-10 23:03:33,026 - INFO - Token #55: ' understanding' (ID=4547) | Time=18.40ms
+2025-12-10 23:03:33,043 - INFO - Token #56: ' of' (ID=286) | Time=17.42ms
+2025-12-10 23:03:33,060 - INFO - Token #57: ' how' (ID=703) | Time=16.03ms
+2025-12-10 23:03:33,077 - INFO - Token #58: ' it' (ID=340) | Time=17.63ms
+2025-12-10 23:03:33,094 - INFO - Token #59: ' will' (ID=481) | Time=16.04ms
+2025-12-10 23:03:33,112 - INFO - Token #60: ' perform' (ID=1620) | Time=17.93ms
+2025-12-10 23:03:33,128 - INFO - Token #61: ' at' (ID=379) | Time=16.41ms
+2025-12-10 23:03:33,146 - INFO - Token #62: ' the' (ID=262) | Time=17.92ms
+2025-12-10 23:03:33,163 - INFO - Token #63: ' research' (ID=2267) | Time=16.78ms
+2025-12-10 23:03:33,179 - INFO - Token #64: ' level' (ID=1241) | Time=16.02ms
+2025-12-10 23:03:33,197 - INFO - Token #65: '.' (ID=13) | Time=17.90ms
+2025-12-10 23:03:33,214 - INFO - Token #66: ' We' (ID=775) | Time=16.66ms
+2025-12-10 23:03:33,233 - INFO - Token #67: ' do' (ID=466) | Time=18.11ms
+2025-12-10 23:03:33,250 - INFO - Token #68: ' not' (ID=407) | Time=16.82ms
+2025-12-10 23:03:33,267 - INFO - Token #69: ' yet' (ID=1865) | Time=17.26ms
+2025-12-10 23:03:33,283 - INFO - Token #70: ' understand' (ID=1833) | Time=16.24ms
+2025-12-10 23:03:33,302 - INFO - Token #71: ' that' (ID=326) | Time=18.10ms
+2025-12-10 23:03:33,320 - INFO - Token #72: ' all' (ID=477) | Time=18.36ms
+2025-12-10 23:03:33,340 - INFO - Token #73: ' data' (ID=1366) | Time=19.77ms
+2025-12-10 23:03:33,357 - INFO - Token #74: ' and' (ID=290) | Time=16.46ms
+2025-12-10 23:03:33,374 - INFO - Token #75: ' interpretation' (ID=10794) | Time=16.73ms
+2025-12-10 23:03:33,392 - INFO - Token #76: ' is' (ID=318) | Time=18.12ms
+2025-12-10 23:03:33,409 - INFO - Token #77: ' generated' (ID=7560) | Time=16.94ms
+2025-12-10 23:03:33,427 - INFO - Token #78: ' with' (ID=351) | Time=17.56ms
+2025-12-10 23:03:33,444 - INFO - Token #79: ' a' (ID=257) | Time=16.88ms
+2025-12-10 23:03:33,462 - INFO - Token #80: ' wide' (ID=3094) | Time=17.41ms
+2025-12-10 23:03:33,478 - INFO - Token #81: ' range' (ID=2837) | Time=16.32ms
+2025-12-10 23:03:33,496 - INFO - Token #82: ' of' (ID=286) | Time=17.45ms
+2025-12-10 23:03:33,512 - INFO - Token #83: ' input' (ID=5128) | Time=16.50ms
+2025-12-10 23:03:33,530 - INFO - Token #84: ' at' (ID=379) | Time=17.41ms
+2025-12-10 23:03:33,547 - INFO - Token #85: ' the' (ID=262) | Time=16.68ms
+2025-12-10 23:03:33,564 - INFO - Token #86: ' data' (ID=1366) | Time=17.44ms
+2025-12-10 23:03:33,581 - INFO - Token #87: ' entry' (ID=5726) | Time=16.40ms
+2025-12-10 23:03:33,599 - INFO - Token #88: ' stage' (ID=3800) | Time=17.97ms
+2025-12-10 23:03:33,616 - INFO - Token #89: ' such' (ID=884) | Time=16.46ms
+2025-12-10 23:03:33,634 - INFO - Token #90: ' as' (ID=355) | Time=17.81ms
+2025-12-10 23:03:33,653 - INFO - Token #91: ' language' (ID=3303) | Time=19.49ms
+2025-12-10 23:03:33,674 - INFO - Token #92: ' formation' (ID=9978) | Time=21.05ms
+2025-12-10 23:03:33,693 - INFO - Token #93: ',' (ID=11) | Time=18.77ms
+2025-12-10 23:03:33,712 - INFO - Token #94: ' language' (ID=3303) | Time=18.59ms
+2025-12-10 23:03:33,731 - INFO - Token #95: ' and' (ID=290) | Time=18.40ms
+2025-12-10 23:03:33,748 - INFO - Token #96: ' information' (ID=1321) | Time=16.93ms
+2025-12-10 23:03:33,766 - INFO - Token #97: ' exchange' (ID=5163) | Time=17.35ms
+2025-12-10 23:03:33,783 - INFO - Token #98: ' processes' (ID=7767) | Time=17.13ms
+2025-12-10 23:03:33,800 - INFO - Token #99: '.' (ID=13) | Time=16.96ms
+2025-12-10 23:03:33,818 - INFO - Token #100: ' It' (ID=632) | Time=18.27ms
+2025-12-10 23:03:33,837 - INFO - Token #101: ' will' (ID=481) | Time=18.85ms
+2025-12-10 23:03:33,857 - INFO - Token #102: ' be' (ID=307) | Time=19.23ms
+2025-12-10 23:03:33,873 - INFO - Token #103: ' important' (ID=1593) | Time=16.27ms
+2025-12-10 23:03:33,893 - INFO - Token #104: ' to' (ID=284) | Time=19.33ms
+2025-12-10 23:03:33,912 - INFO - Token #105: ' be' (ID=307) | Time=19.01ms
+2025-12-10 23:03:33,930 - INFO - Token #106: ' mindful' (ID=33798) | Time=17.44ms
+2025-12-10 23:03:33,948 - INFO - Token #107: ' of' (ID=286) | Time=18.41ms
+2025-12-10 23:03:33,967 - INFO - Token #108: ' the' (ID=262) | Time=18.38ms
+2025-12-10 23:03:33,986 - INFO - Token #109: ' ways' (ID=2842) | Time=18.98ms
+2025-12-10 23:03:34,003 - INFO - Token #110: ' in' (ID=287) | Time=17.20ms
+2025-12-10 23:03:34,026 - INFO - Token #111: ' which' (ID=543) | Time=22.50ms
+2025-12-10 23:03:34,044 - INFO - Token #112: ' data' (ID=1366) | Time=17.78ms
+2025-12-10 23:03:34,063 - INFO - Token #113: ' will' (ID=481) | Time=18.82ms
+2025-12-10 23:03:34,083 - INFO - Token #114: ' be' (ID=307) | Time=19.73ms
+2025-12-10 23:03:34,105 - INFO - Token #115: ' incorporated' (ID=16560) | Time=21.64ms
+2025-12-10 23:03:34,124 - INFO - Token #116: ' and' (ID=290) | Time=18.99ms
+2025-12-10 23:03:34,141 - INFO - Token #117: ' processed' (ID=13686) | Time=16.42ms
+2025-12-10 23:03:34,161 - INFO - Token #118: ' in' (ID=287) | Time=19.59ms
+2025-12-10 23:03:34,180 - INFO - Token #119: ' ways' (ID=2842) | Time=18.93ms
+2025-12-10 23:03:34,198 - INFO - Token #120: ' that' (ID=326) | Time=18.12ms
+2025-12-10 23:03:34,215 - INFO - Token #121: ' allow' (ID=1249) | Time=16.90ms
+2025-12-10 23:03:34,234 - INFO - Token #122: ' future' (ID=2003) | Time=18.85ms
+2025-12-10 23:03:34,254 - INFO - Token #123: ' researchers' (ID=4837) | Time=19.13ms
+2025-12-10 23:03:34,275 - INFO - Token #124: ' to' (ID=284) | Time=20.91ms
+2025-12-10 23:03:34,291 - INFO - Token #125: ' understand' (ID=1833) | Time=16.64ms
+2025-12-10 23:03:34,309 - INFO - Token #126: ' the' (ID=262) | Time=17.24ms
+2025-12-10 23:03:34,327 - INFO - Token #127: ' data' (ID=1366) | Time=17.67ms
+2025-12-10 23:03:34,345 - INFO - Token #128: ' in' (ID=287) | Time=18.19ms
+2025-12-10 23:03:34,363 - INFO - Token #129: ' a' (ID=257) | Time=18.23ms
+2025-12-10 23:03:34,382 - INFO - Token #130: ' greater' (ID=3744) | Time=18.15ms
+2025-12-10 23:03:34,401 - INFO - Token #131: ' degree' (ID=4922) | Time=19.23ms
+2025-12-10 23:03:34,420 - INFO - Token #132: '.' (ID=13) | Time=18.61ms
+2025-12-10 23:03:34,441 - INFO - Token #133: ' In' (ID=554) | Time=21.21ms
+2025-12-10 23:03:34,459 - INFO - Token #134: ' fact' (ID=1109) | Time=17.84ms
+2025-12-10 23:03:34,476 - INFO - Token #135: ',' (ID=11) | Time=15.97ms
+2025-12-10 23:03:34,494 - INFO - Token #136: ' what' (ID=644) | Time=18.74ms
+2025-12-10 23:03:34,512 - INFO - Token #137: ' this' (ID=428) | Time=17.30ms
+2025-12-10 23:03:34,531 - INFO - Token #138: ' study' (ID=2050) | Time=18.55ms
+2025-12-10 23:03:34,549 - INFO - Token #139: ' shows' (ID=2523) | Time=18.10ms
+2025-12-10 23:03:34,570 - INFO - Token #140: ' is' (ID=318) | Time=20.63ms
+2025-12-10 23:03:34,597 - INFO - Token #141: ' that' (ID=326) | Time=27.43ms
+2025-12-10 23:03:34,617 - INFO - Token #142: ' the' (ID=262) | Time=18.98ms
+2025-12-10 23:03:34,637 - INFO - Token #143: ' most' (ID=749) | Time=20.57ms
+2025-12-10 23:03:34,663 - INFO - Token #144: ' important' (ID=1593) | Time=25.19ms
+2025-12-10 23:03:34,684 - INFO - Token #145: ' components' (ID=6805) | Time=20.68ms
+2025-12-10 23:03:34,705 - INFO - Token #146: ' of' (ID=286) | Time=21.20ms
+2025-12-10 23:03:34,742 - INFO - Token #147: ' understanding' (ID=4547) | Time=36.79ms
+2025-12-10 23:03:34,763 - INFO - Token #148: ' the' (ID=262) | Time=21.20ms
+2025-12-10 23:03:34,780 - INFO - Token #149: ' way' (ID=835) | Time=16.26ms
+2025-12-10 23:03:34,801 - INFO - Token #150: ' data' (ID=1366) | Time=20.94ms
+2025-12-10 23:03:34,820 - INFO - Token #151: ' will' (ID=481) | Time=19.15ms
+2025-12-10 23:03:34,844 - INFO - Token #152: ' be' (ID=307) | Time=23.45ms
+2025-12-10 23:03:34,863 - INFO - Token #153: ' gathered' (ID=9272) | Time=18.73ms
+2025-12-10 23:03:34,880 - INFO - Token #154: ' will' (ID=481) | Time=17.04ms
+2025-12-10 23:03:34,899 - INFO - Token #155: ' likely' (ID=1884) | Time=19.07ms
+2025-12-10 23:03:34,917 - INFO - Token #156: ' become' (ID=1716) | Time=17.11ms
+2025-12-10 23:03:34,935 - INFO - Token #157: ' more' (ID=517) | Time=18.61ms
+2025-12-10 23:03:34,954 - INFO - Token #158: ' widely' (ID=6768) | Time=18.15ms
+2025-12-10 23:03:34,974 - INFO - Token #159: ' prevalent' (ID=21854) | Time=19.76ms
+2025-12-10 23:03:34,993 - INFO - Token #160: ' as' (ID=355) | Time=19.05ms
+2025-12-10 23:03:35,011 - INFO - Token #161: ' technology' (ID=3037) | Time=17.39ms
+2025-12-10 23:03:35,030 - INFO - Token #162: ' approaches' (ID=10581) | Time=19.38ms
+2025-12-10 23:03:35,049 - INFO - Token #163: ' the' (ID=262) | Time=18.51ms
+2025-12-10 23:03:35,067 - INFO - Token #164: ' data' (ID=1366) | Time=18.20ms
+2025-12-10 23:03:35,087 - INFO - Token #165: ' entry' (ID=5726) | Time=19.56ms
+2025-12-10 23:03:35,108 - INFO - Token #166: ' stage' (ID=3800) | Time=20.89ms
+2025-12-10 23:03:35,128 - INFO - Token #167: '.' (ID=13) | Time=19.26ms
+2025-12-10 23:03:35,149 - INFO - Token #168: ' I' (ID=314) | Time=20.61ms
+2025-12-10 23:03:35,169 - INFO - Token #169: ' believe' (ID=1975) | Time=20.26ms
+2025-12-10 23:03:35,187 - INFO - Token #170: ' that' (ID=326) | Time=17.42ms
+2025-12-10 23:03:35,206 - INFO - Token #171: ' as' (ID=355) | Time=19.66ms
+2025-12-10 23:03:35,223 - INFO - Token #172: ' the' (ID=262) | Time=16.24ms
+2025-12-10 23:03:35,246 - INFO - Token #173: ' number' (ID=1271) | Time=22.39ms
+2025-12-10 23:03:35,263 - INFO - Token #174: ' of' (ID=286) | Time=17.60ms
+2025-12-10 23:03:35,281 - INFO - Token #175: ' computing' (ID=14492) | Time=17.54ms
+2025-12-10 23:03:35,300 - INFO - Token #176: ' power' (ID=1176) | Time=18.84ms
+2025-12-10 23:03:35,317 - INFO - Token #177: ' becomes' (ID=4329) | Time=16.40ms
+2025-12-10 23:03:35,340 - INFO - Token #178: ' increasingly' (ID=6481) | Time=22.75ms
+2025-12-10 23:03:35,362 - INFO - Token #179: ' important' (ID=1593) | Time=22.37ms
+2025-12-10 23:03:35,381 - INFO - Token #180: ' as' (ID=355) | Time=18.35ms
+2025-12-10 23:03:35,402 - INFO - Token #181: ' the' (ID=262) | Time=20.55ms
+2025-12-10 23:03:35,422 - INFO - Token #182: ' number' (ID=1271) | Time=19.88ms
+2025-12-10 23:03:35,440 - INFO - Token #183: ' of' (ID=286) | Time=18.22ms
+2025-12-10 23:03:35,458 - INFO - Token #184: ' people' (ID=661) | Time=17.19ms
+2025-12-10 23:03:35,480 - INFO - Token #185: ' is' (ID=318) | Time=22.39ms
+2025-12-10 23:03:35,499 - INFO - Token #186: ' more' (ID=517) | Time=18.76ms
+2025-12-10 23:03:35,517 - INFO - Token #187: ' diverse' (ID=10084) | Time=17.27ms
+2025-12-10 23:03:35,536 - INFO - Token #188: ' it' (ID=340) | Time=18.91ms
+2025-12-10 23:03:35,553 - INFO - Token #189: ' will' (ID=481) | Time=17.35ms
+2025-12-10 23:03:35,574 - INFO - Token #190: ' become' (ID=1716) | Time=21.01ms
+2025-12-10 23:03:35,596 - INFO - Token #191: ' important' (ID=1593) | Time=21.31ms
+2025-12-10 23:03:35,619 - INFO - Token #192: ' for' (ID=329) | Time=22.80ms
+2025-12-10 23:03:35,637 - INFO - Token #193: ' new' (ID=649) | Time=18.02ms
+2025-12-10 23:03:35,658 - INFO - Token #194: ' methods' (ID=5050) | Time=20.45ms
+2025-12-10 23:03:35,676 - INFO - Token #195: ' and' (ID=290) | Time=18.10ms
+2025-12-10 23:03:35,699 - INFO - Token #196: ' protocols' (ID=19565) | Time=22.70ms
+2025-12-10 23:03:35,719 - INFO - Token #197: ' to' (ID=284) | Time=19.42ms
+2025-12-10 23:03:35,736 - INFO - Token #198: ' be' (ID=307) | Time=16.90ms
+2025-12-10 23:03:35,758 - INFO - Token #199: ' developed' (ID=4166) | Time=22.09ms
+2025-12-10 23:03:35,776 - INFO - Token #200: ' to' (ID=284) | Time=17.71ms
+2025-12-10 23:03:35,984 - INFO - ✅ 生成完成: 200 tokens in 3.81s (52.56 tokens/s)
+2025-12-10 23:03:46,376 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:03:46,792 - INFO - Token #1: ' makes' (ID=1838) | Time=298.58ms
+2025-12-10 23:03:46,824 - INFO - Token #2: ' a' (ID=257) | Time=30.61ms
+2025-12-10 23:03:46,843 - INFO - Token #3: ' good' (ID=922) | Time=19.33ms
+2025-12-10 23:03:46,862 - INFO - Token #4: ' book' (ID=1492) | Time=18.43ms
+2025-12-10 23:03:46,879 - INFO - Token #5: '.]' (ID=8183) | Time=17.42ms
+2025-12-10 23:03:46,899 - INFO - Token #6: '
+' (ID=198) | Time=18.99ms
+2025-12-10 23:03:46,916 - INFO - Token #7: '
+' (ID=198) | Time=17.65ms
+2025-12-10 23:03:46,936 - INFO - Token #8: '5' (ID=20) | Time=19.06ms
+2025-12-10 23:03:46,954 - INFO - Token #9: '.' (ID=13) | Time=18.59ms
+2025-12-10 23:03:46,975 - INFO - Token #10: ' "' (ID=366) | Time=20.77ms
+2025-12-10 23:03:46,995 - INFO - Token #11: 'S' (ID=50) | Time=19.38ms
+2025-12-10 23:03:47,013 - INFO - Token #12: 'ett' (ID=3087) | Time=17.94ms
+2025-12-10 23:03:47,033 - INFO - Token #13: 'led' (ID=992) | Time=19.39ms
+2025-12-10 23:03:47,051 - INFO - Token #14: '."' (ID=526) | Time=17.83ms
+2025-12-10 23:03:47,074 - INFO - Token #15: '
+' (ID=198) | Time=22.93ms
+2025-12-10 23:03:47,092 - INFO - Token #16: '
+' (ID=198) | Time=18.31ms
+2025-12-10 23:03:47,110 - INFO - Token #17: 'Some' (ID=4366) | Time=17.19ms
+2025-12-10 23:03:47,128 - INFO - Token #18: ' authors' (ID=7035) | Time=18.66ms
+2025-12-10 23:03:47,149 - INFO - Token #19: ' have' (ID=423) | Time=18.67ms
+2025-12-10 23:03:47,167 - INFO - Token #20: ' told' (ID=1297) | Time=18.48ms
+2025-12-10 23:03:47,187 - INFO - Token #21: ' me' (ID=502) | Time=19.16ms
+2025-12-10 23:03:47,207 - INFO - Token #22: ' that' (ID=326) | Time=19.68ms
+2025-12-10 23:03:47,223 - INFO - Token #23: ' they' (ID=484) | Time=16.14ms
+2025-12-10 23:03:47,240 - INFO - Token #24: ' have' (ID=423) | Time=17.15ms
+2025-12-10 23:03:47,257 - INFO - Token #25: ' been' (ID=587) | Time=16.84ms
+2025-12-10 23:03:47,274 - INFO - Token #26: ' moved' (ID=3888) | Time=16.92ms
+2025-12-10 23:03:47,291 - INFO - Token #27: ' by' (ID=416) | Time=16.68ms
+2025-12-10 23:03:47,310 - INFO - Token #28: ' the' (ID=262) | Time=18.78ms
+2025-12-10 23:03:47,328 - INFO - Token #29: ' stories' (ID=3923) | Time=17.26ms
+2025-12-10 23:03:47,347 - INFO - Token #30: '.' (ID=13) | Time=18.76ms
+2025-12-10 23:03:47,364 - INFO - Token #31: ' In' (ID=554) | Time=17.41ms
+2025-12-10 23:03:47,383 - INFO - Token #32: ' My' (ID=2011) | Time=18.86ms
+2025-12-10 23:03:47,401 - INFO - Token #33: ' Brilliant' (ID=45891) | Time=17.61ms
+2025-12-10 23:03:47,424 - INFO - Token #34: ' Friend' (ID=9182) | Time=23.00ms
+2025-12-10 23:03:47,441 - INFO - Token #35: ' in' (ID=287) | Time=16.82ms
+2025-12-10 23:03:47,460 - INFO - Token #36: ' Space' (ID=4687) | Time=18.74ms
+2025-12-10 23:03:47,478 - INFO - Token #37: ',' (ID=11) | Time=17.36ms
+2025-12-10 23:03:47,494 - INFO - Token #38: ' for' (ID=329) | Time=16.53ms
+2025-12-10 23:03:47,512 - INFO - Token #39: ' example' (ID=1672) | Time=17.80ms
+2025-12-10 23:03:47,529 - INFO - Token #40: ',' (ID=11) | Time=16.27ms
+2025-12-10 23:03:47,547 - INFO - Token #41: ' Thomas' (ID=5658) | Time=18.53ms
+2025-12-10 23:03:47,564 - INFO - Token #42: ' M' (ID=337) | Time=16.73ms
+2025-12-10 23:03:47,582 - INFO - Token #43: 'erton' (ID=29111) | Time=17.62ms
+2025-12-10 23:03:47,598 - INFO - Token #44: ' writes' (ID=6797) | Time=16.24ms
+2025-12-10 23:03:47,616 - INFO - Token #45: ' that' (ID=326) | Time=17.63ms
+2025-12-10 23:03:47,633 - INFO - Token #46: ' when' (ID=618) | Time=16.83ms
+2025-12-10 23:03:47,651 - INFO - Token #47: ' he' (ID=339) | Time=17.91ms
+2025-12-10 23:03:47,670 - INFO - Token #48: ' first' (ID=717) | Time=18.88ms
+2025-12-10 23:03:47,692 - INFO - Token #49: ' read' (ID=1100) | Time=21.61ms
+2025-12-10 23:03:47,710 - INFO - Token #50: ' his' (ID=465) | Time=17.80ms
+2025-12-10 23:03:47,727 - INFO - Token #51: ' first' (ID=717) | Time=16.76ms
+2025-12-10 23:03:47,744 - INFO - Token #52: ' draft' (ID=4538) | Time=17.32ms
+2025-12-10 23:03:47,762 - INFO - Token #53: ' of' (ID=286) | Time=17.27ms
+2025-12-10 23:03:47,779 - INFO - Token #54: ' The' (ID=383) | Time=17.27ms
+2025-12-10 23:03:47,795 - INFO - Token #55: ' Adventures' (ID=15640) | Time=15.71ms
+2025-12-10 23:03:47,814 - INFO - Token #56: ' of' (ID=286) | Time=18.89ms
+2025-12-10 23:03:47,830 - INFO - Token #57: ' Sherlock' (ID=25730) | Time=15.86ms
+2025-12-10 23:03:47,848 - INFO - Token #58: ' Holmes' (ID=17628) | Time=17.23ms
+2025-12-10 23:03:47,865 - INFO - Token #59: ',' (ID=11) | Time=16.88ms
+2025-12-10 23:03:47,884 - INFO - Token #60: ' he' (ID=339) | Time=19.39ms
+2025-12-10 23:03:47,904 - INFO - Token #61: ' was' (ID=373) | Time=19.42ms
+2025-12-10 23:03:47,927 - INFO - Token #62: ' struck' (ID=7425) | Time=22.86ms
+2025-12-10 23:03:47,945 - INFO - Token #63: ' by' (ID=416) | Time=17.98ms
+2025-12-10 23:03:47,963 - INFO - Token #64: ' how' (ID=703) | Time=18.40ms
+2025-12-10 23:03:47,982 - INFO - Token #65: ' vividly' (ID=46641) | Time=18.33ms
+2025-12-10 23:03:47,998 - INFO - Token #66: ' it' (ID=340) | Time=16.36ms
+2025-12-10 23:03:48,018 - INFO - Token #67: ' depicted' (ID=18904) | Time=19.78ms
+2025-12-10 23:03:48,039 - INFO - Token #68: ' the' (ID=262) | Time=19.99ms
+2025-12-10 23:03:48,057 - INFO - Token #69: ' way' (ID=835) | Time=18.55ms
+2025-12-10 23:03:48,077 - INFO - Token #70: ' in' (ID=287) | Time=19.24ms
+2025-12-10 23:03:48,096 - INFO - Token #71: ' which' (ID=543) | Time=18.67ms
+2025-12-10 23:03:48,113 - INFO - Token #72: ' human' (ID=1692) | Time=17.57ms
+2025-12-10 23:03:48,133 - INFO - Token #73: ' beings' (ID=9791) | Time=19.43ms
+2025-12-10 23:03:48,153 - INFO - Token #74: ' had' (ID=550) | Time=19.64ms
+2025-12-10 23:03:48,170 - INFO - Token #75: ' been' (ID=587) | Time=17.37ms
+2025-12-10 23:03:48,190 - INFO - Token #76: ' "' (ID=366) | Time=19.84ms
+2025-12-10 23:03:48,209 - INFO - Token #77: 'rem' (ID=2787) | Time=18.67ms
+2025-12-10 23:03:48,228 - INFO - Token #78: 'oved' (ID=2668) | Time=18.33ms
+2025-12-10 23:03:48,245 - INFO - Token #79: ' from' (ID=422) | Time=17.57ms
+2025-12-10 23:03:48,264 - INFO - Token #80: ' the' (ID=262) | Time=18.49ms
+2025-12-10 23:03:48,283 - INFO - Token #81: ' worlds' (ID=11621) | Time=19.09ms
+2025-12-10 23:03:48,305 - INFO - Token #82: ' of' (ID=286) | Time=21.74ms
+2025-12-10 23:03:48,326 - INFO - Token #83: ' this' (ID=428) | Time=20.38ms
+2025-12-10 23:03:48,343 - INFO - Token #84: ' world' (ID=995) | Time=16.71ms
+2025-12-10 23:03:48,361 - INFO - Token #85: '"' (ID=1) | Time=18.53ms
+2025-12-10 23:03:48,381 - INFO - Token #86: ' as' (ID=355) | Time=19.60ms
+2025-12-10 23:03:48,399 - INFO - Token #87: ' though' (ID=996) | Time=18.27ms
+2025-12-10 23:03:48,419 - INFO - Token #88: ' they' (ID=484) | Time=19.08ms
+2025-12-10 23:03:48,439 - INFO - Token #89: ' had' (ID=550) | Time=19.98ms
+2025-12-10 23:03:48,460 - INFO - Token #90: ' disappeared' (ID=12120) | Time=20.69ms
+2025-12-10 23:03:48,480 - INFO - Token #91: ' entirely' (ID=5000) | Time=19.96ms
+2025-12-10 23:03:48,499 - INFO - Token #92: '.' (ID=13) | Time=18.67ms
+2025-12-10 23:03:48,520 - INFO - Token #93: ' But' (ID=887) | Time=20.65ms
+2025-12-10 23:03:48,537 - INFO - Token #94: ' that' (ID=326) | Time=17.73ms
+2025-12-10 23:03:48,560 - INFO - Token #95: ' is' (ID=318) | Time=22.10ms
+2025-12-10 23:03:48,580 - INFO - Token #96: ' not' (ID=407) | Time=20.03ms
+2025-12-10 23:03:48,599 - INFO - Token #97: ' the' (ID=262) | Time=18.86ms
+2025-12-10 23:03:48,618 - INFO - Token #98: ' story' (ID=1621) | Time=19.17ms
+2025-12-10 23:03:48,636 - INFO - Token #99: ' we' (ID=356) | Time=17.04ms
+2025-12-10 23:03:48,660 - INFO - Token #100: ' want' (ID=765) | Time=24.25ms
+2025-12-10 23:03:48,679 - INFO - Token #101: ' to' (ID=284) | Time=18.18ms
+2025-12-10 23:03:48,698 - INFO - Token #102: ' tell' (ID=1560) | Time=18.82ms
+2025-12-10 23:03:48,718 - INFO - Token #103: ' here' (ID=994) | Time=20.41ms
+2025-12-10 23:03:48,739 - INFO - Token #104: '.' (ID=13) | Time=20.44ms
+2025-12-10 23:03:48,762 - INFO - Token #105: ' We' (ID=775) | Time=22.61ms
+2025-12-10 23:03:48,782 - INFO - Token #106: ' want' (ID=765) | Time=19.96ms
+2025-12-10 23:03:48,800 - INFO - Token #107: ' to' (ID=284) | Time=18.54ms
+2025-12-10 23:03:48,827 - INFO - Token #108: ' tell' (ID=1560) | Time=26.33ms
+2025-12-10 23:03:48,846 - INFO - Token #109: ' what' (ID=644) | Time=19.39ms
+2025-12-10 23:03:48,866 - INFO - Token #110: ' it' (ID=340) | Time=19.09ms
+2025-12-10 23:03:48,885 - INFO - Token #111: ' was' (ID=373) | Time=18.62ms
+2025-12-10 23:03:48,906 - INFO - Token #112: ' like' (ID=588) | Time=20.84ms
+2025-12-10 23:03:48,925 - INFO - Token #113: ' for' (ID=329) | Time=19.74ms
+2025-12-10 23:03:48,945 - INFO - Token #114: ' the' (ID=262) | Time=19.48ms
+2025-12-10 23:03:48,962 - INFO - Token #115: ' rest' (ID=1334) | Time=17.06ms
+2025-12-10 23:03:48,982 - INFO - Token #116: ' of' (ID=286) | Time=19.42ms
+2025-12-10 23:03:49,001 - INFO - Token #117: ' us' (ID=514) | Time=18.52ms
+2025-12-10 23:03:49,027 - INFO - Token #118: '.' (ID=13) | Time=25.97ms
+2025-12-10 23:03:49,045 - INFO - Token #119: ' It' (ID=632) | Time=18.21ms
+2025-12-10 23:03:49,065 - INFO - Token #120: ' is' (ID=318) | Time=19.28ms
+2025-12-10 23:03:49,086 - INFO - Token #121: ' this' (ID=428) | Time=20.87ms
+2025-12-10 23:03:49,112 - INFO - Token #122: ' simple' (ID=2829) | Time=26.18ms
+2025-12-10 23:03:49,132 - INFO - Token #123: ' reality' (ID=3950) | Time=19.89ms
+2025-12-10 23:03:49,151 - INFO - Token #124: ' about' (ID=546) | Time=18.85ms
+2025-12-10 23:03:49,179 - INFO - Token #125: ' people' (ID=661) | Time=27.32ms
+2025-12-10 23:03:49,201 - INFO - Token #126: ' that' (ID=326) | Time=22.10ms
+2025-12-10 23:03:49,226 - INFO - Token #127: ' makes' (ID=1838) | Time=24.42ms
+2025-12-10 23:03:49,243 - INFO - Token #128: ' a' (ID=257) | Time=17.70ms
+2025-12-10 23:03:49,264 - INFO - Token #129: ' book' (ID=1492) | Time=20.08ms
+2025-12-10 23:03:49,283 - INFO - Token #130: ' about' (ID=546) | Time=18.68ms
+2025-12-10 23:03:49,302 - INFO - Token #131: ' a' (ID=257) | Time=19.06ms
+2025-12-10 23:03:49,329 - INFO - Token #132: ' character' (ID=2095) | Time=27.47ms
+2025-12-10 23:03:49,350 - INFO - Token #133: ',' (ID=11) | Time=20.29ms
+2025-12-10 23:03:49,369 - INFO - Token #134: ' and' (ID=290) | Time=18.44ms
+2025-12-10 23:03:49,394 - INFO - Token #135: ' how' (ID=703) | Time=25.47ms
+2025-12-10 23:03:49,417 - INFO - Token #136: ' they' (ID=484) | Time=22.30ms
+2025-12-10 23:03:49,435 - INFO - Token #137: ' went' (ID=1816) | Time=17.96ms
+2025-12-10 23:03:49,459 - INFO - Token #138: ' about' (ID=546) | Time=24.30ms
+2025-12-10 23:03:49,480 - INFO - Token #139: ' their' (ID=511) | Time=20.95ms
+2025-12-10 23:03:49,499 - INFO - Token #140: ' lives' (ID=3160) | Time=18.36ms
+2025-12-10 23:03:49,520 - INFO - Token #141: ',' (ID=11) | Time=20.68ms
+2025-12-10 23:03:49,541 - INFO - Token #142: ' that' (ID=326) | Time=21.00ms
+2025-12-10 23:03:49,560 - INFO - Token #143: ' makes' (ID=1838) | Time=18.70ms
+2025-12-10 23:03:49,579 - INFO - Token #144: ' the' (ID=262) | Time=19.13ms
+2025-12-10 23:03:49,600 - INFO - Token #145: ' book' (ID=1492) | Time=20.16ms
+2025-12-10 23:03:49,620 - INFO - Token #146: ' compelling' (ID=13206) | Time=20.81ms
+2025-12-10 23:03:49,639 - INFO - Token #147: ',' (ID=11) | Time=18.33ms
+2025-12-10 23:03:49,662 - INFO - Token #148: ' and' (ID=290) | Time=22.91ms
+2025-12-10 23:03:49,682 - INFO - Token #149: ' that' (ID=326) | Time=19.85ms
+2025-12-10 23:03:49,703 - INFO - Token #150: ' also' (ID=635) | Time=20.82ms
+2025-12-10 23:03:49,727 - INFO - Token #151: ' makes' (ID=1838) | Time=23.74ms
+2025-12-10 23:03:49,748 - INFO - Token #152: ' it' (ID=340) | Time=21.06ms
+2025-12-10 23:03:49,768 - INFO - Token #153: ' a' (ID=257) | Time=19.73ms
+2025-12-10 23:03:49,792 - INFO - Token #154: ' fun' (ID=1257) | Time=23.90ms
+2025-12-10 23:03:49,813 - INFO - Token #155: ' read' (ID=1100) | Time=20.87ms
+2025-12-10 23:03:49,832 - INFO - Token #156: '.' (ID=13) | Time=18.85ms
+2025-12-10 23:03:49,853 - INFO - Token #157: ' To' (ID=1675) | Time=20.14ms
+2025-12-10 23:03:49,872 - INFO - Token #158: ' read' (ID=1100) | Time=19.28ms
+2025-12-10 23:03:49,896 - INFO - Token #159: ' My' (ID=2011) | Time=24.11ms
+2025-12-10 23:03:49,916 - INFO - Token #160: ' Brilliant' (ID=45891) | Time=19.47ms
+2025-12-10 23:03:49,937 - INFO - Token #161: ' Friend' (ID=9182) | Time=20.81ms
+2025-12-10 23:03:49,960 - INFO - Token #162: ' on' (ID=319) | Time=22.78ms
+2025-12-10 23:03:49,980 - INFO - Token #163: ' a' (ID=257) | Time=20.07ms
+2025-12-10 23:03:49,999 - INFO - Token #164: ' remote' (ID=6569) | Time=19.05ms
+2025-12-10 23:03:50,020 - INFO - Token #165: ' island' (ID=7022) | Time=21.02ms
+2025-12-10 23:03:50,040 - INFO - Token #166: ' would' (ID=561) | Time=19.37ms
+2025-12-10 23:03:50,063 - INFO - Token #167: ' have' (ID=423) | Time=22.72ms
+2025-12-10 23:03:50,084 - INFO - Token #168: ' been' (ID=587) | Time=21.06ms
+2025-12-10 23:03:50,103 - INFO - Token #169: ' a' (ID=257) | Time=18.58ms
+2025-12-10 23:03:50,129 - INFO - Token #170: ' great' (ID=1049) | Time=26.16ms
+2025-12-10 23:03:50,150 - INFO - Token #171: ' experience' (ID=1998) | Time=20.50ms
+2025-12-10 23:03:50,169 - INFO - Token #172: ',' (ID=11) | Time=19.07ms
+2025-12-10 23:03:50,201 - INFO - Token #173: ' but' (ID=475) | Time=31.70ms
+2025-12-10 23:03:50,228 - INFO - Token #174: ' it' (ID=340) | Time=26.74ms
+2025-12-10 23:03:50,249 - INFO - Token #175: ' is' (ID=318) | Time=21.13ms
+2025-12-10 23:03:50,275 - INFO - Token #176: ' no' (ID=645) | Time=26.00ms
+2025-12-10 23:03:50,296 - INFO - Token #177: ' fun' (ID=1257) | Time=20.48ms
+2025-12-10 23:03:50,316 - INFO - Token #178: ' reading' (ID=3555) | Time=19.87ms
+2025-12-10 23:03:50,337 - INFO - Token #179: ' Sherlock' (ID=25730) | Time=21.03ms
+2025-12-10 23:03:50,357 - INFO - Token #180: ' Holmes' (ID=17628) | Time=19.60ms
+2025-12-10 23:03:50,376 - INFO - Token #181: ' on' (ID=319) | Time=18.89ms
+2025-12-10 23:03:50,397 - INFO - Token #182: ' an' (ID=281) | Time=20.46ms
+2025-12-10 23:03:50,417 - INFO - Token #183: ' island' (ID=7022) | Time=19.89ms
+2025-12-10 23:03:50,443 - INFO - Token #184: ' unless' (ID=4556) | Time=26.10ms
+2025-12-10 23:03:50,466 - INFO - Token #185: ' you' (ID=345) | Time=22.36ms
+2025-12-10 23:03:50,485 - INFO - Token #186: ''re' (ID=821) | Time=19.67ms
+2025-12-10 23:03:50,514 - INFO - Token #187: ' not' (ID=407) | Time=28.19ms
+2025-12-10 23:03:50,535 - INFO - Token #188: ' familiar' (ID=5385) | Time=21.19ms
+2025-12-10 23:03:50,559 - INFO - Token #189: ' with' (ID=351) | Time=23.68ms
+2025-12-10 23:03:50,582 - INFO - Token #190: ' the' (ID=262) | Time=22.39ms
+2025-12-10 23:03:50,603 - INFO - Token #191: ' series' (ID=2168) | Time=21.44ms
+2025-12-10 23:03:50,623 - INFO - Token #192: '.' (ID=13) | Time=19.55ms
+2025-12-10 23:03:50,645 - INFO - Token #193: ' The' (ID=383) | Time=21.59ms
+2025-12-10 23:03:50,666 - INFO - Token #194: ' novel' (ID=5337) | Time=21.01ms
+2025-12-10 23:03:50,689 - INFO - Token #195: ' tells' (ID=4952) | Time=23.09ms
+2025-12-10 23:03:50,712 - INFO - Token #196: ' us' (ID=514) | Time=22.25ms
+2025-12-10 23:03:50,733 - INFO - Token #197: ' what' (ID=644) | Time=21.43ms
+2025-12-10 23:03:50,756 - INFO - Token #198: ' it' (ID=340) | Time=22.13ms
+2025-12-10 23:03:50,778 - INFO - Token #199: ' was' (ID=373) | Time=22.48ms
+2025-12-10 23:03:50,798 - INFO - Token #200: ' like' (ID=588) | Time=19.19ms
+2025-12-10 23:03:51,009 - INFO - ✅ 生成完成: 200 tokens in 4.31s (46.45 tokens/s)
+2025-12-10 23:04:05,061 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:04:05,486 - INFO - Token #1: ' gives' (ID=3607) | Time=309.13ms
+2025-12-10 23:04:05,512 - INFO - Token #2: ' life' (ID=1204) | Time=24.64ms
+2025-12-10 23:04:05,533 - INFO - Token #3: '.' (ID=13) | Time=21.46ms
+2025-12-10 23:04:05,551 - INFO - Token #4: ' That' (ID=1320) | Time=17.55ms
+2025-12-10 23:04:05,568 - INFO - Token #5: ' the' (ID=262) | Time=17.09ms
+2025-12-10 23:04:05,588 - INFO - Token #6: ' earth' (ID=4534) | Time=19.87ms
+2025-12-10 23:04:05,606 - INFO - Token #7: ',' (ID=11) | Time=17.80ms
+2025-12-10 23:04:05,701 - INFO - Token #8: ' or' (ID=393) | Time=94.38ms
+2025-12-10 23:04:05,725 - INFO - Token #9: ' its' (ID=663) | Time=24.18ms
+2025-12-10 23:04:05,747 - INFO - Token #10: ' bodies' (ID=5920) | Time=21.16ms
+2025-12-10 23:04:05,766 - INFO - Token #11: ',' (ID=11) | Time=18.74ms
+2025-12-10 23:04:05,785 - INFO - Token #12: ' should' (ID=815) | Time=18.71ms
+2025-12-10 23:04:05,804 - INFO - Token #13: ' die' (ID=4656) | Time=19.20ms
+2025-12-10 23:04:05,826 - INFO - Token #14: ' when' (ID=618) | Time=21.64ms
+2025-12-10 23:04:05,846 - INFO - Token #15: ' nothing' (ID=2147) | Time=19.52ms
+2025-12-10 23:04:05,863 - INFO - Token #16: ' is' (ID=318) | Time=17.66ms
+2025-12-10 23:04:05,882 - INFO - Token #17: ' left' (ID=1364) | Time=18.11ms
+2025-12-10 23:04:05,901 - INFO - Token #18: ' of' (ID=286) | Time=18.89ms
+2025-12-10 23:04:05,920 - INFO - Token #19: ' its' (ID=663) | Time=19.20ms
+2025-12-10 23:04:05,941 - INFO - Token #20: ' earth' (ID=4534) | Time=20.53ms
+2025-12-10 23:04:05,958 - INFO - Token #21: ',' (ID=11) | Time=16.61ms
+2025-12-10 23:04:05,976 - INFO - Token #22: ' and' (ID=290) | Time=18.01ms
+2025-12-10 23:04:05,995 - INFO - Token #23: ' its' (ID=663) | Time=18.92ms
+2025-12-10 23:04:06,012 - INFO - Token #24: ' whole' (ID=2187) | Time=17.10ms
+2025-12-10 23:04:06,031 - INFO - Token #25: ' bodies' (ID=5920) | Time=18.20ms
+2025-12-10 23:04:06,048 - INFO - Token #26: ',' (ID=11) | Time=17.34ms
+2025-12-10 23:04:06,066 - INFO - Token #27: ' should' (ID=815) | Time=17.76ms
+2025-12-10 23:04:06,083 - INFO - Token #28: ' never' (ID=1239) | Time=17.04ms
+2025-12-10 23:04:06,102 - INFO - Token #29: ' exist' (ID=2152) | Time=18.67ms
+2025-12-10 23:04:06,121 - INFO - Token #30: ' in' (ID=287) | Time=18.37ms
+2025-12-10 23:04:06,141 - INFO - Token #31: ' one' (ID=530) | Time=20.53ms
+2025-12-10 23:04:06,162 - INFO - Token #32: ',' (ID=11) | Time=20.52ms
+2025-12-10 23:04:06,179 - INFO - Token #33: ' and' (ID=290) | Time=16.77ms
+2025-12-10 23:04:06,198 - INFO - Token #34: ' one' (ID=530) | Time=18.61ms
+2025-12-10 23:04:06,215 - INFO - Token #35: ' only' (ID=691) | Time=17.43ms
+2025-12-10 23:04:06,234 - INFO - Token #36: ',' (ID=11) | Time=18.51ms
+2025-12-10 23:04:06,254 - INFO - Token #37: ' existence' (ID=6224) | Time=19.71ms
+2025-12-10 23:04:06,274 - INFO - Token #38: ' in' (ID=287) | Time=19.45ms
+2025-12-10 23:04:06,292 - INFO - Token #39: ' time' (ID=640) | Time=18.64ms
+2025-12-10 23:04:06,310 - INFO - Token #40: ';' (ID=26) | Time=17.28ms
+2025-12-10 23:04:06,329 - INFO - Token #41: ' and' (ID=290) | Time=18.68ms
+2025-12-10 23:04:06,346 - INFO - Token #42: ' that' (ID=326) | Time=17.07ms
+2025-12-10 23:04:06,365 - INFO - Token #43: ' all' (ID=477) | Time=19.13ms
+2025-12-10 23:04:06,382 - INFO - Token #44: ' of' (ID=286) | Time=16.91ms
+2025-12-10 23:04:06,401 - INFO - Token #45: ' reality' (ID=3950) | Time=17.92ms
+2025-12-10 23:04:06,418 - INFO - Token #46: ' should' (ID=815) | Time=16.78ms
+2025-12-10 23:04:06,440 - INFO - Token #47: ' return' (ID=1441) | Time=22.72ms
+2025-12-10 23:04:06,457 - INFO - Token #48: ' as' (ID=355) | Time=16.72ms
+2025-12-10 23:04:06,475 - INFO - Token #49: ' just' (ID=655) | Time=16.94ms
+2025-12-10 23:04:06,492 - INFO - Token #50: ' as' (ID=355) | Time=17.44ms
+2025-12-10 23:04:06,510 - INFO - Token #51: ' it' (ID=340) | Time=17.67ms
+2025-12-10 23:04:06,528 - INFO - Token #52: ' was' (ID=373) | Time=17.69ms
+2025-12-10 23:04:06,545 - INFO - Token #53: ' before' (ID=878) | Time=16.77ms
+2025-12-10 23:04:06,562 - INFO - Token #54: ' the' (ID=262) | Time=17.23ms
+2025-12-10 23:04:06,580 - INFO - Token #55: ' beginning' (ID=3726) | Time=17.22ms
+2025-12-10 23:04:06,600 - INFO - Token #56: ' of' (ID=286) | Time=20.32ms
+2025-12-10 23:04:06,621 - INFO - Token #57: ' time' (ID=640) | Time=20.14ms
+2025-12-10 23:04:06,641 - INFO - Token #58: '."' (ID=526) | Time=19.97ms
+2025-12-10 23:04:06,659 - INFO - Token #59: ' (' (ID=357) | Time=17.82ms
+2025-12-10 23:04:06,678 - INFO - Token #60: '1' (ID=16) | Time=18.93ms
+2025-12-10 23:04:06,696 - INFO - Token #61: ')' (ID=8) | Time=18.42ms
+2025-12-10 23:04:06,716 - INFO - Token #62: ' This' (ID=770) | Time=19.22ms
+2025-12-10 23:04:06,735 - INFO - Token #63: ' was' (ID=373) | Time=18.41ms
+2025-12-10 23:04:06,755 - INFO - Token #64: ' the' (ID=262) | Time=20.45ms
+2025-12-10 23:04:06,776 - INFO - Token #65: ' first' (ID=717) | Time=20.72ms
+2025-12-10 23:04:06,795 - INFO - Token #66: ' of' (ID=286) | Time=18.51ms
+2025-12-10 23:04:06,814 - INFO - Token #67: ' the' (ID=262) | Time=18.89ms
+2025-12-10 23:04:06,835 - INFO - Token #68: ' three' (ID=1115) | Time=20.46ms
+2025-12-10 23:04:06,854 - INFO - Token #69: ' primary' (ID=4165) | Time=19.15ms
+2025-12-10 23:04:06,878 - INFO - Token #70: ' points' (ID=2173) | Time=23.77ms
+2025-12-10 23:04:06,900 - INFO - Token #71: ' quoted' (ID=10947) | Time=21.74ms
+2025-12-10 23:04:06,918 - INFO - Token #72: '.' (ID=13) | Time=18.30ms
+2025-12-10 23:04:06,944 - INFO - Token #73: ' He' (ID=679) | Time=24.90ms
+2025-12-10 23:04:06,967 - INFO - Token #74: ' called' (ID=1444) | Time=22.85ms
+2025-12-10 23:04:06,984 - INFO - Token #75: ' his' (ID=465) | Time=17.38ms
+2025-12-10 23:04:07,008 - INFO - Token #76: ' account' (ID=1848) | Time=23.71ms
+2025-12-10 23:04:07,028 - INFO - Token #77: ' the' (ID=262) | Time=19.52ms
+2025-12-10 23:04:07,047 - INFO - Token #78: ' "' (ID=366) | Time=18.61ms
+2025-12-10 23:04:07,065 - INFO - Token #79: 'first' (ID=11085) | Time=18.48ms
+2025-12-10 23:04:07,084 - INFO - Token #80: ' of' (ID=286) | Time=18.51ms
+2025-12-10 23:04:07,110 - INFO - Token #81: ' the' (ID=262) | Time=25.79ms
+2025-12-10 23:04:07,131 - INFO - Token #82: ' three' (ID=1115) | Time=20.45ms
+2025-12-10 23:04:07,148 - INFO - Token #83: ' primary' (ID=4165) | Time=17.40ms
+2025-12-10 23:04:07,167 - INFO - Token #84: ' points' (ID=2173) | Time=18.99ms
+2025-12-10 23:04:07,188 - INFO - Token #85: '."' (ID=526) | Time=20.18ms
+2025-12-10 23:04:07,207 - INFO - Token #86: ' (' (ID=357) | Time=19.08ms
+2025-12-10 23:04:07,228 - INFO - Token #87: '2' (ID=17) | Time=20.50ms
+2025-12-10 23:04:07,247 - INFO - Token #88: ')' (ID=8) | Time=19.13ms
+2025-12-10 23:04:07,269 - INFO - Token #89: '
+' (ID=198) | Time=21.26ms
+2025-12-10 23:04:07,291 - INFO - Token #90: '
+' (ID=198) | Time=22.03ms
+2025-12-10 23:04:07,311 - INFO - Token #91: '(' (ID=7) | Time=20.25ms
+2025-12-10 23:04:07,332 - INFO - Token #92: '1' (ID=16) | Time=20.66ms
+2025-12-10 23:04:07,352 - INFO - Token #93: ')' (ID=8) | Time=19.84ms
+2025-12-10 23:04:07,377 - INFO - Token #94: ' The' (ID=383) | Time=25.16ms
+2025-12-10 23:04:07,399 - INFO - Token #95: ' Creation' (ID=21582) | Time=21.65ms
+2025-12-10 23:04:07,420 - INFO - Token #96: 'ist' (ID=396) | Time=20.09ms
+2025-12-10 23:04:07,443 - INFO - Token #97: ',' (ID=11) | Time=22.80ms
+2025-12-10 23:04:07,463 - INFO - Token #98: ' as' (ID=355) | Time=20.25ms
+2025-12-10 23:04:07,481 - INFO - Token #99: ' we' (ID=356) | Time=17.80ms
+2025-12-10 23:04:07,499 - INFO - Token #100: ' shall' (ID=2236) | Time=17.41ms
+2025-12-10 23:04:07,517 - INFO - Token #101: ' see' (ID=766) | Time=18.61ms
+2025-12-10 23:04:07,540 - INFO - Token #102: ' later' (ID=1568) | Time=22.71ms
+2025-12-10 23:04:07,560 - INFO - Token #103: ',' (ID=11) | Time=19.75ms
+2025-12-10 23:04:07,581 - INFO - Token #104: ' had' (ID=550) | Time=20.54ms
+2025-12-10 23:04:07,600 - INFO - Token #105: ' already' (ID=1541) | Time=18.62ms
+2025-12-10 23:04:07,620 - INFO - Token #106: ' expressed' (ID=6241) | Time=19.83ms
+2025-12-10 23:04:07,639 - INFO - Token #107: ' himself' (ID=2241) | Time=19.34ms
+2025-12-10 23:04:07,660 - INFO - Token #108: ' with' (ID=351) | Time=20.34ms
+2025-12-10 23:04:07,679 - INFO - Token #109: ' a' (ID=257) | Time=18.79ms
+2025-12-10 23:04:07,699 - INFO - Token #110: ' specific' (ID=2176) | Time=20.36ms
+2025-12-10 23:04:07,717 - INFO - Token #111: ',' (ID=11) | Time=17.09ms
+2025-12-10 23:04:07,735 - INFO - Token #112: ' almost' (ID=2048) | Time=18.77ms
+2025-12-10 23:04:07,754 - INFO - Token #113: ' theological' (ID=30576) | Time=18.35ms
+2025-12-10 23:04:07,777 - INFO - Token #114: ' statement' (ID=2643) | Time=22.60ms
+2025-12-10 23:04:07,796 - INFO - Token #115: '.' (ID=13) | Time=19.25ms
+2025-12-10 23:04:07,816 - INFO - Token #116: ' I' (ID=314) | Time=19.33ms
+2025-12-10 23:04:07,836 - INFO - Token #117: ' am' (ID=716) | Time=19.96ms
+2025-12-10 23:04:07,858 - INFO - Token #118: ' sorry' (ID=7926) | Time=21.81ms
+2025-12-10 23:04:07,878 - INFO - Token #119: ' to' (ID=284) | Time=19.85ms
+2025-12-10 23:04:07,898 - INFO - Token #120: ' say' (ID=910) | Time=20.23ms
+2025-12-10 23:04:07,921 - INFO - Token #121: ' that' (ID=326) | Time=21.92ms
+2025-12-10 23:04:07,942 - INFO - Token #122: ' I' (ID=314) | Time=21.46ms
+2025-12-10 23:04:07,963 - INFO - Token #123: ' did' (ID=750) | Time=20.67ms
+2025-12-10 23:04:07,982 - INFO - Token #124: ' not' (ID=407) | Time=18.99ms
+2025-12-10 23:04:08,003 - INFO - Token #125: ' know' (ID=760) | Time=20.56ms
+2025-12-10 23:04:08,023 - INFO - Token #126: ' about' (ID=546) | Time=19.98ms
+2025-12-10 23:04:08,046 - INFO - Token #127: ' this' (ID=428) | Time=22.07ms
+2025-12-10 23:04:08,065 - INFO - Token #128: '.' (ID=13) | Time=19.49ms
+2025-12-10 23:04:08,084 - INFO - Token #129: ' But' (ID=887) | Time=18.71ms
+2025-12-10 23:04:08,110 - INFO - Token #130: ',' (ID=11) | Time=26.03ms
+2025-12-10 23:04:08,131 - INFO - Token #131: ' even' (ID=772) | Time=20.90ms
+2025-12-10 23:04:08,151 - INFO - Token #132: ' though' (ID=996) | Time=19.06ms
+2025-12-10 23:04:08,177 - INFO - Token #133: ' I' (ID=314) | Time=26.51ms
+2025-12-10 23:04:08,199 - INFO - Token #134: ' have' (ID=423) | Time=21.07ms
+2025-12-10 23:04:08,218 - INFO - Token #135: ',' (ID=11) | Time=19.71ms
+2025-12-10 23:04:08,245 - INFO - Token #136: ' of' (ID=286) | Time=26.14ms
+2025-12-10 23:04:08,265 - INFO - Token #137: ' course' (ID=1781) | Time=19.65ms
+2025-12-10 23:04:08,286 - INFO - Token #138: ',' (ID=11) | Time=21.03ms
+2025-12-10 23:04:08,308 - INFO - Token #139: ' always' (ID=1464) | Time=21.83ms
+2025-12-10 23:04:08,328 - INFO - Token #140: ' been' (ID=587) | Time=20.46ms
+2025-12-10 23:04:08,349 - INFO - Token #141: ' quite' (ID=2407) | Time=19.91ms
+2025-12-10 23:04:08,371 - INFO - Token #142: ' aware' (ID=3910) | Time=22.29ms
+2025-12-10 23:04:08,392 - INFO - Token #143: ' that' (ID=326) | Time=21.08ms
+2025-12-10 23:04:08,412 - INFO - Token #144: ' the' (ID=262) | Time=19.78ms
+2025-12-10 23:04:08,433 - INFO - Token #145: ' Creation' (ID=21582) | Time=20.51ms
+2025-12-10 23:04:08,452 - INFO - Token #146: 'ist' (ID=396) | Time=18.61ms
+2025-12-10 23:04:08,478 - INFO - Token #147: ' was' (ID=373) | Time=25.67ms
+2025-12-10 23:04:08,499 - INFO - Token #148: ' a' (ID=257) | Time=21.32ms
+2025-12-10 23:04:08,519 - INFO - Token #149: ' real' (ID=1103) | Time=20.13ms
+2025-12-10 23:04:08,548 - INFO - Token #150: 'ist' (ID=396) | Time=28.49ms
+2025-12-10 23:04:08,568 - INFO - Token #151: ';' (ID=26) | Time=19.24ms
+2025-12-10 23:04:08,587 - INFO - Token #152: ' and' (ID=290) | Time=18.64ms
+2025-12-10 23:04:08,608 - INFO - Token #153: ' it' (ID=340) | Time=20.77ms
+2025-12-10 23:04:08,629 - INFO - Token #154: ' is' (ID=318) | Time=20.69ms
+2025-12-10 23:04:08,649 - INFO - Token #155: ' perhaps' (ID=3737) | Time=20.60ms
+2025-12-10 23:04:08,670 - INFO - Token #156: ' true' (ID=2081) | Time=19.91ms
+2025-12-10 23:04:08,690 - INFO - Token #157: ' that' (ID=326) | Time=20.03ms
+2025-12-10 23:04:08,711 - INFO - Token #158: ' he' (ID=339) | Time=20.76ms
+2025-12-10 23:04:08,732 - INFO - Token #159: ' also' (ID=635) | Time=21.34ms
+2025-12-10 23:04:08,752 - INFO - Token #160: ' took' (ID=1718) | Time=19.71ms
+2025-12-10 23:04:08,777 - INFO - Token #161: ' credit' (ID=3884) | Time=24.76ms
+2025-12-10 23:04:08,797 - INFO - Token #162: ' for' (ID=329) | Time=19.45ms
+2025-12-10 23:04:08,818 - INFO - Token #163: ' the' (ID=262) | Time=21.07ms
+2025-12-10 23:04:08,840 - INFO - Token #164: ' existence' (ID=6224) | Time=22.25ms
+2025-12-10 23:04:08,862 - INFO - Token #165: ' of' (ID=286) | Time=21.63ms
+2025-12-10 23:04:08,883 - INFO - Token #166: ' this' (ID=428) | Time=20.90ms
+2025-12-10 23:04:08,903 - INFO - Token #167: ' world' (ID=995) | Time=19.54ms
+2025-12-10 23:04:08,934 - INFO - Token #168: ',' (ID=11) | Time=30.52ms
+2025-12-10 23:04:08,958 - INFO - Token #169: ' and' (ID=290) | Time=23.72ms
+2025-12-10 23:04:08,979 - INFO - Token #170: ' for' (ID=329) | Time=20.94ms
+2025-12-10 23:04:09,000 - INFO - Token #171: ' the' (ID=262) | Time=21.22ms
+2025-12-10 23:04:09,023 - INFO - Token #172: ' preservation' (ID=22459) | Time=22.16ms
+2025-12-10 23:04:09,046 - INFO - Token #173: ' of' (ID=286) | Time=23.04ms
+2025-12-10 23:04:09,067 - INFO - Token #174: ' natural' (ID=3288) | Time=20.82ms
+2025-12-10 23:04:09,094 - INFO - Token #175: ' history' (ID=2106) | Time=27.40ms
+2025-12-10 23:04:09,116 - INFO - Token #176: '.' (ID=13) | Time=21.44ms
+2025-12-10 23:04:09,138 - INFO - Token #177: '
+' (ID=198) | Time=21.54ms
+2025-12-10 23:04:09,158 - INFO - Token #178: '
+' (ID=198) | Time=19.66ms
+2025-12-10 23:04:09,182 - INFO - Token #179: 'I' (ID=40) | Time=23.64ms
+2025-12-10 23:04:09,204 - INFO - Token #180: ' should' (ID=815) | Time=22.67ms
+2025-12-10 23:04:09,227 - INFO - Token #181: ' like' (ID=588) | Time=22.02ms
+2025-12-10 23:04:09,247 - INFO - Token #182: ' to' (ID=284) | Time=20.10ms
+2025-12-10 23:04:09,269 - INFO - Token #183: ' take' (ID=1011) | Time=21.78ms
+2025-12-10 23:04:09,289 - INFO - Token #184: ' one' (ID=530) | Time=19.44ms
+2025-12-10 23:04:09,314 - INFO - Token #185: ' of' (ID=286) | Time=25.28ms
+2025-12-10 23:04:09,338 - INFO - Token #186: ' the' (ID=262) | Time=23.72ms
+2025-12-10 23:04:09,365 - INFO - Token #187: ' major' (ID=1688) | Time=26.64ms
+2025-12-10 23:04:09,388 - INFO - Token #188: ' points' (ID=2173) | Time=22.60ms
+2025-12-10 23:04:09,415 - INFO - Token #189: ' of' (ID=286) | Time=26.44ms
+2025-12-10 23:04:09,446 - INFO - Token #190: ' connection' (ID=4637) | Time=30.51ms
+2025-12-10 23:04:09,474 - INFO - Token #191: ' from' (ID=422) | Time=27.96ms
+2025-12-10 23:04:09,494 - INFO - Token #192: ' the' (ID=262) | Time=19.67ms
+2025-12-10 23:04:09,514 - INFO - Token #193: ' first' (ID=717) | Time=20.34ms
+2025-12-10 23:04:09,536 - INFO - Token #194: ' of' (ID=286) | Time=21.15ms
+2025-12-10 23:04:09,560 - INFO - Token #195: ' the' (ID=262) | Time=23.98ms
+2025-12-10 23:04:09,581 - INFO - Token #196: ' three' (ID=1115) | Time=21.32ms
+2025-12-10 23:04:09,603 - INFO - Token #197: ' primary' (ID=4165) | Time=20.98ms
+2025-12-10 23:04:09,627 - INFO - Token #198: ' points' (ID=2173) | Time=23.47ms
+2025-12-10 23:04:09,648 - INFO - Token #199: '.' (ID=13) | Time=20.49ms
+2025-12-10 23:04:09,669 - INFO - Token #200: ' At' (ID=1629) | Time=21.10ms
+2025-12-10 23:04:09,878 - INFO - ✅ 生成完成: 200 tokens in 4.49s (44.50 tokens/s)
+2025-12-10 23:04:17,178 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:04:17,547 - INFO - Token #1: ' defines' (ID=15738) | Time=241.78ms
+2025-12-10 23:04:17,569 - INFO - Token #2: ' it' (ID=340) | Time=21.55ms
+2025-12-10 23:04:17,588 - INFO - Token #3: '."' (ID=526) | Time=18.22ms
+2025-12-10 23:04:17,608 - INFO - Token #4: '
+' (ID=198) | Time=20.79ms
+2025-12-10 23:04:17,628 - INFO - Token #5: '
+' (ID=198) | Time=19.15ms
+2025-12-10 23:04:17,646 - INFO - Token #6: 'But' (ID=1537) | Time=18.08ms
+2025-12-10 23:04:17,665 - INFO - Token #7: ' in' (ID=287) | Time=18.65ms
+2025-12-10 23:04:17,683 - INFO - Token #8: ' a' (ID=257) | Time=17.80ms
+2025-12-10 23:04:17,701 - INFO - Token #9: ' long' (ID=890) | Time=17.94ms
+2025-12-10 23:04:17,718 - INFO - Token #10: '-' (ID=12) | Time=16.68ms
+2025-12-10 23:04:17,742 - INFO - Token #11: 'deb' (ID=11275) | Time=24.01ms
+2025-12-10 23:04:17,760 - INFO - Token #12: 'unk' (ID=2954) | Time=17.89ms
+2025-12-10 23:04:17,777 - INFO - Token #13: 'ed' (ID=276) | Time=17.21ms
+2025-12-10 23:04:17,796 - INFO - Token #14: ' study' (ID=2050) | Time=18.01ms
+2025-12-10 23:04:17,813 - INFO - Token #15: ' that' (ID=326) | Time=17.25ms
+2025-12-10 23:04:17,832 - INFO - Token #16: ' included' (ID=3017) | Time=18.36ms
+2025-12-10 23:04:17,849 - INFO - Token #17: ' data' (ID=1366) | Time=17.47ms
+2025-12-10 23:04:17,867 - INFO - Token #18: ' on' (ID=319) | Time=17.77ms
+2025-12-10 23:04:17,884 - INFO - Token #19: ' more' (ID=517) | Time=16.91ms
+2025-12-10 23:04:17,909 - INFO - Token #20: ' than' (ID=621) | Time=24.71ms
+2025-12-10 23:04:17,927 - INFO - Token #21: ' 100' (ID=1802) | Time=17.96ms
+2025-12-10 23:04:17,944 - INFO - Token #22: ' million' (ID=1510) | Time=16.82ms
+2025-12-10 23:04:17,962 - INFO - Token #23: ' Americans' (ID=3399) | Time=17.59ms
+2025-12-10 23:04:17,979 - INFO - Token #24: ',' (ID=11) | Time=16.83ms
+2025-12-10 23:04:17,997 - INFO - Token #25: ' the' (ID=262) | Time=18.20ms
+2025-12-10 23:04:18,014 - INFO - Token #26: ' researchers' (ID=4837) | Time=16.73ms
+2025-12-10 23:04:18,032 - INFO - Token #27: ' argued' (ID=7189) | Time=17.68ms
+2025-12-10 23:04:18,049 - INFO - Token #28: ' that' (ID=326) | Time=16.57ms
+2025-12-10 23:04:18,067 - INFO - Token #29: ' the' (ID=262) | Time=18.43ms
+2025-12-10 23:04:18,087 - INFO - Token #30: ' more' (ID=517) | Time=19.54ms
+2025-12-10 23:04:18,108 - INFO - Token #31: ' specific' (ID=2176) | Time=20.33ms
+2025-12-10 23:04:18,124 - INFO - Token #32: ' nature' (ID=3450) | Time=16.18ms
+2025-12-10 23:04:18,142 - INFO - Token #33: ' of' (ID=286) | Time=18.20ms
+2025-12-10 23:04:18,161 - INFO - Token #34: ' the' (ID=262) | Time=18.59ms
+2025-12-10 23:04:18,178 - INFO - Token #35: ' "' (ID=366) | Time=17.09ms
+2025-12-10 23:04:18,196 - INFO - Token #36: 'pred' (ID=28764) | Time=17.65ms
+2025-12-10 23:04:18,213 - INFO - Token #37: 'ictions' (ID=9278) | Time=16.94ms
+2025-12-10 23:04:18,231 - INFO - Token #38: ' of' (ID=286) | Time=17.94ms
+2025-12-10 23:04:18,248 - INFO - Token #39: ' the' (ID=262) | Time=16.75ms
+2025-12-10 23:04:18,267 - INFO - Token #40: ' future' (ID=2003) | Time=18.37ms
+2025-12-10 23:04:18,291 - INFO - Token #41: '"' (ID=1) | Time=24.19ms
+2025-12-10 23:04:18,309 - INFO - Token #42: ' is' (ID=318) | Time=17.14ms
+2025-12-10 23:04:18,327 - INFO - Token #43: ' not' (ID=407) | Time=17.96ms
+2025-12-10 23:04:18,343 - INFO - Token #44: ' clear' (ID=1598) | Time=16.45ms
+2025-12-10 23:04:18,361 - INFO - Token #45: '.' (ID=13) | Time=17.79ms
+2025-12-10 23:04:18,377 - INFO - Token #46: ' Indeed' (ID=9676) | Time=16.09ms
+2025-12-10 23:04:18,393 - INFO - Token #47: ',' (ID=11) | Time=15.77ms
+2025-12-10 23:04:18,411 - INFO - Token #48: ' they' (ID=484) | Time=17.12ms
+2025-12-10 23:04:18,427 - INFO - Token #49: ' found' (ID=1043) | Time=16.42ms
+2025-12-10 23:04:18,445 - INFO - Token #50: ' that' (ID=326) | Time=17.38ms
+2025-12-10 23:04:18,462 - INFO - Token #51: ' "' (ID=366) | Time=16.59ms
+2025-12-10 23:04:18,479 - INFO - Token #52: 'pred' (ID=28764) | Time=17.66ms
+2025-12-10 23:04:18,496 - INFO - Token #53: 'ictions' (ID=9278) | Time=16.15ms
+2025-12-10 23:04:18,513 - INFO - Token #54: ' of' (ID=286) | Time=17.24ms
+2025-12-10 23:04:18,529 - INFO - Token #55: ' the' (ID=262) | Time=16.29ms
+2025-12-10 23:04:18,549 - INFO - Token #56: ' future' (ID=2003) | Time=19.54ms
+2025-12-10 23:04:18,566 - INFO - Token #57: ' have' (ID=423) | Time=16.61ms
+2025-12-10 23:04:18,584 - INFO - Token #58: ' a' (ID=257) | Time=17.64ms
+2025-12-10 23:04:18,604 - INFO - Token #59: ' much' (ID=881) | Time=19.80ms
+2025-12-10 23:04:18,626 - INFO - Token #60: ' smaller' (ID=4833) | Time=21.69ms
+2025-12-10 23:04:18,642 - INFO - Token #61: ' predictive' (ID=33344) | Time=15.99ms
+2025-12-10 23:04:18,661 - INFO - Token #62: ' profile' (ID=7034) | Time=19.08ms
+2025-12-10 23:04:18,679 - INFO - Token #63: ' (' (ID=357) | Time=17.74ms
+2025-12-10 23:04:18,697 - INFO - Token #64: 'relative' (ID=43762) | Time=18.11ms
+2025-12-10 23:04:18,716 - INFO - Token #65: ' to' (ID=284) | Time=18.47ms
+2025-12-10 23:04:18,732 - INFO - Token #66: ' predictions' (ID=16277) | Time=16.00ms
+2025-12-10 23:04:18,751 - INFO - Token #67: ' of' (ID=286) | Time=18.68ms
+2025-12-10 23:04:18,776 - INFO - Token #68: ' the' (ID=262) | Time=24.83ms
+2025-12-10 23:04:18,794 - INFO - Token #69: ' past' (ID=1613) | Time=18.34ms
+2025-12-10 23:04:18,813 - INFO - Token #70: '),"' (ID=27267) | Time=18.32ms
+2025-12-10 23:04:18,833 - INFO - Token #71: ' meaning' (ID=3616) | Time=19.66ms
+2025-12-10 23:04:18,849 - INFO - Token #72: ' that' (ID=326) | Time=16.36ms
+2025-12-10 23:04:18,868 - INFO - Token #73: ' they' (ID=484) | Time=19.04ms
+2025-12-10 23:04:18,888 - INFO - Token #74: ' are' (ID=389) | Time=19.83ms
+2025-12-10 23:04:18,909 - INFO - Token #75: ' not' (ID=407) | Time=19.99ms
+2025-12-10 23:04:18,925 - INFO - Token #76: ' simply' (ID=2391) | Time=16.17ms
+2025-12-10 23:04:18,944 - INFO - Token #77: ' more' (ID=517) | Time=18.92ms
+2025-12-10 23:04:18,964 - INFO - Token #78: ' specific' (ID=2176) | Time=19.49ms
+2025-12-10 23:04:18,981 - INFO - Token #79: ' than' (ID=621) | Time=17.41ms
+2025-12-10 23:04:19,001 - INFO - Token #80: ' our' (ID=674) | Time=19.30ms
+2025-12-10 23:04:19,021 - INFO - Token #81: ' perceptions' (ID=23574) | Time=20.52ms
+2025-12-10 23:04:19,042 - INFO - Token #82: ' about' (ID=546) | Time=20.83ms
+2025-12-10 23:04:19,061 - INFO - Token #83: ' future' (ID=2003) | Time=18.02ms
+2025-12-10 23:04:19,077 - INFO - Token #84: ' events' (ID=2995) | Time=16.09ms
+2025-12-10 23:04:19,097 - INFO - Token #85: '.' (ID=13) | Time=19.90ms
+2025-12-10 23:04:19,115 - INFO - Token #86: ' The' (ID=383) | Time=17.87ms
+2025-12-10 23:04:19,134 - INFO - Token #87: ' researchers' (ID=4837) | Time=19.04ms
+2025-12-10 23:04:19,155 - INFO - Token #88: ' found' (ID=1043) | Time=20.17ms
+2025-12-10 23:04:19,177 - INFO - Token #89: ' that' (ID=326) | Time=22.08ms
+2025-12-10 23:04:19,194 - INFO - Token #90: ' people' (ID=661) | Time=17.28ms
+2025-12-10 23:04:19,213 - INFO - Token #91: ' who' (ID=508) | Time=18.53ms
+2025-12-10 23:04:19,233 - INFO - Token #92: ' agreed' (ID=4987) | Time=19.62ms
+2025-12-10 23:04:19,251 - INFO - Token #93: ' that' (ID=326) | Time=18.14ms
+2025-12-10 23:04:19,276 - INFO - Token #94: ' the' (ID=262) | Time=25.04ms
+2025-12-10 23:04:19,295 - INFO - Token #95: ' economy' (ID=3773) | Time=18.95ms
+2025-12-10 23:04:19,314 - INFO - Token #96: ' will' (ID=481) | Time=18.90ms
+2025-12-10 23:04:19,336 - INFO - Token #97: ' be' (ID=307) | Time=21.10ms
+2025-12-10 23:04:19,360 - INFO - Token #98: ' much' (ID=881) | Time=24.10ms
+2025-12-10 23:04:19,378 - INFO - Token #99: ' better' (ID=1365) | Time=17.57ms
+2025-12-10 23:04:19,395 - INFO - Token #100: ' off' (ID=572) | Time=17.20ms
+2025-12-10 23:04:19,412 - INFO - Token #101: ' (' (ID=357) | Time=16.65ms
+2025-12-10 23:04:19,431 - INFO - Token #102: 'and' (ID=392) | Time=19.29ms
+2025-12-10 23:04:19,450 - INFO - Token #103: ' therefore' (ID=4361) | Time=18.95ms
+2025-12-10 23:04:19,476 - INFO - Token #104: ' much' (ID=881) | Time=25.33ms
+2025-12-10 23:04:19,496 - INFO - Token #105: ' more' (ID=517) | Time=19.68ms
+2025-12-10 23:04:19,515 - INFO - Token #106: ' competitive' (ID=7606) | Time=19.08ms
+2025-12-10 23:04:19,537 - INFO - Token #107: ')' (ID=8) | Time=21.36ms
+2025-12-10 23:04:19,555 - INFO - Token #108: ' over' (ID=625) | Time=18.02ms
+2025-12-10 23:04:19,577 - INFO - Token #109: ' the' (ID=262) | Time=21.79ms
+2025-12-10 23:04:19,596 - INFO - Token #110: ' next' (ID=1306) | Time=18.75ms
+2025-12-10 23:04:19,614 - INFO - Token #111: ' 50' (ID=2026) | Time=18.57ms
+2025-12-10 23:04:19,633 - INFO - Token #112: ' years' (ID=812) | Time=18.15ms
+2025-12-10 23:04:19,651 - INFO - Token #113: ' were' (ID=547) | Time=18.32ms
+2025-12-10 23:04:19,672 - INFO - Token #114: ' more' (ID=517) | Time=20.28ms
+2025-12-10 23:04:19,688 - INFO - Token #115: ' likely' (ID=1884) | Time=16.45ms
+2025-12-10 23:04:19,709 - INFO - Token #116: ' to' (ID=284) | Time=21.01ms
+2025-12-10 23:04:19,729 - INFO - Token #117: ' predict' (ID=4331) | Time=19.44ms
+2025-12-10 23:04:19,748 - INFO - Token #118: ' that' (ID=326) | Time=18.40ms
+2025-12-10 23:04:19,767 - INFO - Token #119: ' the' (ID=262) | Time=19.19ms
+2025-12-10 23:04:19,788 - INFO - Token #120: ' market' (ID=1910) | Time=21.30ms
+2025-12-10 23:04:19,812 - INFO - Token #121: ' would' (ID=561) | Time=23.91ms
+2025-12-10 23:04:19,832 - INFO - Token #122: ' decline' (ID=7794) | Time=19.09ms
+2025-12-10 23:04:19,850 - INFO - Token #123: ' by' (ID=416) | Time=18.53ms
+2025-12-10 23:04:19,876 - INFO - Token #124: ' about' (ID=546) | Time=25.84ms
+2025-12-10 23:04:19,896 - INFO - Token #125: ' a' (ID=257) | Time=19.69ms
+2025-12-10 23:04:19,916 - INFO - Token #126: ' percentage' (ID=5873) | Time=19.60ms
+2025-12-10 23:04:19,937 - INFO - Token #127: ' point' (ID=966) | Time=20.92ms
+2025-12-10 23:04:19,954 - INFO - Token #128: ' as' (ID=355) | Time=16.84ms
+2025-12-10 23:04:19,977 - INFO - Token #129: ' a' (ID=257) | Time=22.91ms
+2025-12-10 23:04:19,995 - INFO - Token #130: ' result' (ID=1255) | Time=17.78ms
+2025-12-10 23:04:20,015 - INFO - Token #131: ' of' (ID=286) | Time=20.07ms
+2025-12-10 23:04:20,034 - INFO - Token #132: ' the' (ID=262) | Time=18.92ms
+2025-12-10 23:04:20,060 - INFO - Token #133: ' decline' (ID=7794) | Time=25.40ms
+2025-12-10 23:04:20,080 - INFO - Token #134: ' in' (ID=287) | Time=19.86ms
+2025-12-10 23:04:20,099 - INFO - Token #135: ' productivity' (ID=13714) | Time=18.86ms
+2025-12-10 23:04:20,119 - INFO - Token #136: '.' (ID=13) | Time=19.89ms
+2025-12-10 23:04:20,139 - INFO - Token #137: '
+' (ID=198) | Time=19.27ms
+2025-12-10 23:04:20,159 - INFO - Token #138: '
+' (ID=198) | Time=20.60ms
+2025-12-10 23:04:20,181 - INFO - Token #139: 'The' (ID=464) | Time=21.35ms
+2025-12-10 23:04:20,201 - INFO - Token #140: ' new' (ID=649) | Time=20.37ms
+2025-12-10 23:04:20,225 - INFO - Token #141: ' study' (ID=2050) | Time=23.80ms
+2025-12-10 23:04:20,246 - INFO - Token #142: ',' (ID=11) | Time=20.95ms
+2025-12-10 23:04:20,266 - INFO - Token #143: ' which' (ID=543) | Time=18.96ms
+2025-12-10 23:04:20,285 - INFO - Token #144: ' was' (ID=373) | Time=19.79ms
+2025-12-10 23:04:20,306 - INFO - Token #145: ' published' (ID=3199) | Time=20.60ms
+2025-12-10 23:04:20,327 - INFO - Token #146: ' in' (ID=287) | Time=20.04ms
+2025-12-10 23:04:20,347 - INFO - Token #147: ' the' (ID=262) | Time=19.92ms
+2025-12-10 23:04:20,366 - INFO - Token #148: ' journal' (ID=3989) | Time=19.00ms
+2025-12-10 23:04:20,386 - INFO - Token #149: ' Current' (ID=9236) | Time=20.41ms
+2025-12-10 23:04:20,408 - INFO - Token #150: ' Biology' (ID=24698) | Time=21.79ms
+2025-12-10 23:04:20,428 - INFO - Token #151: ',' (ID=11) | Time=19.32ms
+2025-12-10 23:04:20,448 - INFO - Token #152: ' is' (ID=318) | Time=20.21ms
+2025-12-10 23:04:20,468 - INFO - Token #153: ' based' (ID=1912) | Time=19.20ms
+2025-12-10 23:04:20,494 - INFO - Token #154: ' on' (ID=319) | Time=25.98ms
+2025-12-10 23:04:20,514 - INFO - Token #155: ' data' (ID=1366) | Time=20.24ms
+2025-12-10 23:04:20,533 - INFO - Token #156: ' on' (ID=319) | Time=18.47ms
+2025-12-10 23:04:20,553 - INFO - Token #157: ' 1' (ID=352) | Time=19.95ms
+2025-12-10 23:04:20,572 - INFO - Token #158: ',' (ID=11) | Time=18.79ms
+2025-12-10 23:04:20,596 - INFO - Token #159: '7' (ID=22) | Time=24.41ms
+2025-12-10 23:04:20,617 - INFO - Token #160: '22' (ID=1828) | Time=20.19ms
+2025-12-10 23:04:20,639 - INFO - Token #161: ' adults' (ID=6490) | Time=21.95ms
+2025-12-10 23:04:20,664 - INFO - Token #162: ' over' (ID=625) | Time=25.00ms
+2025-12-10 23:04:20,685 - INFO - Token #163: ' 75' (ID=5441) | Time=20.69ms
+2025-12-10 23:04:20,704 - INFO - Token #164: ' years' (ID=812) | Time=18.45ms
+2025-12-10 23:04:20,728 - INFO - Token #165: ' old' (ID=1468) | Time=24.43ms
+2025-12-10 23:04:20,750 - INFO - Token #166: ' from' (ID=422) | Time=20.99ms
+2025-12-10 23:04:20,768 - INFO - Token #167: ' 2002' (ID=6244) | Time=18.60ms
+2025-12-10 23:04:20,795 - INFO - Token #168: ' to' (ID=284) | Time=26.51ms
+2025-12-10 23:04:20,818 - INFO - Token #169: ' 2015' (ID=1853) | Time=22.39ms
+2025-12-10 23:04:20,840 - INFO - Token #170: '.' (ID=13) | Time=22.56ms
+2025-12-10 23:04:20,861 - INFO - Token #171: ' Researchers' (ID=26685) | Time=19.94ms
+2025-12-10 23:04:20,880 - INFO - Token #172: ' analyzed' (ID=15475) | Time=19.49ms
+2025-12-10 23:04:20,901 - INFO - Token #173: ' about' (ID=546) | Time=20.60ms
+2025-12-10 23:04:20,928 - INFO - Token #174: ' 9' (ID=860) | Time=27.02ms
+2025-12-10 23:04:20,952 - INFO - Token #175: '55' (ID=2816) | Time=23.45ms
+2025-12-10 23:04:20,977 - INFO - Token #176: ' interviews' (ID=9299) | Time=25.09ms
+2025-12-10 23:04:20,996 - INFO - Token #177: ' with' (ID=351) | Time=18.91ms
+2025-12-10 23:04:21,016 - INFO - Token #178: ' about' (ID=546) | Time=19.34ms
+2025-12-10 23:04:21,040 - INFO - Token #179: ' 4' (ID=604) | Time=24.26ms
+2025-12-10 23:04:21,062 - INFO - Token #180: ',' (ID=11) | Time=21.42ms
+2025-12-10 23:04:21,082 - INFO - Token #181: '9' (ID=24) | Time=19.85ms
+2025-12-10 23:04:21,103 - INFO - Token #182: '31' (ID=3132) | Time=20.46ms
+2025-12-10 23:04:21,122 - INFO - Token #183: ' adults' (ID=6490) | Time=19.32ms
+2025-12-10 23:04:21,143 - INFO - Token #184: ' from' (ID=422) | Time=20.54ms
+2025-12-10 23:04:21,166 - INFO - Token #185: ' the' (ID=262) | Time=22.53ms
+2025-12-10 23:04:21,185 - INFO - Token #186: ' national' (ID=2260) | Time=19.28ms
+2025-12-10 23:04:21,207 - INFO - Token #187: ',' (ID=11) | Time=22.28ms
+2025-12-10 23:04:21,228 - INFO - Token #188: ' state' (ID=1181) | Time=20.37ms
+2025-12-10 23:04:21,249 - INFO - Token #189: ',' (ID=11) | Time=20.71ms
+2025-12-10 23:04:21,271 - INFO - Token #190: ' and' (ID=290) | Time=22.22ms
+2025-12-10 23:04:21,293 - INFO - Token #191: ' local' (ID=1957) | Time=21.44ms
+2025-12-10 23:04:21,313 - INFO - Token #192: ' level' (ID=1241) | Time=19.43ms
+2025-12-10 23:04:21,333 - INFO - Token #193: ' (' (ID=357) | Time=20.06ms
+2025-12-10 23:04:21,352 - INFO - Token #194: 'n' (ID=77) | Time=18.67ms
+2025-12-10 23:04:21,378 - INFO - Token #195: ' =' (ID=796) | Time=26.00ms
+2025-12-10 23:04:21,399 - INFO - Token #196: ' 9' (ID=860) | Time=20.86ms
+2025-12-10 23:04:21,418 - INFO - Token #197: ',' (ID=11) | Time=19.27ms
+2025-12-10 23:04:21,445 - INFO - Token #198: '8' (ID=23) | Time=26.50ms
+2025-12-10 23:04:21,467 - INFO - Token #199: '29' (ID=1959) | Time=22.07ms
+2025-12-10 23:04:21,488 - INFO - Token #200: ')' (ID=8) | Time=21.08ms
+2025-12-10 23:04:21,699 - INFO - ✅ 生成完成: 200 tokens in 4.18s (47.81 tokens/s)
+2025-12-10 23:04:29,902 - INFO - [GENERATE] prompt='the future of ai is what', max_tokens=200, temp=1.0, top_k=50
+2025-12-10 23:04:30,265 - INFO - Token #1: ' it' (ID=340) | Time=250.17ms
+2025-12-10 23:04:30,284 - INFO - Token #2: ' needs' (ID=2476) | Time=19.34ms
+2025-12-10 23:04:30,305 - INFO - Token #3: ' to' (ID=284) | Time=20.61ms
+2025-12-10 23:04:30,322 - INFO - Token #4: ' be' (ID=307) | Time=17.14ms
+2025-12-10 23:04:30,342 - INFO - Token #5: '.' (ID=13) | Time=19.02ms
+2025-12-10 23:04:30,360 - INFO - Token #6: '
+' (ID=198) | Time=18.51ms
+2025-12-10 23:04:30,378 - INFO - Token #7: '
+' (ID=198) | Time=17.57ms
+2025-12-10 23:04:30,397 - INFO - Token #8: 'P' (ID=47) | Time=18.81ms
+2025-12-10 23:04:30,414 - INFO - Token #9: 'ig' (ID=328) | Time=17.00ms
+2025-12-10 23:04:30,431 - INFO - Token #10: 'gy' (ID=1360) | Time=16.83ms
+2025-12-10 23:04:30,450 - INFO - Token #11: '-' (ID=12) | Time=18.00ms
+2025-12-10 23:04:30,467 - INFO - Token #12: 'back' (ID=1891) | Time=17.50ms
+2025-12-10 23:04:30,491 - INFO - Token #13: 'ing' (ID=278) | Time=24.02ms
+2025-12-10 23:04:30,509 - INFO - Token #14: '.' (ID=13) | Time=17.91ms
+2025-12-10 23:04:30,527 - INFO - Token #15: ' You' (ID=921) | Time=16.97ms
+2025-12-10 23:04:30,544 - INFO - Token #16: ' get' (ID=651) | Time=17.32ms
+2025-12-10 23:04:30,562 - INFO - Token #17: ' a' (ID=257) | Time=17.74ms
+2025-12-10 23:04:30,579 - INFO - Token #18: ' set' (ID=900) | Time=17.05ms
+2025-12-10 23:04:30,596 - INFO - Token #19: ' of' (ID=286) | Time=17.04ms
+2025-12-10 23:04:30,614 - INFO - Token #20: ' muscles' (ID=12749) | Time=17.57ms
+2025-12-10 23:04:30,632 - INFO - Token #21: ' and' (ID=290) | Time=17.66ms
+2025-12-10 23:04:30,650 - INFO - Token #22: ' bones' (ID=11945) | Time=18.15ms
+2025-12-10 23:04:30,669 - INFO - Token #23: ' you' (ID=345) | Time=18.58ms
+2025-12-10 23:04:30,693 - INFO - Token #24: ' can' (ID=460) | Time=23.26ms
+2025-12-10 23:04:30,711 - INFO - Token #25: ' put' (ID=1234) | Time=18.08ms
+2025-12-10 23:04:30,728 - INFO - Token #26: ' between' (ID=1022) | Time=16.95ms
+2025-12-10 23:04:30,747 - INFO - Token #27: ' the' (ID=262) | Time=18.28ms
+2025-12-10 23:04:30,763 - INFO - Token #28: ' human' (ID=1692) | Time=16.55ms
+2025-12-10 23:04:30,781 - INFO - Token #29: ' body' (ID=1767) | Time=17.77ms
+2025-12-10 23:04:30,816 - INFO - Token #30: ' and' (ID=290) | Time=34.90ms
+2025-12-10 23:04:30,834 - INFO - Token #31: ' the' (ID=262) | Time=17.17ms
+2025-12-10 23:04:30,859 - INFO - Token #32: ' muscle' (ID=8280) | Time=25.16ms
+2025-12-10 23:04:30,876 - INFO - Token #33: '-' (ID=12) | Time=16.63ms
+2025-12-10 23:04:30,893 - INFO - Token #34: 'brain' (ID=27825) | Time=17.10ms
+2025-12-10 23:04:30,911 - INFO - Token #35: ' barrier' (ID=13054) | Time=17.48ms
+2025-12-10 23:04:30,928 - INFO - Token #36: '.' (ID=13) | Time=16.85ms
+2025-12-10 23:04:30,945 - INFO - Token #37: ' This' (ID=770) | Time=16.98ms
+2025-12-10 23:04:30,961 - INFO - Token #38: ' will' (ID=481) | Time=15.98ms
+2025-12-10 23:04:30,980 - INFO - Token #39: ' allow' (ID=1249) | Time=18.43ms
+2025-12-10 23:04:31,002 - INFO - Token #40: ' us' (ID=514) | Time=22.68ms
+2025-12-10 23:04:31,027 - INFO - Token #41: ' to' (ID=284) | Time=24.60ms
+2025-12-10 23:04:31,047 - INFO - Token #42: ' physically' (ID=10170) | Time=19.29ms
+2025-12-10 23:04:31,064 - INFO - Token #43: ' communicate' (ID=10996) | Time=16.69ms
+2025-12-10 23:04:31,082 - INFO - Token #44: ' better' (ID=1365) | Time=18.41ms
+2025-12-10 23:04:31,099 - INFO - Token #45: ' and' (ID=290) | Time=16.87ms
+2025-12-10 23:04:31,117 - INFO - Token #46: ' gain' (ID=4461) | Time=18.09ms
+2025-12-10 23:04:31,137 - INFO - Token #47: ' body' (ID=1767) | Time=19.77ms
+2025-12-10 23:04:31,154 - INFO - Token #48: ' shape' (ID=5485) | Time=16.56ms
+2025-12-10 23:04:31,175 - INFO - Token #49: ',' (ID=11) | Time=20.94ms
+2025-12-10 23:04:31,193 - INFO - Token #50: ' as' (ID=355) | Time=17.10ms
+2025-12-10 23:04:31,210 - INFO - Token #51: ' many' (ID=867) | Time=17.18ms
+2025-12-10 23:04:31,227 - INFO - Token #52: ' scientists' (ID=5519) | Time=17.11ms
+2025-12-10 23:04:31,244 - INFO - Token #53: ' believe' (ID=1975) | Time=16.16ms
+2025-12-10 23:04:31,261 - INFO - Token #54: '.' (ID=13) | Time=16.80ms
+2025-12-10 23:04:31,276 - INFO - Token #55: ' Scientists' (ID=23782) | Time=15.53ms
+2025-12-10 23:04:31,295 - INFO - Token #56: ' are' (ID=389) | Time=18.82ms
+2025-12-10 23:04:31,313 - INFO - Token #57: ' continuing' (ID=8282) | Time=17.07ms
+2025-12-10 23:04:31,329 - INFO - Token #58: ' to' (ID=284) | Time=15.89ms
+2025-12-10 23:04:31,344 - INFO - Token #59: ' see' (ID=766) | Time=15.79ms
+2025-12-10 23:04:31,364 - INFO - Token #60: ' progress' (ID=4371) | Time=18.88ms
+2025-12-10 23:04:31,381 - INFO - Token #61: ' in' (ID=287) | Time=16.84ms
+2025-12-10 23:04:31,401 - INFO - Token #62: ' treating' (ID=13622) | Time=20.27ms
+2025-12-10 23:04:31,424 - INFO - Token #63: ' people' (ID=661) | Time=23.08ms
+2025-12-10 23:04:31,443 - INFO - Token #64: ' with' (ID=351) | Time=18.94ms
+2025-12-10 23:04:31,461 - INFO - Token #65: ' multiple' (ID=3294) | Time=17.70ms
+2025-12-10 23:04:31,479 - INFO - Token #66: ' sclerosis' (ID=46225) | Time=17.79ms
+2025-12-10 23:04:31,498 - INFO - Token #67: '.' (ID=13) | Time=18.80ms
+2025-12-10 23:04:31,518 - INFO - Token #68: ' It' (ID=632) | Time=19.72ms
+2025-12-10 23:04:31,537 - INFO - Token #69: ' seems' (ID=2331) | Time=18.78ms
+2025-12-10 23:04:31,559 - INFO - Token #70: ' to' (ID=284) | Time=21.83ms
+2025-12-10 23:04:31,578 - INFO - Token #71: ' be' (ID=307) | Time=18.92ms
+2025-12-10 23:04:31,596 - INFO - Token #72: ' the' (ID=262) | Time=17.70ms
+2025-12-10 23:04:31,615 - INFO - Token #73: ' most' (ID=749) | Time=19.04ms
+2025-12-10 23:04:31,635 - INFO - Token #74: ' complex' (ID=3716) | Time=19.49ms
+2025-12-10 23:04:31,654 - INFO - Token #75: ' brain' (ID=3632) | Time=18.77ms
+2025-12-10 23:04:31,676 - INFO - Token #76: ' disease' (ID=4369) | Time=21.78ms
+2025-12-10 23:04:31,696 - INFO - Token #77: ' ever' (ID=1683) | Time=20.07ms
+2025-12-10 23:04:31,716 - INFO - Token #78: ' discovered' (ID=5071) | Time=19.65ms
+2025-12-10 23:04:31,735 - INFO - Token #79: ' in' (ID=287) | Time=19.03ms
+2025-12-10 23:04:31,755 - INFO - Token #80: ' human' (ID=1692) | Time=19.95ms
+2025-12-10 23:04:31,777 - INFO - Token #81: ' history' (ID=2106) | Time=21.73ms
+2025-12-10 23:04:31,797 - INFO - Token #82: '.' (ID=13) | Time=19.75ms
+2025-12-10 23:04:31,814 - INFO - Token #83: '
+' (ID=198) | Time=16.51ms
+2025-12-10 23:04:31,831 - INFO - Token #84: '
+' (ID=198) | Time=16.98ms
+2025-12-10 23:04:31,850 - INFO - Token #85: 'This' (ID=1212) | Time=18.80ms
+2025-12-10 23:04:31,869 - INFO - Token #86: ' disease' (ID=4369) | Time=19.10ms
+2025-12-10 23:04:31,887 - INFO - Token #87: ' is' (ID=318) | Time=17.62ms
+2025-12-10 23:04:31,909 - INFO - Token #88: ' the' (ID=262) | Time=22.54ms
+2025-12-10 23:04:31,929 - INFO - Token #89: ' most' (ID=749) | Time=19.32ms
+2025-12-10 23:04:31,945 - INFO - Token #90: ' commonly' (ID=8811) | Time=16.20ms
+2025-12-10 23:04:31,965 - INFO - Token #91: ' diagnosed' (ID=14641) | Time=19.63ms
+2025-12-10 23:04:31,985 - INFO - Token #92: ' at' (ID=379) | Time=19.88ms
+2025-12-10 23:04:32,009 - INFO - Token #93: ' one' (ID=530) | Time=23.65ms
+2025-12-10 23:04:32,029 - INFO - Token #94: ' time' (ID=640) | Time=20.02ms
+2025-12-10 23:04:32,049 - INFO - Token #95: ' or' (ID=393) | Time=19.62ms
+2025-12-10 23:04:32,069 - INFO - Token #96: ' another' (ID=1194) | Time=19.70ms
+2025-12-10 23:04:32,088 - INFO - Token #97: '.' (ID=13) | Time=18.58ms
+2025-12-10 23:04:32,110 - INFO - Token #98: ' It' (ID=632) | Time=22.44ms
+2025-12-10 23:04:32,129 - INFO - Token #99: ''s' (ID=338) | Time=19.07ms
+2025-12-10 23:04:32,146 - INFO - Token #100: ' a' (ID=257) | Time=16.24ms
+2025-12-10 23:04:32,163 - INFO - Token #101: ' brain' (ID=3632) | Time=17.34ms
+2025-12-10 23:04:32,182 - INFO - Token #102: ' disorder' (ID=8967) | Time=18.37ms
+2025-12-10 23:04:32,202 - INFO - Token #103: ' that' (ID=326) | Time=19.99ms
+2025-12-10 23:04:32,222 - INFO - Token #104: ' comes' (ID=2058) | Time=20.00ms
+2025-12-10 23:04:32,241 - INFO - Token #105: ' with' (ID=351) | Time=18.87ms
+2025-12-10 23:04:32,261 - INFO - Token #106: ' several' (ID=1811) | Time=19.92ms
+2025-12-10 23:04:32,281 - INFO - Token #107: ' different' (ID=1180) | Time=19.08ms
+2025-12-10 23:04:32,300 - INFO - Token #108: ' causes' (ID=5640) | Time=19.14ms
+2025-12-10 23:04:32,328 - INFO - Token #109: ',' (ID=11) | Time=27.77ms
+2025-12-10 23:04:32,348 - INFO - Token #110: ' but' (ID=475) | Time=19.48ms
+2025-12-10 23:04:32,366 - INFO - Token #111: ' the' (ID=262) | Time=18.02ms
+2025-12-10 23:04:32,385 - INFO - Token #112: ' disease' (ID=4369) | Time=18.60ms
+2025-12-10 23:04:32,401 - INFO - Token #113: ' is' (ID=318) | Time=16.53ms
+2025-12-10 23:04:32,427 - INFO - Token #114: ' mostly' (ID=4632) | Time=25.62ms
+2025-12-10 23:04:32,445 - INFO - Token #115: ' fatal' (ID=10800) | Time=17.90ms
+2025-12-10 23:04:32,464 - INFO - Token #116: ' in' (ID=287) | Time=18.29ms
+2025-12-10 23:04:32,484 - INFO - Token #117: ' people' (ID=661) | Time=20.03ms
+2025-12-10 23:04:32,506 - INFO - Token #118: ' with' (ID=351) | Time=21.78ms
+2025-12-10 23:04:32,529 - INFO - Token #119: ' MS' (ID=6579) | Time=22.77ms
+2025-12-10 23:04:32,548 - INFO - Token #120: '.' (ID=13) | Time=18.72ms
+2025-12-10 23:04:32,570 - INFO - Token #121: '
+' (ID=198) | Time=21.79ms
+2025-12-10 23:04:32,588 - INFO - Token #122: '
+' (ID=198) | Time=18.11ms
+2025-12-10 23:04:32,610 - INFO - Token #123: 'The' (ID=464) | Time=21.42ms
+2025-12-10 23:04:32,630 - INFO - Token #124: ' human' (ID=1692) | Time=20.05ms
+2025-12-10 23:04:32,648 - INFO - Token #125: ' body' (ID=1767) | Time=18.42ms
+2025-12-10 23:04:32,669 - INFO - Token #126: ' is' (ID=318) | Time=19.96ms
+2025-12-10 23:04:32,691 - INFO - Token #127: ' a' (ID=257) | Time=22.26ms
+2025-12-10 23:04:32,711 - INFO - Token #128: ' giant' (ID=6175) | Time=19.69ms
+2025-12-10 23:04:32,731 - INFO - Token #129: ' repository' (ID=16099) | Time=20.04ms
+2025-12-10 23:04:32,750 - INFO - Token #130: ' of' (ID=286) | Time=18.19ms
+2025-12-10 23:04:32,770 - INFO - Token #131: ' cellular' (ID=19824) | Time=20.37ms
+2025-12-10 23:04:32,788 - INFO - Token #132: ' information' (ID=1321) | Time=17.75ms
+2025-12-10 23:04:32,810 - INFO - Token #133: ',' (ID=11) | Time=21.86ms
+2025-12-10 23:04:32,830 - INFO - Token #134: ' and' (ID=290) | Time=20.12ms
+2025-12-10 23:04:32,849 - INFO - Token #135: ' even' (ID=772) | Time=18.68ms
+2025-12-10 23:04:32,869 - INFO - Token #136: ' at' (ID=379) | Time=19.97ms
+2025-12-10 23:04:32,888 - INFO - Token #137: ' an' (ID=281) | Time=18.10ms
+2025-12-10 23:04:32,909 - INFO - Token #138: ' early' (ID=1903) | Time=21.50ms
+2025-12-10 23:04:32,931 - INFO - Token #139: ' stage' (ID=3800) | Time=22.09ms
+2025-12-10 23:04:32,950 - INFO - Token #140: ',' (ID=11) | Time=18.79ms
+2025-12-10 23:04:32,976 - INFO - Token #141: ' cellular' (ID=19824) | Time=24.90ms
+2025-12-10 23:04:32,997 - INFO - Token #142: ' information' (ID=1321) | Time=21.62ms
+2025-12-10 23:04:33,017 - INFO - Token #143: ' usually' (ID=3221) | Time=19.20ms
+2025-12-10 23:04:33,046 - INFO - Token #144: ' was' (ID=373) | Time=29.41ms
+2025-12-10 23:04:33,069 - INFO - Token #145: ' lost' (ID=2626) | Time=22.06ms
+2025-12-10 23:04:33,089 - INFO - Token #146: ' or' (ID=393) | Time=20.29ms
+2025-12-10 23:04:33,110 - INFO - Token #147: ' buried' (ID=11694) | Time=20.63ms
+2025-12-10 23:04:33,130 - INFO - Token #148: ' in' (ID=287) | Time=19.38ms
+2025-12-10 23:04:33,152 - INFO - Token #149: ' memory' (ID=4088) | Time=21.84ms
+2025-12-10 23:04:33,174 - INFO - Token #150: '.' (ID=13) | Time=22.23ms
+2025-12-10 23:04:33,192 - INFO - Token #151: ' We' (ID=775) | Time=17.73ms
+2025-12-10 23:04:33,212 - INFO - Token #152: ' used' (ID=973) | Time=20.05ms
+2025-12-10 23:04:33,231 - INFO - Token #153: ' to' (ID=284) | Time=18.59ms
+2025-12-10 23:04:33,252 - INFO - Token #154: ' get' (ID=651) | Time=20.57ms
+2025-12-10 23:04:33,277 - INFO - Token #155: ' all' (ID=477) | Time=24.80ms
+2025-12-10 23:04:33,296 - INFO - Token #156: ' that' (ID=326) | Time=19.32ms
+2025-12-10 23:04:33,317 - INFO - Token #157: ' information' (ID=1321) | Time=20.74ms
+2025-12-10 23:04:33,337 - INFO - Token #158: ' back' (ID=736) | Time=19.68ms
+2025-12-10 23:04:33,359 - INFO - Token #159: ' through' (ID=832) | Time=21.96ms
+2025-12-10 23:04:33,381 - INFO - Token #160: ' a' (ID=257) | Time=20.91ms
+2025-12-10 23:04:33,402 - INFO - Token #161: ' chemical' (ID=5931) | Time=21.32ms
+2025-12-10 23:04:33,425 - INFO - Token #162: ' and' (ID=290) | Time=22.35ms
+2025-12-10 23:04:33,447 - INFO - Token #163: ' electrical' (ID=12278) | Time=21.91ms
+2025-12-10 23:04:33,466 - INFO - Token #164: ' device' (ID=3335) | Time=19.12ms
+2025-12-10 23:04:33,486 - INFO - Token #165: ',' (ID=11) | Time=20.14ms
+2025-12-10 23:04:33,511 - INFO - Token #166: ' and' (ID=290) | Time=24.42ms
+2025-12-10 23:04:33,530 - INFO - Token #167: ' I' (ID=314) | Time=18.51ms
+2025-12-10 23:04:33,552 - INFO - Token #168: ''d' (ID=1549) | Time=22.16ms
+2025-12-10 23:04:33,571 - INFO - Token #169: ' find' (ID=1064) | Time=18.41ms
+2025-12-10 23:04:33,595 - INFO - Token #170: ' that' (ID=326) | Time=24.30ms
+2025-12-10 23:04:33,616 - INFO - Token #171: ' stuff' (ID=3404) | Time=21.18ms
+2025-12-10 23:04:33,635 - INFO - Token #172: ' at' (ID=379) | Time=18.36ms
+2025-12-10 23:04:33,662 - INFO - Token #173: ' random' (ID=4738) | Time=26.64ms
+2025-12-10 23:04:33,682 - INFO - Token #174: ' across' (ID=1973) | Time=20.63ms
+2025-12-10 23:04:33,703 - INFO - Token #175: ' a' (ID=257) | Time=20.74ms
+2025-12-10 23:04:33,729 - INFO - Token #176: ' person' (ID=1048) | Time=25.02ms
+2025-12-10 23:04:33,748 - INFO - Token #177: ''s' (ID=338) | Time=19.60ms
+2025-12-10 23:04:33,768 - INFO - Token #178: ' body' (ID=1767) | Time=19.27ms
+2025-12-10 23:04:33,789 - INFO - Token #179: '.' (ID=13) | Time=21.50ms
+2025-12-10 23:04:33,809 - INFO - Token #180: '
+' (ID=198) | Time=19.62ms
+2025-12-10 23:04:33,831 - INFO - Token #181: '
+' (ID=198) | Time=21.07ms
+2025-12-10 23:04:33,850 - INFO - Token #182: 'One' (ID=3198) | Time=18.93ms
+2025-12-10 23:04:33,870 - INFO - Token #183: ' thing' (ID=1517) | Time=20.56ms
+2025-12-10 23:04:33,889 - INFO - Token #184: ' that' (ID=326) | Time=18.29ms
+2025-12-10 23:04:33,912 - INFO - Token #185: ' was' (ID=373) | Time=23.13ms
+2025-12-10 23:04:33,934 - INFO - Token #186: ' missing' (ID=4814) | Time=21.58ms
+2025-12-10 23:04:33,954 - INFO - Token #187: ' was' (ID=373) | Time=19.69ms
+2025-12-10 23:04:33,975 - INFO - Token #188: ' the' (ID=262) | Time=20.92ms
+2025-12-10 23:04:33,998 - INFO - Token #189: ' data' (ID=1366) | Time=22.58ms
+2025-12-10 23:04:34,019 - INFO - Token #190: ' from' (ID=422) | Time=21.04ms
+2025-12-10 23:04:34,047 - INFO - Token #191: ' the' (ID=262) | Time=27.66ms
+2025-12-10 23:04:34,068 - INFO - Token #192: ' brain' (ID=3632) | Time=21.39ms
+2025-12-10 23:04:34,088 - INFO - Token #193: ' itself' (ID=2346) | Time=19.08ms
+2025-12-10 23:04:34,107 - INFO - Token #194: '.' (ID=13) | Time=18.56ms
+2025-12-10 23:04:34,131 - INFO - Token #195: ' We' (ID=775) | Time=24.33ms
+2025-12-10 23:04:34,154 - INFO - Token #196: ' needed' (ID=2622) | Time=22.99ms
+2025-12-10 23:04:34,176 - INFO - Token #197: ' to' (ID=284) | Time=21.36ms
+2025-12-10 23:04:34,198 - INFO - Token #198: ' look' (ID=804) | Time=21.74ms
+2025-12-10 23:04:34,224 - INFO - Token #199: ' at' (ID=379) | Time=26.24ms
+2025-12-10 23:04:34,244 - INFO - Token #200: ' the' (ID=262) | Time=19.74ms
+2025-12-10 23:04:34,452 - INFO - ✅ 生成完成: 200 tokens in 4.23s (47.28 tokens/s)
